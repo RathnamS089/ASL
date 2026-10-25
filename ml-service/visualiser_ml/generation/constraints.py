@@ -33,7 +33,8 @@ GLOSS_ALIASES = {
     "ME": ("i", "me", "i'm", "i'll", "i've", "i'd"),
     "IX-2": ("you", "your", "you're", "you'll", "you've", "you'd"),
     "YOU": ("you", "your", "you're", "you'll", "you've", "you'd"),
-    "IX-3": ("he", "she", "it", "they", "him", "her", "them"),
+    "IX-3": ("he", "she", "it", "they", "him", "her", "them", "his", "its", "their",
+             "he's", "she's", "it's", "they're"),
     "MY": ("my", "mine"),
     "POSS-1": ("my", "mine"),
     "NOT": NEGATIONS,
@@ -48,6 +49,16 @@ IRREGULAR = {
     "come": ("came",), "have": ("had", "has"), "be": ("is", "are", "was", "were", "am"),
     "give": ("gave", "given"), "know": ("knew", "known"), "take": ("took", "taken"),
     "child": ("children",), "person": ("people",), "man": ("men",), "woman": ("women",),
+    "buy": ("bought",), "bring": ("brought",), "think": ("thought",), "teach": ("taught",),
+    "meet": ("met",), "forget": ("forgot", "forgotten"), "get": ("got",), "make": ("made",),
+    "say": ("said",), "tell": ("told",), "feel": ("felt",), "leave": ("left",), "lose": ("lost",),
+    "find": ("found",), "sit": ("sat",), "run": ("ran",), "swim": ("swam",), "drink": ("drank",),
+    "write": ("wrote", "written"), "read": ("read",), "sleep": ("slept",), "speak": ("spoke",),
+    "understand": ("understood",), "drive": ("drove",), "fly": ("flew",), "wake": ("woke",),
+    "pay": ("paid",), "sell": ("sold",), "send": ("sent",), "spend": ("spent",), "hear": ("heard",),
+    "win": ("won",), "fall": ("fell",), "grow": ("grew",), "break": ("broke", "broken"),
+    "begin": ("began", "begun"), "choose": ("chose",), "do": ("did", "done", "does"),
+    "good": ("well", "better", "best"), "bad": ("worse", "worst"),
 }
 
 SUFFIXES = ("", "s", "es", "ed", "d", "ing", "er", "ers", "ly", "'s")
@@ -69,11 +80,15 @@ def gloss_surface_forms(label: str) -> set[str]:
     forms: set[str] = set()
     for part in re.split(r"[-+_\s]+", label):
         base = part.lower()
-        if not base.isalpha():
+        if not base.replace("'", "").isalpha():
             continue
         forms.update(base + s for s in SUFFIXES)
         if base.endswith("e"):
             forms.update(base[:-1] + s for s in ("ing", "ed", "er"))
+        if len(base) > 2 and base.endswith("y") and base[-2] not in "aeiou":  # study -> studies
+            forms.update(base[:-1] + s for s in ("ies", "ied", "ier"))
+        if len(base) >= 3 and re.fullmatch(r".*[^aeiou][aeiou][^aeiouwxy]", base):  # stop -> stopped
+            forms.update(base + base[-1] + s for s in ("ing", "ed", "er"))
         forms.update(IRREGULAR.get(base, ()))
     return forms
 

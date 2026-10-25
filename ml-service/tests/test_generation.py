@@ -174,3 +174,13 @@ def test_negation_needs_a_negation_sign():
 def test_non_negative_contractions_are_function_words():
     _, reason = align("Sorry, I'm late.", segs("SORRY", "IX-1", "LATE"), None)
     assert reason is None
+
+
+def test_inflection_rules():
+    assert {"studies", "studied"} <= gloss_surface_forms("STUDY")
+    assert {"stopped", "stopping"} <= gloss_surface_forms("STOP")
+    assert {"met", "bought", "well"} <= gloss_surface_forms("MEET") | gloss_surface_forms("BUY") | gloss_surface_forms("GOOD")
+    assert "his" in gloss_surface_forms("IX-3")
+    assert "let's" in gloss_surface_forms("LET'S")
+    # Inflection never invents a different word.
+    assert "meat" not in gloss_surface_forms("MEET")

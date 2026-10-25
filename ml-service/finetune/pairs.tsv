@@ -1,0 +1,307 @@
+# glosses<TAB>sentence. ASL-style glosses written for this project; NOT reviewed by a fluent signer yet.
+# Rules: every sentence must pass generation/constraints.py; no gloss sequence from benchmarks/glosses.jsonl.
+# Tense: no time sign -> present tense. Past/future only from a time sign (YESTERDAY, TOMORROW, FINISH, WILL, ...).
+HI	Hi.
+HI FRIEND	Hi, friend.
+HELLO EVERYONE	Hello, everyone.
+GOOD AFTERNOON	Good afternoon.
+GOOD NIGHT	Good night.
+GOOD EVENING	Good evening.
+BYE	Bye.
+SEE YOU LATER	See you later.
+SEE YOU TOMORROW	See you tomorrow.
+NICE MEET YOU	Nice to meet you.
+THANK-YOU VERY-MUCH	Thank you very much.
+THANK-YOU FRIEND	Thank you, friend.
+WELCOME	Welcome.
+YOU WELCOME	You are welcome.
+SORRY	Sorry.
+SORRY IX-1 FORGET	Sorry, I forgot.
+EXCUSE-ME	Excuse me.
+PLEASE WAIT	Please wait.
+PLEASE SIT	Please sit.
+PLEASE REPEAT	Please repeat that.
+PLEASE SIGN SLOW	Please sign slowly.
+IX-1 NAME FS-JOHN	My name is John.
+IX-1 NAME FS-PRIYA	My name is Priya.
+IX-1 NAME FS-SAM	My name is Sam.
+IX-1 NAME FS-MARIA	My name is Maria.
+IX-3 NAME FS-LEO	His name is Leo.
+IX-1 MOTHER NAME FS-RITA	My mother's name is Rita.
+IX-1 FRIEND NAME FS-KAI	My friend's name is Kai.
+YOU NAME FS-ANNA	Your name is Anna.
+IX-1 DEAF	I am deaf.
+IX-1 HEARING	I am hearing.
+IX-1 HARD-OF-HEARING	I am hard of hearing.
+IX-1 STUDENT	I am a student.
+IX-1 TEACHER	I am a teacher.
+IX-1 DOCTOR	I am a doctor.
+IX-1 NURSE	I am a nurse.
+IX-1 ENGINEER	I am an engineer.
+IX-1 FROM FS-INDIA	I am from India.
+IX-1 FROM FS-CANADA	I am from Canada.
+IX-1 LIVE FS-CHENNAI	I live in Chennai.
+IX-1 LIVE CITY	I live in the city.
+IX-1 TIRED	I am tired.
+IX-1 HAPPY	I am happy.
+IX-1 SAD	I am sad.
+IX-1 SICK	I am sick.
+IX-1 COLD	I am cold.
+IX-1 THIRSTY	I am thirsty.
+IX-1 BUSY	I am busy.
+IX-1 READY	I am ready.
+IX-1 FINE	I am fine.
+IX-1 SCARED	I am scared.
+IX-1 EXCITED	I am excited.
+IX-1 NERVOUS	I am nervous.
+IX-1 BORED	I am bored.
+IX-3 HAPPY	She is happy.
+IX-3 ANGRY	He is angry.
+IX-3 TIRED	They are tired.
+YOU BEAUTIFUL	You are beautiful.
+YOU SMART	You are smart.
+YOU KIND	You are kind.
+WEATHER HOT	The weather is hot.
+WEATHER COLD	The weather is cold.
+TODAY RAIN	It is raining today.
+TODAY SUNNY	It is sunny today.
+YESTERDAY SNOW	It snowed yesterday.
+TOMORROW RAIN	It will rain tomorrow.
+IX-1 LIKE COFFEE	I like coffee.
+IX-1 LIKE TEA	I like tea.
+IX-1 LIKE MUSIC	I like music.
+IX-1 LIKE DANCE	I like to dance.
+IX-1 LIKE READ BOOK	I like to read books.
+IX-1 NOT LIKE COFFEE	I do not like coffee.
+IX-1 NOT LIKE COLD	I don't like the cold.
+IX-1 LOVE MOTHER	I love my mother.
+IX-1 LOVE FAMILY	I love my family.
+IX-1 LOVE DOG	I love dogs.
+IX-1 WANT WATER	I want water.
+IX-1 WANT COFFEE	I want coffee.
+IX-1 WANT SLEEP	I want to sleep.
+IX-1 WANT GO HOME	I want to go home.
+IX-1 WANT LEARN	I want to learn.
+IX-1 NOT WANT GO	I do not want to go.
+IX-1 NEED HELP	I need help.
+IX-1 NEED DOCTOR	I need a doctor.
+IX-1 NEED WATER	I need water.
+IX-1 NEED REST	I need to rest.
+IX-1 NEED BATHROOM	I need the bathroom.
+IX-1 NEED INTERPRETER	I need an interpreter.
+HELP	Help.
+HELP IX-1 PLEASE	Help me, please.
+PLEASE CALL DOCTOR	Please call a doctor.
+CALL POLICE	Call the police.
+IX-1 HURT	I am hurt.
+IX-1 HEAD HURT	My head hurts.
+IX-1 STOMACH HURT	My stomach hurts.
+IX-1 BACK HURT	My back hurts.
+IX-1 ALLERGIC PEANUT	I am allergic to peanuts.
+IX-1 LOST	I am lost.
+IX-1 LOST PHONE	I lost my phone.
+WHERE HOSPITAL	Where is the hospital?
+WHERE STORE	Where is the store?
+WHERE SCHOOL	Where is the school?
+WHERE STATION	Where is the station?
+WHERE EXIT	Where is the exit?
+WHERE DOCTOR	Where is the doctor?
+WHERE YOU LIVE	Where do you live?
+WHERE YOU WORK	Where do you work?
+WHERE YOU FROM	Where are you from?
+WHERE YOU GO	Where are you going?
+WHERE IX-1 PHONE	Where is my phone?
+WHERE IX-1 BAG	Where is my bag?
+WHAT TIME	What time is it?
+WHAT YOU WANT	What do you want?
+WHAT YOU DO	What do you do?
+WHAT YOU EAT	What are you eating?
+WHAT THAT	What is that?
+WHAT HAPPEN	What happened?
+YOU WORK WHAT	What is your work?
+YOU WANT EAT WHAT	What do you want to eat?
+YOU FAVORITE COLOR WHAT	What is your favorite color?
+YOU DO TOMORROW WHAT	What will you do tomorrow?
+WHO THAT	Who is that?
+WHO YOU	Who are you?
+WHO TEACHER	Who is the teacher?
+YOU FRIEND WHO	Who is your friend?
+WHEN CLASS	When is class?
+WHEN MEETING	When is the meeting?
+WHEN YOU COME	When are you coming?
+YOU BIRTHDAY WHEN	When is your birthday?
+WHY YOU SAD	Why are you sad?
+WHY YOU LATE	Why are you late?
+WHY NOT	Why not?
+HOW YOU	How are you?
+HOW YOU FEEL	How do you feel?
+HOW OLD YOU	How old are you?
+HOW MUCH	How much is it?
+HOW SIGN THAT	How do you sign that?
+YOU UNDERSTAND	You understand.
+IX-1 UNDERSTAND	I understand.
+IX-1 NOT KNOW	I do not know.
+IX-1 KNOW	I know.
+IX-1 THINK YES	I think yes.
+IX-1 AGREE	I agree.
+IX-1 NOT AGREE	I don't agree.
+YES	Yes.
+NO	No.
+MAYBE	Maybe.
+OK	Ok.
+IX-1 SORRY LATE	I am sorry I am late.
+IX-1 WORK HOSPITAL	I work at the hospital.
+IX-1 WORK SCHOOL	I work at a school.
+IX-1 WORK OFFICE	I work in an office.
+IX-1 WORK HOME	I work from home.
+FATHER WORK BANK	Father works at the bank.
+IX-1 FATHER WORK FARM	My father works on a farm.
+IX-1 SISTER STUDY COLLEGE	My sister studies at college.
+IX-1 BROTHER PLAY FOOTBALL	My brother plays football.
+IX-1 GRANDMOTHER LIVE VILLAGE	My grandmother lives in a village.
+IX-1 HAVE TWO BROTHER	I have two brothers.
+IX-1 HAVE ONE SISTER	I have one sister.
+IX-1 HAVE DOG	I have a dog.
+IX-1 HAVE CAT	I have a cat.
+IX-1 HAVE QUESTION	I have a question.
+IX-1 NOT HAVE MONEY	I do not have money.
+IX-1 FAMILY BIG	My family is big.
+IX-1 HOUSE SMALL	My house is small.
+IX-1 CAR RED	My car is red.
+YOU PHONE NEW	Your phone is new.
+IX-1 GO SCHOOL	I go to school.
+IX-1 GO WORK	I go to work.
+IX-1 GO CHURCH	I go to church.
+IX-1 GO TEMPLE	I go to the temple.
+YESTERDAY IX-1 GO STORE	Yesterday I went to the store.
+YESTERDAY IX-1 GO PARK	Yesterday I went to the park.
+YESTERDAY IX-1 SEE MOVIE	Yesterday I saw a movie.
+YESTERDAY IX-1 MEET FRIEND	Yesterday I met a friend.
+YESTERDAY IX-1 WORK	Yesterday I worked.
+YESTERDAY IX-1 SICK	Yesterday I was sick.
+YESTERDAY IX-3 COME	Yesterday she came.
+YESTERDAY IX-1 BUY SHOE	Yesterday I bought shoes.
+YESTERDAY IX-1 COOK DINNER	Yesterday I cooked dinner.
+YESTERDAY IX-1 WATCH TV	Yesterday I watched TV.
+LAST-WEEK IX-1 TRAVEL	Last week I traveled.
+LAST-WEEK IX-1 VISIT GRANDMOTHER	Last week I visited my grandmother.
+LAST-YEAR IX-1 MOVE	Last year I moved.
+TOMORROW IX-1 WORK	Tomorrow I will work.
+TOMORROW IX-1 GO DOCTOR	Tomorrow I will go to the doctor.
+TOMORROW IX-1 VISIT FRIEND	Tomorrow I will visit a friend.
+TOMORROW IX-1 STUDY	Tomorrow I will study.
+TOMORROW WE MEET	Tomorrow we will meet.
+TOMORROW TEST	Tomorrow is the test.
+NEXT-WEEK IX-1 TRAVEL	Next week I will travel.
+NEXT-WEEK SCHOOL START	Next week school starts.
+NEXT-YEAR IX-1 GRADUATE	Next year I will graduate.
+TODAY IX-1 WORK	Today I work.
+TODAY IX-1 BUSY	Today I am busy.
+TODAY IX-1 BIRTHDAY	Today is my birthday.
+NOW IX-1 EAT	Now I am eating.
+NOW IX-1 GO	Now I am going.
+NOW IX-1 STUDY	I am studying now.
+IX-1 EAT FINISH	I finished eating.
+IX-1 HOMEWORK FINISH	I finished my homework.
+IX-1 FINISH READ BOOK	I finished reading the book.
+IX-1 WILL CALL YOU	I will call you.
+IX-1 WILL HELP YOU	I will help you.
+IX-1 WILL COME	I will come.
+IX-1 EAT BREAKFAST	I eat breakfast.
+IX-1 EAT RICE	I eat rice.
+IX-1 DRINK WATER	I drink water.
+IX-1 DRINK MILK	I drink milk.
+IX-1 COOK	I cook.
+IX-1 READ	I read.
+IX-1 WRITE	I write.
+IX-1 SWIM	I swim.
+IX-1 RUN MORNING	I run in the morning.
+IX-1 SLEEP LATE	I sleep late.
+IX-1 WAKE-UP EARLY	I wake up early.
+IX-1 TAKE BUS	I take the bus.
+IX-1 DRIVE CAR	I drive a car.
+IX-1 WALK SCHOOL	I walk to school.
+IX-1 PLAY GUITAR	I play guitar.
+IX-1 LEARN ASL	I learn ASL.
+IX-1 STUDY ENGLISH	I study English.
+IX-1 TEACH MATH	I teach math.
+IX-1 SPEAK HINDI	I speak Hindi.
+IX-1 SIGN SLOW	I sign slowly.
+IX-1 PRACTICE SIGN	I practice signing.
+YOU SIGN FAST	You sign fast.
+YOU SIGN GOOD	You sign well.
+YOU LEARN FAST	You learn fast.
+YOU HELP IX-1	You help me.
+IX-1 HELP YOU	I help you.
+IX-1 MISS YOU	I miss you.
+IX-1 PROUD YOU	I am proud of you.
+IX-1 WAIT YOU	I am waiting for you.
+IX-1 NOT UNDERSTAND YOU	I do not understand you.
+IX-1 NOT HEAR	I can't hear.
+IX-1 NOT SEE	I cannot see.
+IX-1 CAN SIGN	I can sign.
+IX-1 CAN HELP	I can help.
+IX-1 CAN'T COME	I can't come.
+IX-1 CAN'T SWIM	I cannot swim.
+YOU CAN COME	You can come.
+IX-3 CAN DRIVE	She can drive.
+WE GO TOGETHER	We go together.
+WE FRIEND	We are friends.
+WE FAMILY	We are family.
+WE LEARN SIGN LANGUAGE	We learn sign language.
+WE PLAY GAME	We play a game.
+TEACHER GOOD	The teacher is good.
+TEACHER EXPLAIN	The teacher explains.
+STUDENT ASK QUESTION	The student asks a question.
+CHILD PLAY	The child plays.
+CHILD SLEEP	The child sleeps.
+BABY CRY	The baby cries.
+DOG BARK	The dog barks.
+CAT SLEEP	The cat sleeps.
+BUS LATE	The bus is late.
+TRAIN COME	The train is coming.
+STORE CLOSE	The store is closed.
+STORE OPEN	The store is open.
+FOOD GOOD	The food is good.
+FOOD HOT	The food is hot.
+COFFEE COLD	The coffee is cold.
+WATER CLEAN	The water is clean.
+ROOM DIRTY	The room is dirty.
+BOOK INTERESTING	The book is interesting.
+MOVIE FUNNY	The movie is funny.
+CLASS BORING	The class is boring.
+TEST HARD	The test is hard.
+HOMEWORK EASY	The homework is easy.
+PHONE BROKEN	The phone is broken.
+DOOR OPEN	The door is open.
+STORE IX-1 GO	I go to the store.
+PIZZA IX-1 LIKE	I like pizza.
+COFFEE IX-1 NOT LIKE	I don't like coffee.
+IX-1 FAVORITE FOOD PIZZA	My favorite food is pizza.
+IX-1 FAVORITE COLOR BLUE	My favorite color is blue.
+IX-1 FAVORITE SPORT CRICKET	My favorite sport is cricket.
+IX-1 BIRTHDAY TOMORROW	My birthday is tomorrow.
+IX-1 HOME FAR	My home is far.
+SCHOOL NEAR	The school is near.
+PLEASE OPEN DOOR	Please open the door.
+PLEASE CLOSE WINDOW	Please close the window.
+PLEASE GIVE IX-1 WATER	Please give me water.
+PLEASE WRITE	Please write it.
+PLEASE LOOK	Please look.
+PLEASE COME	Please come.
+PLEASE HELP IX-1 FIND BATHROOM	Please help me find the bathroom.
+LET'S GO	Let's go.
+LET'S EAT	Let's eat.
+STOP	Stop.
+WAIT	Wait.
+COME HERE	Come here.
+LOOK THERE	Look there.
+SIT DOWN	Sit down.
+HURRY	Hurry.
+CAREFUL	Careful.
+CONGRATULATIONS	Congratulations.
+HAPPY BIRTHDAY	Happy birthday.
+GOOD LUCK	Good luck.
+IX-1 LOVE SIGN LANGUAGE	I love sign language.
+SIGN LANGUAGE BEAUTIFUL	Sign language is beautiful.
+DEAF CULTURE IMPORTANT	Deaf culture is important.

@@ -1,0 +1,243 @@
+{
+  "backend": "openai_compat",
+  "model": "default_model",
+  "thinking": false,
+  "max_tokens": 96,
+  "host": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.12"
+  },
+  "notes": "Apple M4; Qwen3.5-2B + LoRA checkpoint 200 iters; default_model",
+  "case_file": "glosses.jsonl",
+  "cases": 16,
+  "exact_match_rate": 0.688,
+  "model_acceptance_rate": 0.812,
+  "latency_ms": {
+    "p50": 1086.6,
+    "p95": 1179.1,
+    "max": 1959.7
+  },
+  "rows": [
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO"
+      ],
+      "reference": "Hello.",
+      "output": "Hello.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1959.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO",
+        "MY",
+        "FRIEND"
+      ],
+      "reference": "Hello, my friend.",
+      "output": "Hello, my friend.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1082.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "THANK-YOU"
+      ],
+      "reference": "Thank you.",
+      "output": "Thank you.",
+      "source": "template",
+      "exact_match": true,
+      "rejected_reason": "constraint: word 'friend' does not come from any recognized sign",
+      "latency_ms": 1087.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NAME",
+        "FS-ANA"
+      ],
+      "reference": "My name is Ana.",
+      "output": "My name is Ana.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1086.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YOU",
+        "NAME",
+        "WHAT"
+      ],
+      "reference": "What is your name?",
+      "output": "Your name is what?",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1076.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "GO",
+        "STORE",
+        "TOMORROW"
+      ],
+      "reference": "I will go to the store tomorrow.",
+      "output": "I go store tomorrow.",
+      "source": "template",
+      "exact_match": false,
+      "rejected_reason": "constraint: signs not expressed in the text: TOMORROW",
+      "latency_ms": 1134.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "EAT",
+        "PIZZA"
+      ],
+      "reference": "Yesterday I ate pizza.",
+      "output": "Yesterday I ate pizza.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1093.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LOVE",
+        "YOU"
+      ],
+      "reference": "I love you.",
+      "output": "I love you.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1041.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "BATHROOM"
+      ],
+      "reference": "Where is the bathroom?",
+      "output": "Where is the bathroom?",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1112.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NOT",
+        "UNDERSTAND"
+      ],
+      "reference": "I do not understand.",
+      "output": "I do not understand.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1097.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "PLEASE",
+        "HELP",
+        "IX-1"
+      ],
+      "reference": "Please help me.",
+      "output": "Please help me.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1034.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "MOTHER",
+        "WORK",
+        "HOSPITAL"
+      ],
+      "reference": "Mother works at the hospital.",
+      "output": "My mother works at a hospital.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1179.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "HUNGRY"
+      ],
+      "reference": "I am hungry.",
+      "output": "I am hungry.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1050.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "SORRY",
+        "IX-1",
+        "LATE"
+      ],
+      "reference": "Sorry, I am late.",
+      "output": "Sorry I late.",
+      "source": "template",
+      "exact_match": false,
+      "rejected_reason": "constraint: signs not expressed in the text: SORRY",
+      "latency_ms": 1034.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "GOOD",
+        "MORNING"
+      ],
+      "reference": "Good morning.",
+      "output": "Good morning.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 974.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LEARN",
+        "SIGN",
+        "LANGUAGE"
+      ],
+      "reference": "I am learning sign language.",
+      "output": "I learn sign language.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1092.0
+    }
+  ]
+}

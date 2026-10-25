@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import platform
+import re
 import statistics
 import sys
 import time
@@ -30,6 +31,11 @@ from visualiser_ml.schemas import Segment  # noqa: E402
 HERE = Path(__file__).resolve().parent
 
 
+def normalise(text):
+    """Lower-case and drop punctuation, so "Hello, friend." == "hello friend"."""
+    return " ".join(re.findall(r"[a-z0-9']+", text.lower()))
+
+
 def percentile(values, p):
     ordered = sorted(values)
     return ordered[min(len(ordered) - 1, round(p / 100 * (len(ordered) - 1)))]
@@ -39,11 +45,13 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--backend", choices=["template", "openai_compat"], default="template")
     ap.add_argument("--base-url", default="http://127.0.0.1:8002/v1")
-    ap.add_argument("--model", default="")
+    ap.add_argument("--model", default="", help='served model name; use "default_model" for mlx_lm.server with --adapter-path')
     ap.add_argument("--runs", type=int, default=1, help="repeat the whole set this many times")
     ap.add_argument("--thinking", action="store_true", help="leave the model's thinking mode on")
     ap.add_argument("--timeout", type=float, default=60)
     ap.add_argument("--max-tokens", type=int, default=96, help="raise for --thinking runs")
+    ap.add_argument("--cases", type=Path, default=HERE / "glosses.jsonl",
+                    help="gloss set to score, e.g. finetune/data/test_glosses.jsonl")
     ap.add_argument("--notes", default="", help="hardware, runtime, quantisation, execution provider")
     ap.add_argument("--out", type=Path)
     args = ap.parse_args(argv)
@@ -57,7 +65,7 @@ def main(argv=None):
                                                        max_tokens=args.max_tokens,
                                                        disable_thinking=not args.thinking))
 
-    cases = [json.loads(line) for line in (HERE / "glosses.jsonl").read_text().splitlines() if line.strip()]
+    cases = [json.loads(line) for line in args.cases.read_text().splitlines() if line.strip()]
     rows, latencies = [], []
     for run in range(args.runs):
         for case in cases:
@@ -68,15 +76,18 @@ def main(argv=None):
             latencies.append(ms)
             rows.append({"run": run, "glosses": case["glosses"], "reference": case["reference"],
                          "output": result.text, "source": result.source,
+                         "exact_match": normalise(result.text) == normalise(case["reference"]),
                          "rejected_reason": result.rejected_reason, "latency_ms": round(ms, 1)})
 
     accepted = sum(r["source"] == "model" for r in rows)
+    exact = sum(r["exact_match"] for r in rows)
     report = {
         "backend": args.backend, "model": args.model or None, "thinking": args.thinking,
         "max_tokens": args.max_tokens,
         "host": {"machine": platform.machine(), "system": platform.system(),
                  "python": platform.python_version()},
-        "notes": args.notes, "cases": len(rows),
+        "notes": args.notes, "case_file": args.cases.name, "cases": len(rows),
+        "exact_match_rate": round(exact / len(rows), 3),
         "model_acceptance_rate": round(accepted / len(rows), 3) if args.backend != "template" else None,
         "latency_ms": {"p50": round(statistics.median(latencies), 1),
                        "p95": round(percentile(latencies, 95), 1), "max": round(max(latencies), 1)},

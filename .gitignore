@@ -23,3 +23,7 @@ ml-service/benchmarks/results/
 
 # Benchmark reports quoted in MODEL_SELECTION.md are committed
 !ml-service/benchmarks/reports/
+
+# Fine-tuning outputs (regenerate with finetune/build_dataset.py; adapters are local)
+ml-service/finetune/data/
+ml-service/finetune/adapters/

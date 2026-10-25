@@ -94,6 +94,8 @@ Done (in `main`):
 - [x] Downloaded official Qwen3.5-2B and benchmarked it on an M4 Mac: 100% of outputs passed the no-invention rule, about 1 s each with thinking off; thinking on is unusable (~46 s, no answer). Results are in MODEL_SELECTION.md.
 
 Still to do:
+- [x] MLX LoRA fine-tuning set up and run once (`ml-service/finetune/`): better on held-out rows (80% exact vs 60%), not yet better on the benchmark; base model stays the default.
+- [ ] Fine-tuning round 2: add WH-question pairs, get a fluent signer to review `finetune/pairs.tsv`, retrain and compare.
 - [ ] Benchmark one more candidate (SmolLM3-3B) and add a human fluency score.
 - [ ] Fix the template turning `PLEASE HELP IX-1` into "Please help I."
 - [ ] Choose: template only, or a model (decision D9).

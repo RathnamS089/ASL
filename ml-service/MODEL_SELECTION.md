@@ -27,7 +27,7 @@ What the outputs show (human reading of the thinking-off report, not a formal sc
 Decision input for D9:
 - **Use the model.** With thinking off, Qwen3.5-2B is clearly more fluent than the template ("Where is the bathroom?" vs "Where bathroom.") at about 1 s on the M4.
 - **Benchmark one more candidate** (SmolLM3-3B, then Qwen3.5-4B) on the same M4 setup before deciding.
-- **Fine-tuning, if done**, should target meaning errors like the "name" row. A small team-written corpus and an MLX LoRA run are enough to try that; see [`docs/DATASETS.md`](../docs/DATASETS.md).
+- **Fine-tuning has been tried.** A LoRA adapter trained on 244 starter pairs fixes the "name" row and tense, but adds a WH-question regression. It does not beat the base model on this benchmark yet, so the base model stays the default. Details are in [`finetune/README.md`](finetune/README.md).
 - **Template bug found.** The template produces "Please help I." for `PLEASE HELP IX-1`, because it always renders IX-1 as "I". This is a known weakness of the fallback.
 
 ## What the generator does
@@ -110,7 +110,7 @@ A model is worth shipping only if it beats the template on fluency **and** keeps
 
 ## Should we fine-tune the generator?
 
-**Not before the benchmark says so.** Few-shot prompting plus the constraint may be enough for the vocabulary size the recognizer can actually handle at first (tens to a few hundred glosses). If fine-tuning is needed, see [`docs/DATASETS.md`](../docs/DATASETS.md#gloss--text-for-the-generator). The main ASL gloss→English corpus (ASLG-PC12) is rule-generated and its licence is unclear. A small corpus written by the team for the chosen vocabulary, with LoRA on the chosen 2–4B model, is the more realistic plan.
+**First round done; see [`finetune/README.md`](finetune/README.md).** Few-shot prompting plus the constraint may be enough for the vocabulary size the recognizer can actually handle at first (tens to a few hundred glosses). If fine-tuning is needed, see [`docs/DATASETS.md`](../docs/DATASETS.md#gloss--text-for-the-generator). The main ASL gloss→English corpus (ASLG-PC12) is rule-generated and its licence is unclear. A small corpus written by the team for the chosen vocabulary, with LoRA on the chosen 2–4B model, is the more realistic plan.
 
 ## GPU and Neural Engine
 

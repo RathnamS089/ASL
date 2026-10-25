@@ -1,0 +1,430 @@
+{
+  "backend": "openai_compat",
+  "model": "default_model",
+  "thinking": false,
+  "max_tokens": 96,
+  "host": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.12"
+  },
+  "notes": "Apple M4; Qwen3.5-2B + LoRA checkpoint 200 iters; default_model",
+  "case_file": "test_glosses.jsonl",
+  "cases": 30,
+  "exact_match_rate": 0.7,
+  "model_acceptance_rate": 0.9,
+  "latency_ms": {
+    "p50": 1045.4,
+    "p95": 1129.3,
+    "max": 1166.5
+  },
+  "rows": [
+    {
+      "run": 0,
+      "glosses": [
+        "LAST-WEEK",
+        "IX-1",
+        "TRAVEL"
+      ],
+      "reference": "Last week I traveled.",
+      "output": "Last week I traveled.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 994.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "NOW",
+        "IX-1",
+        "GO"
+      ],
+      "reference": "Now I am going.",
+      "output": "Now I go.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 925.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "SEE",
+        "YOU",
+        "TOMORROW"
+      ],
+      "reference": "See you tomorrow.",
+      "output": "See you tomorrow.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 929.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "TEACHER",
+        "EXPLAIN"
+      ],
+      "reference": "The teacher explains.",
+      "output": "The teacher explains.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 932.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "COME",
+        "HERE"
+      ],
+      "reference": "Come here.",
+      "output": "Come here.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 880.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "GOOD",
+        "NIGHT"
+      ],
+      "reference": "Good night.",
+      "output": "Good night.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 877.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NEED",
+        "WATER"
+      ],
+      "reference": "I need water.",
+      "output": "I need water.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 930.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "FOOD",
+        "HOT"
+      ],
+      "reference": "The food is hot.",
+      "output": "The food is hot.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 975.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "WORK"
+      ],
+      "reference": "Yesterday I worked.",
+      "output": "Yesterday I worked.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 920.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "NEXT-WEEK",
+        "IX-1",
+        "TRAVEL"
+      ],
+      "reference": "Next week I will travel.",
+      "output": "Next week I will travel.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1036.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "ROOM",
+        "DIRTY"
+      ],
+      "reference": "The room is dirty.",
+      "output": "The room is dirty.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1053.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YOU",
+        "BIRTHDAY",
+        "WHEN"
+      ],
+      "reference": "When is your birthday?",
+      "output": "Your birthday is when.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1089.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "BUS",
+        "LATE"
+      ],
+      "reference": "The bus is late.",
+      "output": "Bus late.",
+      "source": "template",
+      "exact_match": false,
+      "rejected_reason": "constraint: signs not expressed in the text: BUS",
+      "latency_ms": 1058.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "TOMORROW",
+        "RAIN"
+      ],
+      "reference": "It will rain tomorrow.",
+      "output": "Tomorrow rain.",
+      "source": "template",
+      "exact_match": false,
+      "rejected_reason": "constraint: word 'today' does not come from any recognized sign",
+      "latency_ms": 1101.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "SEE",
+        "YOU",
+        "LATER"
+      ],
+      "reference": "See you later.",
+      "output": "See you later.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1056.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "TOMORROW",
+        "IX-1",
+        "STUDY"
+      ],
+      "reference": "Tomorrow I will study.",
+      "output": "Tomorrow I am studying.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1077.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "FRIEND",
+        "NAME",
+        "FS-KAI"
+      ],
+      "reference": "My friend's name is Kai.",
+      "output": "My friend's name is Kai.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1166.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "HEAD",
+        "HURT"
+      ],
+      "reference": "My head hurts.",
+      "output": "I am head hurt.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1076.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "DOCTOR"
+      ],
+      "reference": "I am a doctor.",
+      "output": "I am a doctor.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1060.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "TIRED"
+      ],
+      "reference": "I am tired.",
+      "output": "I am tired.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1026.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "HOW",
+        "MUCH"
+      ],
+      "reference": "How much is it?",
+      "output": "How much?",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1024.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "NO"
+      ],
+      "reference": "No.",
+      "output": "No.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 930.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "ENGINEER"
+      ],
+      "reference": "I am an engineer.",
+      "output": "I am an engineer.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1073.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "EAT",
+        "FINISH"
+      ],
+      "reference": "I finished eating.",
+      "output": "I eat finish.",
+      "source": "template",
+      "exact_match": false,
+      "rejected_reason": "constraint: word 'finis' does not come from any recognized sign",
+      "latency_ms": 1099.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "GO",
+        "WORK"
+      ],
+      "reference": "I go to work.",
+      "output": "I go to work.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1090.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NEED",
+        "REST"
+      ],
+      "reference": "I need to rest.",
+      "output": "I need rest.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1030.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YOU",
+        "BEAUTIFUL"
+      ],
+      "reference": "You are beautiful.",
+      "output": "You are beautiful.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1020.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "FAVORITE",
+        "SPORT",
+        "CRICKET"
+      ],
+      "reference": "My favorite sport is cricket.",
+      "output": "My favorite sport is cricket.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1119.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "HOW",
+        "YOU",
+        "FEEL"
+      ],
+      "reference": "How do you feel?",
+      "output": "How do you feel?",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1129.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "STORE",
+        "OPEN"
+      ],
+      "reference": "The store is open.",
+      "output": "The store is open.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1073.5
+    }
+  ]
+}

@@ -91,11 +91,7 @@ class OpenAICompatGenerator:
                                 source="model", constrained=True)
 
     def _complete(self, glosses: list[str]) -> str:
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-        for shot_glosses, answer in FEW_SHOT:
-            messages.append({"role": "user", "content": " ".join(shot_glosses)})
-            messages.append({"role": "assistant", "content": json.dumps(answer)})
-        messages.append({"role": "user", "content": " ".join(glosses)})
+        messages = build_messages(glosses)
         body = {
             "model": self.config.model,
             "messages": messages,
@@ -125,6 +121,17 @@ class OpenAICompatGenerator:
             return payload["choices"][0]["message"]["content"] or ""
         except (KeyError, IndexError, TypeError) as e:
             raise GenerationBackendError("malformed completion") from e
+
+
+def build_messages(glosses: Sequence[str]) -> list[dict]:
+    """The exact chat sent to the model. Fine-tuning data is built with this too, so
+    training and serving prompts cannot drift apart."""
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    for shot_glosses, answer in FEW_SHOT:
+        messages.append({"role": "user", "content": " ".join(shot_glosses)})
+        messages.append({"role": "assistant", "content": json.dumps(answer)})
+    messages.append({"role": "user", "content": " ".join(glosses)})
+    return messages
 
 
 def parse_model_output(content: str, n_segments: int) -> tuple[str, list[int]]:

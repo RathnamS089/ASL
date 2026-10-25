@@ -42,7 +42,7 @@ Recommended MVP approach: **isolated sign recognition on pose and hand landmarks
 | ASLG-PC12 | ASL gloss ↔ English | Large, but the gloss side is **rule-generated from English**, not real ASL. Its licence is listed as unknown ([TFDS catalogue](https://tensorflow.org/datasets/community_catalog/huggingface/aslg_pc12)). Use it for experiments only, after checking terms. |
 | How2Sign glosses + transcripts | ASL ↔ English | Real signing, but glosses cover only part of it. The authors note that glosses are an approximation, not a translation. |
 | PHOENIX-2014T | German SL gloss ↔ German | Real broadcast data. Only relevant if D1 = German SL and the output is German. |
-| **Team-written corpus (recommended if fine-tuning is needed)** | chosen language ↔ English | Write 300–1,000 gloss→sentence pairs using **only the recognizer's vocabulary**, reviewed by a fluent signer. A LoRA fine-tune of the chosen 2–4B model is then cheap. Check `benchmarks/glosses.jsonl` and keep it out of the training data so it stays a test set. |
+| **Team-written corpus (started: `ml-service/finetune/pairs.tsv`, 304 pairs, not yet reviewed by a signer)** | chosen language ↔ English | Write 300–1,000 gloss→sentence pairs using **only the recognizer's vocabulary**, reviewed by a fluent signer. A LoRA fine-tune of the chosen 2–4B model is then cheap. Check `benchmarks/glosses.jsonl` and keep it out of the training data so it stays a test set. |
 
 ## Decision checklist for D1
 

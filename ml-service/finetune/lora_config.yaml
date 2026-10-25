@@ -1,0 +1,26 @@
+# MLX LoRA settings for Qwen3.5-2B on an Apple M4 with 16 GB. Run from ml-service/:
+#   .venv/bin/mlx_lm.lora -c finetune/lora_config.yaml
+model: models/Qwen3.5-2B
+train: true
+test: true
+data: finetune/data
+adapter_path: finetune/adapters/qwen35-2b-gloss
+fine_tune_type: lora
+mask_prompt: true          # learn only the answer, not the long fixed prompt
+num_layers: 16
+batch_size: 4
+grad_accumulation_steps: 1
+iters: 300                 # ~5 epochs over ~245 training rows; watch validation loss
+learning_rate: 1.0e-4
+steps_per_report: 10
+steps_per_eval: 50
+val_batches: -1
+test_batches: -1
+save_every: 100
+max_seq_length: 1024
+grad_checkpoint: true
+seed: 7
+lora_parameters:
+  rank: 8
+  scale: 20.0
+  dropout: 0.05
