@@ -63,7 +63,7 @@ Only after M9 is stable: design the live-translation contract (WebSocket or stre
 | D7 | HTTPS method for phones | mkcert | M3 |
 | D8 | One sign per clip, or several signs per clip in the MVP? | Several clearly separated signs, if recognition can segment them; otherwise one | M1, revisit at M5 |
 | D9 | Generator: template only, or a small local language model | Template first. A model only if M6 benchmarks justify it. | M6 |
-| D10 | Version control and hosting for the repository | `git init` and push to a private shared remote | before M2 |
+| D10 | Version control and hosting for the repository | Done locally (`main`); still needs a private shared remote | before M2 |
 | D11 | Move the iOS app into `ios/` | Leave it at the root for now | after M3 |
 | D12 | Production hosting | Out of MVP scope | after M9 |
 | D13 | ARM64-native or x64-emulated Python on the laptop | Whichever runs every dependency, with performance measured | M2 |

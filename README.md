@@ -1,6 +1,6 @@
 # VISUALISER
 
-> **Team docs:** the web app, Go API and Python inference service are planned in [`docs/`](docs/) — start with [ARCHITECTURE.md](docs/ARCHITECTURE.md), [TEAM_ASSIGNMENTS.md](docs/TEAM_ASSIGNMENTS.md), [API_CONTRACT.md](docs/API_CONTRACT.md), [ML_CONTRACT.md](docs/ML_CONTRACT.md), [DEVELOPMENT_SETUP.md](docs/DEVELOPMENT_SETUP.md) and [INTEGRATION_PLAN.md](docs/INTEGRATION_PLAN.md). The rest of this README describes the existing iOS client.
+> **Start here:** [INSTRUCTIONS.md](INSTRUCTIONS.md). **Team docs:** the web app, Go API and Python inference service are planned in [`docs/`](docs/) — start with [ARCHITECTURE.md](docs/ARCHITECTURE.md), [TEAM_ASSIGNMENTS.md](docs/TEAM_ASSIGNMENTS.md), [API_CONTRACT.md](docs/API_CONTRACT.md), [ML_CONTRACT.md](docs/ML_CONTRACT.md), [DEVELOPMENT_SETUP.md](docs/DEVELOPMENT_SETUP.md) and [INTEGRATION_PLAN.md](docs/INTEGRATION_PLAN.md). The rest of this README describes the existing iOS client.
 
 A native SwiftUI frontend for sign-language video-to-text, expressed through kinetic typography. The app uses a near-black canvas, warm white serif typography, violet word accents and lime actions. Supports iPhone and iPad with iOS 17 or later.
 
