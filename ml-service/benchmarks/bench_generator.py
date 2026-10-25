@@ -43,6 +43,7 @@ def main(argv=None):
     ap.add_argument("--runs", type=int, default=1, help="repeat the whole set this many times")
     ap.add_argument("--thinking", action="store_true", help="leave the model's thinking mode on")
     ap.add_argument("--timeout", type=float, default=60)
+    ap.add_argument("--max-tokens", type=int, default=96, help="raise for --thinking runs")
     ap.add_argument("--notes", default="", help="hardware, runtime, quantisation, execution provider")
     ap.add_argument("--out", type=Path)
     args = ap.parse_args(argv)
@@ -53,6 +54,7 @@ def main(argv=None):
         if not args.model:
             ap.error("--model is required for openai_compat")
         gen = OpenAICompatGenerator(OpenAICompatConfig(args.base_url, args.model, timeout_s=args.timeout,
+                                                       max_tokens=args.max_tokens,
                                                        disable_thinking=not args.thinking))
 
     cases = [json.loads(line) for line in (HERE / "glosses.jsonl").read_text().splitlines() if line.strip()]
@@ -71,6 +73,7 @@ def main(argv=None):
     accepted = sum(r["source"] == "model" for r in rows)
     report = {
         "backend": args.backend, "model": args.model or None, "thinking": args.thinking,
+        "max_tokens": args.max_tokens,
         "host": {"machine": platform.machine(), "system": platform.system(),
                  "python": platform.python_version()},
         "notes": args.notes, "cases": len(rows),

@@ -20,3 +20,6 @@ ml-service/models/
 ml-service/benchmarks/results/
 *.egg-info/
 .pytest_cache/
+
+# Benchmark reports quoted in MODEL_SELECTION.md are committed
+!ml-service/benchmarks/reports/

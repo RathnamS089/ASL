@@ -18,18 +18,29 @@ FUNCTION_WORDS = frozenset("""
 a an the and or but so to of in on at for with from by as
 is are am was were be been being do does did have has had will would can could
 i me my you your he him his she her it its we us our they them their
-this that these those there here not no
+this that these those there here
+i'm you're he's she's it's we're they're that's there's
+i'll you'll he'll she'll we'll they'll i've you've we've they've i'd you'd
 """.split())
+# Negation is meaning, not grammar: "not", "no" and negative contractions are only
+# allowed when a NOT/NO-type gloss was recognized (see GLOSS_ALIASES).
+NEGATIONS = ("not", "don't", "doesn't", "didn't", "can't", "cannot", "isn't", "aren't",
+             "wasn't", "weren't", "won't", "haven't", "hasn't")
 
 # Common ASL-style gloss conventions mapped to English surface words.
 GLOSS_ALIASES = {
-    "IX-1": ("i", "me", "my"),
-    "ME": ("i", "me"),
-    "IX-2": ("you", "your"),
-    "YOU": ("you", "your"),
+    "IX-1": ("i", "me", "my", "i'm", "i'll", "i've", "i'd"),
+    "ME": ("i", "me", "i'm", "i'll", "i've", "i'd"),
+    "IX-2": ("you", "your", "you're", "you'll", "you've", "you'd"),
+    "YOU": ("you", "your", "you're", "you'll", "you've", "you'd"),
     "IX-3": ("he", "she", "it", "they", "him", "her", "them"),
     "MY": ("my", "mine"),
     "POSS-1": ("my", "mine"),
+    "NOT": NEGATIONS,
+    "DON'T": NEGATIONS,
+    "CAN'T": ("can't", "cannot", "not", "can"),
+    "NO": ("no", "not", "none"),
+    "NONE": ("none", "no"),
 }
 
 IRREGULAR = {

@@ -1,0 +1,225 @@
+{
+  "backend": "template",
+  "model": null,
+  "thinking": false,
+  "max_tokens": 96,
+  "host": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.12"
+  },
+  "notes": "Apple M4, 16 GB, macOS; baseline",
+  "cases": 16,
+  "model_acceptance_rate": null,
+  "latency_ms": {
+    "p50": 0.0,
+    "p95": 0.0,
+    "max": 0.0
+  },
+  "rows": [
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO"
+      ],
+      "reference": "Hello.",
+      "output": "Hello.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO",
+        "MY",
+        "FRIEND"
+      ],
+      "reference": "Hello, my friend.",
+      "output": "Hello my friend.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "THANK-YOU"
+      ],
+      "reference": "Thank you.",
+      "output": "Thank you.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NAME",
+        "FS-ANA"
+      ],
+      "reference": "My name is Ana.",
+      "output": "I name Ana.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YOU",
+        "NAME",
+        "WHAT"
+      ],
+      "reference": "What is your name?",
+      "output": "You name what.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "GO",
+        "STORE",
+        "TOMORROW"
+      ],
+      "reference": "I will go to the store tomorrow.",
+      "output": "I go store tomorrow.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "EAT",
+        "PIZZA"
+      ],
+      "reference": "Yesterday I ate pizza.",
+      "output": "Yesterday I eat pizza.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LOVE",
+        "YOU"
+      ],
+      "reference": "I love you.",
+      "output": "I love you.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "BATHROOM"
+      ],
+      "reference": "Where is the bathroom?",
+      "output": "Where bathroom.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NOT",
+        "UNDERSTAND"
+      ],
+      "reference": "I do not understand.",
+      "output": "I not understand.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "PLEASE",
+        "HELP",
+        "IX-1"
+      ],
+      "reference": "Please help me.",
+      "output": "Please help I.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "MOTHER",
+        "WORK",
+        "HOSPITAL"
+      ],
+      "reference": "Mother works at the hospital.",
+      "output": "Mother work hospital.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "HUNGRY"
+      ],
+      "reference": "I am hungry.",
+      "output": "I hungry.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "SORRY",
+        "IX-1",
+        "LATE"
+      ],
+      "reference": "Sorry, I am late.",
+      "output": "Sorry I late.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "GOOD",
+        "MORNING"
+      ],
+      "reference": "Good morning.",
+      "output": "Good morning.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LEARN",
+        "SIGN",
+        "LANGUAGE"
+      ],
+      "reference": "I am learning sign language.",
+      "output": "I learn sign language.",
+      "source": "template",
+      "rejected_reason": null,
+      "latency_ms": 0.0
+    }
+  ]
+}

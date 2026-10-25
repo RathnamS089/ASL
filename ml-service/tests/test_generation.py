@@ -159,3 +159,18 @@ def test_benchmark_references_satisfy_constraint():
         segments = [Segment(g, i, i + 0.5) for i, g in enumerate(case["glosses"])]
         _, reason = align(case["reference"], segments, None)
         assert reason is None, (case["reference"], reason)
+
+
+def test_negation_needs_a_negation_sign():
+    """Adding "not" flips the meaning, so it is never a free function word."""
+    _, reason = align("I do not understand.", segs("IX-1", "UNDERSTAND"), None)
+    assert reason and "not" in reason
+    _, reason = align("I don't understand.", segs("IX-1", "UNDERSTAND"), None)
+    assert reason and "don't" in reason
+    tokens, reason = align("I don't understand.", segs("IX-1", "NOT", "UNDERSTAND"), None)
+    assert reason is None and tokens[1].segment_index == 1
+
+
+def test_non_negative_contractions_are_function_words():
+    _, reason = align("Sorry, I'm late.", segs("SORRY", "IX-1", "LATE"), None)
+    assert reason is None

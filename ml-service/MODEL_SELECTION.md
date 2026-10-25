@@ -1,6 +1,34 @@
 # Generator model selection: vLLM and small reasoning models
 
-Owner: Language/inference. Status: **research plus a working adapter. No model has been downloaded or benchmarked yet.** Every number below comes from the cited source, not from us. Our own numbers come only from `benchmarks/bench_generator.py` run on the Snapdragon laptop.
+Owner: Language/inference. Status: **Qwen3.5-2B downloaded and benchmarked on an Apple M4 development Mac (2026-10-25). Not yet measured on the Snapdragon laptop.** Numbers in the candidate table come from the cited sources. Numbers in "Our measurements" come from `benchmarks/bench_generator.py`, with the raw reports in `benchmarks/reports/`.
+
+## Our measurements
+
+Setup:
+- **Machine:** Apple M4, 16 GB RAM, macOS
+- **Server:** `mlx_lm.server` (mlx-lm 0.32.2) on Metal
+- **Model:** the official `Qwen/Qwen3.5-2B` weights in bf16 (4.55 GB on disk)
+- **Test set:** the 16-row gloss set; thinking-off runs repeat it 3 times (48 requests)
+- **Constraint:** v2 (negation must be signed; contractions allowed)
+
+| Generator | Acceptance (passed the constraint) | p50 latency | p95 latency | Report |
+| --- | --- | --- | --- | --- |
+| Template (baseline) | — (always passes) | < 1 ms | < 1 ms | `m4-template.json` |
+| **Qwen3.5-2B, thinking off** | **100% (48/48)** | **976 ms** | **1,118 ms** | `m4-qwen35-2b-nothink.json` |
+| Qwen3.5-2B, thinking on (max 1,024 tokens) | 0% (0/16): never produced the JSON answer | 46.3 s | 47.1 s | `m4-qwen35-2b-think.json` |
+
+What the outputs show (human reading of the thinking-off report, not a formal score):
+- **Exact matches.** 12 of the 16 rows match the reference exactly, for example `YOU NAME WHAT` → "What is your name?" and `YESTERDAY IX-1 EAT PIZZA` → "Yesterday I ate pizza."
+- **Fluent but different meaning.** `IX-1 NAME FS-ANA` → "I will name Ana." (the reference is "My name is Ana"). The constraint cannot catch this, because no word was invented.
+- **Guessed tense.** `IX-1 LEARN SIGN LANGUAGE` → "I will learn sign language." Glosses carry no tense, so the model guesses one.
+- **Small additions.** `MOTHER WORK HOSPITAL` → "My mother works in the hospital." The added "my" is allowed as a function word.
+- **Thinking mode.** The steady ~46 s per request suggests the model used the whole 1,024-token budget reasoning and never reached an answer. Either way, it is unusable for this task at this latency.
+
+Decision input for D9:
+- **Use the model.** With thinking off, Qwen3.5-2B is clearly more fluent than the template ("Where is the bathroom?" vs "Where bathroom.") at about 1 s on the M4.
+- **Measure the laptop next.** The Snapdragon laptop has no Metal or MLX, so it needs a separate run with llama.cpp. M4 numbers do not carry over.
+- **Fine-tuning, if done**, should target meaning errors like the "name" row. A small team-written corpus and an MLX LoRA run are enough to try that; see [`docs/DATASETS.md`](../docs/DATASETS.md).
+- **Template bug found.** The template produces "Please help I." for `PLEASE HELP IX-1`, because it always renders IX-1 as "I". This is a known weakness of the fallback.
 
 ## What the generator does
 
@@ -42,6 +70,26 @@ Then:
 GEN_BACKEND=openai_compat GEN_MODEL=<served-model-name> ML_INTERNAL_TOKEN=dev ML_MOCK=1 .venv/bin/uvicorn visualiser_ml.app:create_app --factory --host 127.0.0.1 --port 8001
 ```
 
+## Running the model on a Mac (Apple Silicon)
+
+```bash
+.venv/bin/pip install mlx-lm==0.32.2
+```
+
+```bash
+.venv/bin/hf download Qwen/Qwen3.5-2B --local-dir models/Qwen3.5-2B
+```
+
+```bash
+.venv/bin/mlx_lm.server --model models/Qwen3.5-2B --host 127.0.0.1 --port 8002
+```
+
+```bash
+.venv/bin/python benchmarks/bench_generator.py --backend openai_compat --base-url http://127.0.0.1:8002/v1 --model "$PWD/models/Qwen3.5-2B" --runs 3
+```
+
+`mlx_lm.server` honours `chat_template_kwargs` (thinking off), but it ignores `response_format`, so JSON output is not enforced by the server. The adapter parses and validates the output either way. For the service itself, set `GEN_BACKEND=openai_compat`, `GEN_BASE_URL=http://127.0.0.1:8002/v1` and `GEN_MODEL=<absolute model path>`.
+
 ## Candidate small models (≤ 4B)
 
 These are small open-weight models with a reasoning or "thinking" mode, chosen from public model cards and roundups ([tinyweights.dev](https://tinyweights.dev/posts/best-small-language-models-2026/), [premai.io](https://blog.premai.io/best-lightweight-language-models-worth-running), [Qwen3.5 Small release coverage](https://gigazine.net/gsc_news/en/20260303-qwen-3-5-small)). **Check each model card and licence before downloading.** Secondary sources sometimes disagree, for example on Qwen3.5-4B's default thinking mode.
@@ -55,7 +103,7 @@ These are small open-weight models with a reasoning or "thinking" mode, chosen f
 | Ministral 3 3B | ~3–4B | Apache-2.0 (per roundup) | Strong reasoning for its size | Licence and size need checking on the official card |
 | Qwen3.5-0.8B | 0.8B | Apache-2.0 | Fastest option; good for a latency floor | A roundup notes heavy token use in reasoning mode. Quality may be too low. |
 
-**Suggested benchmark order:** template baseline → Qwen3.5-2B (thinking off) → SmolLM3-3B (thinking off) → Qwen3.5-4B (thinking off) → the best of these with `--thinking`. Use a 4-bit quantisation (for example GGUF `Q4_K_M`) first, and record the exact quantisation in `--notes`.
+**Suggested benchmark order:** template baseline ✓ → Qwen3.5-2B (thinking off) ✓ → SmolLM3-3B (thinking off) → Qwen3.5-4B (thinking off) → the best of these with `--thinking`. Use a 4-bit quantisation (for example GGUF `Q4_K_M`) first, and record the exact quantisation in `--notes`.
 
 ## Benchmark procedure (milestone 6)
 

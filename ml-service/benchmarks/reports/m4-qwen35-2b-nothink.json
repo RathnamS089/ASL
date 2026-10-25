@@ -1,0 +1,633 @@
+{
+  "backend": "openai_compat",
+  "model": "/Users/rathnam/mlproject/ml-service/models/Qwen3.5-2B",
+  "thinking": false,
+  "max_tokens": 96,
+  "host": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.12"
+  },
+  "notes": "Apple M4, 16 GB, macOS; mlx-lm 0.32.2 server; Qwen/Qwen3.5-2B bf16 (official weights); Metal GPU; thinking off; constraint v2 (negation + contractions)",
+  "cases": 48,
+  "model_acceptance_rate": 1.0,
+  "latency_ms": {
+    "p50": 976.2,
+    "p95": 1117.5,
+    "max": 1148.8
+  },
+  "rows": [
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO"
+      ],
+      "reference": "Hello.",
+      "output": "Hello.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 871.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO",
+        "MY",
+        "FRIEND"
+      ],
+      "reference": "Hello, my friend.",
+      "output": "Hello, my friend.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 954.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "THANK-YOU"
+      ],
+      "reference": "Thank you.",
+      "output": "Thank you.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 850.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NAME",
+        "FS-ANA"
+      ],
+      "reference": "My name is Ana.",
+      "output": "I will name Ana.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 933.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YOU",
+        "NAME",
+        "WHAT"
+      ],
+      "reference": "What is your name?",
+      "output": "What is your name?",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 933.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "GO",
+        "STORE",
+        "TOMORROW"
+      ],
+      "reference": "I will go to the store tomorrow.",
+      "output": "I will go to the store tomorrow.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1021.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "EAT",
+        "PIZZA"
+      ],
+      "reference": "Yesterday I ate pizza.",
+      "output": "Yesterday I ate pizza.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 938.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LOVE",
+        "YOU"
+      ],
+      "reference": "I love you.",
+      "output": "I love you.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 946.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "BATHROOM"
+      ],
+      "reference": "Where is the bathroom?",
+      "output": "Where is the bathroom?",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1007.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NOT",
+        "UNDERSTAND"
+      ],
+      "reference": "I do not understand.",
+      "output": "I do not understand.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1001.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "PLEASE",
+        "HELP",
+        "IX-1"
+      ],
+      "reference": "Please help me.",
+      "output": "Please help me.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 969.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "MOTHER",
+        "WORK",
+        "HOSPITAL"
+      ],
+      "reference": "Mother works at the hospital.",
+      "output": "My mother works in the hospital.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1105.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "HUNGRY"
+      ],
+      "reference": "I am hungry.",
+      "output": "I am hungry.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 965.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "SORRY",
+        "IX-1",
+        "LATE"
+      ],
+      "reference": "Sorry, I am late.",
+      "output": "I'm sorry, I'm late.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1145.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "GOOD",
+        "MORNING"
+      ],
+      "reference": "Good morning.",
+      "output": "Good morning.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 876.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LEARN",
+        "SIGN",
+        "LANGUAGE"
+      ],
+      "reference": "I am learning sign language.",
+      "output": "I will learn sign language.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1060.1
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "HELLO"
+      ],
+      "reference": "Hello.",
+      "output": "Hello.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 875.9
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "HELLO",
+        "MY",
+        "FRIEND"
+      ],
+      "reference": "Hello, my friend.",
+      "output": "Hello, my friend.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1010.8
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "THANK-YOU"
+      ],
+      "reference": "Thank you.",
+      "output": "Thank you.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 924.5
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "IX-1",
+        "NAME",
+        "FS-ANA"
+      ],
+      "reference": "My name is Ana.",
+      "output": "I will name Ana.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1006.6
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "YOU",
+        "NAME",
+        "WHAT"
+      ],
+      "reference": "What is your name?",
+      "output": "What is your name?",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1010.7
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "IX-1",
+        "GO",
+        "STORE",
+        "TOMORROW"
+      ],
+      "reference": "I will go to the store tomorrow.",
+      "output": "I will go to the store tomorrow.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1101.0
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "EAT",
+        "PIZZA"
+      ],
+      "reference": "Yesterday I ate pizza.",
+      "output": "Yesterday I ate pizza.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1010.4
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "IX-1",
+        "LOVE",
+        "YOU"
+      ],
+      "reference": "I love you.",
+      "output": "I love you.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 969.7
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "WHERE",
+        "BATHROOM"
+      ],
+      "reference": "Where is the bathroom?",
+      "output": "Where is the bathroom?",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1011.5
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "IX-1",
+        "NOT",
+        "UNDERSTAND"
+      ],
+      "reference": "I do not understand.",
+      "output": "I do not understand.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1010.8
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "PLEASE",
+        "HELP",
+        "IX-1"
+      ],
+      "reference": "Please help me.",
+      "output": "Please help me.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 965.6
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "MOTHER",
+        "WORK",
+        "HOSPITAL"
+      ],
+      "reference": "Mother works at the hospital.",
+      "output": "My mother works in the hospital.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1117.5
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "IX-1",
+        "HUNGRY"
+      ],
+      "reference": "I am hungry.",
+      "output": "I am hungry.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 972.0
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "SORRY",
+        "IX-1",
+        "LATE"
+      ],
+      "reference": "Sorry, I am late.",
+      "output": "I'm sorry, I'm late.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1148.8
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "GOOD",
+        "MORNING"
+      ],
+      "reference": "Good morning.",
+      "output": "Good morning.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 880.5
+    },
+    {
+      "run": 1,
+      "glosses": [
+        "IX-1",
+        "LEARN",
+        "SIGN",
+        "LANGUAGE"
+      ],
+      "reference": "I am learning sign language.",
+      "output": "I will learn sign language.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1057.1
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "HELLO"
+      ],
+      "reference": "Hello.",
+      "output": "Hello.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 883.1
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "HELLO",
+        "MY",
+        "FRIEND"
+      ],
+      "reference": "Hello, my friend.",
+      "output": "Hello, my friend.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1015.7
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "THANK-YOU"
+      ],
+      "reference": "Thank you.",
+      "output": "Thank you.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 920.8
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "IX-1",
+        "NAME",
+        "FS-ANA"
+      ],
+      "reference": "My name is Ana.",
+      "output": "I will name Ana.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1010.7
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "YOU",
+        "NAME",
+        "WHAT"
+      ],
+      "reference": "What is your name?",
+      "output": "What is your name?",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1019.8
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "IX-1",
+        "GO",
+        "STORE",
+        "TOMORROW"
+      ],
+      "reference": "I will go to the store tomorrow.",
+      "output": "I will go to the store tomorrow.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1102.0
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "EAT",
+        "PIZZA"
+      ],
+      "reference": "Yesterday I ate pizza.",
+      "output": "Yesterday I ate pizza.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1006.5
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "IX-1",
+        "LOVE",
+        "YOU"
+      ],
+      "reference": "I love you.",
+      "output": "I love you.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 904.2
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "WHERE",
+        "BATHROOM"
+      ],
+      "reference": "Where is the bathroom?",
+      "output": "Where is the bathroom?",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 940.1
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "IX-1",
+        "NOT",
+        "UNDERSTAND"
+      ],
+      "reference": "I do not understand.",
+      "output": "I do not understand.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 941.4
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "PLEASE",
+        "HELP",
+        "IX-1"
+      ],
+      "reference": "Please help me.",
+      "output": "Please help me.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 900.1
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "MOTHER",
+        "WORK",
+        "HOSPITAL"
+      ],
+      "reference": "Mother works at the hospital.",
+      "output": "My mother works in the hospital.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1023.0
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "IX-1",
+        "HUNGRY"
+      ],
+      "reference": "I am hungry.",
+      "output": "I am hungry.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 898.1
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "SORRY",
+        "IX-1",
+        "LATE"
+      ],
+      "reference": "Sorry, I am late.",
+      "output": "I'm sorry, I'm late.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 1072.4
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "GOOD",
+        "MORNING"
+      ],
+      "reference": "Good morning.",
+      "output": "Good morning.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 813.6
+    },
+    {
+      "run": 2,
+      "glosses": [
+        "IX-1",
+        "LEARN",
+        "SIGN",
+        "LANGUAGE"
+      ],
+      "reference": "I am learning sign language.",
+      "output": "I will learn sign language.",
+      "source": "model",
+      "rejected_reason": null,
+      "latency_ms": 980.4
+    }
+  ]
+}

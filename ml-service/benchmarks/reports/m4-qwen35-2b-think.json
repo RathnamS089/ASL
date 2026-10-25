@@ -1,0 +1,225 @@
+{
+  "backend": "openai_compat",
+  "model": "/Users/rathnam/mlproject/ml-service/models/Qwen3.5-2B",
+  "thinking": true,
+  "max_tokens": 1024,
+  "host": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.12"
+  },
+  "notes": "Apple M4, 16 GB, macOS; mlx-lm 0.32.2 server; Qwen/Qwen3.5-2B bf16; Metal GPU; thinking ON; constraint v2",
+  "cases": 16,
+  "model_acceptance_rate": 0.0,
+  "latency_ms": {
+    "p50": 46337.3,
+    "p95": 47091.4,
+    "max": 47381.0
+  },
+  "rows": [
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO"
+      ],
+      "reference": "Hello.",
+      "output": "Hello.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 46665.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO",
+        "MY",
+        "FRIEND"
+      ],
+      "reference": "Hello, my friend.",
+      "output": "Hello my friend.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 45620.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "THANK-YOU"
+      ],
+      "reference": "Thank you.",
+      "output": "Thank you.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 44952.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NAME",
+        "FS-ANA"
+      ],
+      "reference": "My name is Ana.",
+      "output": "I name Ana.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 46970.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YOU",
+        "NAME",
+        "WHAT"
+      ],
+      "reference": "What is your name?",
+      "output": "You name what.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 47091.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "GO",
+        "STORE",
+        "TOMORROW"
+      ],
+      "reference": "I will go to the store tomorrow.",
+      "output": "I go store tomorrow.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 45640.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "EAT",
+        "PIZZA"
+      ],
+      "reference": "Yesterday I ate pizza.",
+      "output": "Yesterday I eat pizza.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 46072.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LOVE",
+        "YOU"
+      ],
+      "reference": "I love you.",
+      "output": "I love you.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 46602.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "BATHROOM"
+      ],
+      "reference": "Where is the bathroom?",
+      "output": "Where bathroom.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 47381.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NOT",
+        "UNDERSTAND"
+      ],
+      "reference": "I do not understand.",
+      "output": "I not understand.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 46915.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "PLEASE",
+        "HELP",
+        "IX-1"
+      ],
+      "reference": "Please help me.",
+      "output": "Please help I.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 46986.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "MOTHER",
+        "WORK",
+        "HOSPITAL"
+      ],
+      "reference": "Mother works at the hospital.",
+      "output": "Mother work hospital.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 46933.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "HUNGRY"
+      ],
+      "reference": "I am hungry.",
+      "output": "I hungry.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 45439.0
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "SORRY",
+        "IX-1",
+        "LATE"
+      ],
+      "reference": "Sorry, I am late.",
+      "output": "Sorry I late.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 42654.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "GOOD",
+        "MORNING"
+      ],
+      "reference": "Good morning.",
+      "output": "Good morning.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 41897.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LEARN",
+        "SIGN",
+        "LANGUAGE"
+      ],
+      "reference": "I am learning sign language.",
+      "output": "I learn sign language.",
+      "source": "template",
+      "rejected_reason": "backend: no JSON object in output",
+      "latency_ms": 41761.8
+    }
+  ]
+}

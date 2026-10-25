@@ -89,12 +89,14 @@ Done (in `main`):
 - [x] Adapter for **vLLM** or **llama.cpp `llama-server`** (OpenAI-compatible), with thinking mode off and a fallback if the model breaks the rule
 - [x] Benchmark script and 16 test sentences (`ml-service/benchmarks/`)
 - [x] Model and dataset research: [ml-service/MODEL_SELECTION.md](ml-service/MODEL_SELECTION.md), [docs/DATASETS.md](docs/DATASETS.md)
-- [x] 32 passing tests (`cd ml-service && .venv/bin/python -m pytest -q`)
+- [x] 34 passing tests (`cd ml-service && .venv/bin/python -m pytest -q`)
+- [x] Downloaded official Qwen3.5-2B and benchmarked it on an M4 Mac: 100% of outputs passed the no-invention rule, about 1 s each with thinking off; thinking on is unusable (~46 s, no answer). Results are in MODEL_SELECTION.md.
 
 Still to do:
 - [ ] On the Snapdragon laptop: install the service and fill in the Windows-on-ARM table in `ml-service/README.md`.
-- [ ] Install `llama-server` (native ARM64). Download **by hand** one candidate model (start with Qwen3.5-2B, 4-bit GGUF) after checking its licence.
-- [ ] Run `benchmarks/bench_generator.py` for the template and each candidate, then write the results into MODEL_SELECTION.md.
+- [ ] Install `llama-server` (native ARM64) on the Snapdragon laptop and benchmark Qwen3.5-2B there (4-bit GGUF; check the licence first). The M4 numbers don't carry over.
+- [ ] Benchmark one more candidate (SmolLM3-3B) and add a human fluency score.
+- [ ] Fix the template turning `PLEASE HELP IX-1` into "Please help I."
 - [ ] Choose: template only, or a model (decision D9).
 - [ ] When Member 3's recognizer is ready, connect it in `app.py` and test the full pipeline.
 
