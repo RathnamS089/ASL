@@ -105,6 +105,7 @@ The service uses the same envelope as the public API (`{ "error": { "code", "mes
 | 400 | `invalid_request` | 500 `internal`: a malformed request from Go is a Go bug |
 | 401 | `unauthorized` | 500 `internal`: the token is misconfigured |
 | 422 | `undecodable_clip` / `clip_too_short` / `clip_too_long` / `unsupported_sign_language` | same code, 422 |
+| 422 | `clip_too_large` (over `ML_MAX_CLIP_BYTES`; Go's own cap should make this unreachable) | 413 `payload_too_large` |
 | 503 | `models_not_loaded` / `busy` | 503 `inference_unavailable` / `busy` |
 | 500 | `internal` | 502 `inference_failed` |
 | timeout or connection refused | — | 504 `inference_timeout` / 503 `inference_unavailable` |
@@ -119,6 +120,10 @@ The service never puts stack traces or file paths in `message`. They belong in i
 4. **Low confidence.** `low_confidence` uses the threshold `ML_LOW_CONFIDENCE_THRESHOLD`, which is reported in the model card and chosen from validation data at M9, not guessed.
 5. **Token mapping.** Each `segment_index` is a valid index into `segments` or `null`. Joining `tokens[].text` with single spaces gives `text`.
 6. **Generation constraint.** Every content word in `text` must come from a recognized segment. Only function words, punctuation and inflection may be added. The validator rejects anything else, and the service falls back to the deterministic template, setting `source: "template"` and the `rejected_reason`.
+
+## `POST /v1/generate` (internal, for benchmarks)
+
+Takes `{ "segments": [Segment…], "sign_language": "ase" }` and returns `{ "generation": GenerationResult, "timings_ms": { "generation": n } }`. It needs the internal token. Go does not call it. It exists so the generator can be tested and benchmarked before a recognizer exists.
 
 ## In-process interfaces inside `ml-service`
 

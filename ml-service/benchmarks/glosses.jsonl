@@ -1,0 +1,16 @@
+{"glosses": ["HELLO"], "reference": "Hello."}
+{"glosses": ["HELLO", "MY", "FRIEND"], "reference": "Hello, my friend."}
+{"glosses": ["THANK-YOU"], "reference": "Thank you."}
+{"glosses": ["IX-1", "NAME", "FS-ANA"], "reference": "My name is Ana."}
+{"glosses": ["YOU", "NAME", "WHAT"], "reference": "What is your name?"}
+{"glosses": ["IX-1", "GO", "STORE", "TOMORROW"], "reference": "I will go to the store tomorrow."}
+{"glosses": ["YESTERDAY", "IX-1", "EAT", "PIZZA"], "reference": "Yesterday I ate pizza."}
+{"glosses": ["IX-1", "LOVE", "YOU"], "reference": "I love you."}
+{"glosses": ["WHERE", "BATHROOM"], "reference": "Where is the bathroom?"}
+{"glosses": ["IX-1", "NOT", "UNDERSTAND"], "reference": "I do not understand."}
+{"glosses": ["PLEASE", "HELP", "IX-1"], "reference": "Please help me."}
+{"glosses": ["MOTHER", "WORK", "HOSPITAL"], "reference": "Mother works at the hospital."}
+{"glosses": ["IX-1", "HUNGRY"], "reference": "I am hungry."}
+{"glosses": ["SORRY", "IX-1", "LATE"], "reference": "Sorry, I am late."}
+{"glosses": ["GOOD", "MORNING"], "reference": "Good morning."}
+{"glosses": ["IX-1", "LEARN", "SIGN", "LANGUAGE"], "reference": "I am learning sign language."}

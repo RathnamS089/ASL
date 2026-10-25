@@ -16,3 +16,7 @@ web/dist/
 .venv/
 __pycache__/
 ml-service/models/
+
+ml-service/benchmarks/results/
+*.egg-info/
+.pytest_cache/
