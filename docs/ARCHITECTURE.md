@@ -19,7 +19,7 @@ The iOS project stays where it is at the repository root. Moving it into `ios/` 
 ## Components
 
 ```text
- Phone / laptop browser                  Laptop (Windows on ARM, Snapdragon X)
+ Phone / laptop browser                  Model host: Apple M4 Mac (16 GB)
 ┌──────────────────────────┐   HTTPS   ┌───────────────────────────────────────────────┐
 │ web/  React + TS + Vite  │──────────▶│ Vite dev server :5173 (HTTPS, LAN)            │
 │  camera, recorder,       │  /api/*   │   └─ proxy /api/* ─▶ backend-go :8080         │
@@ -29,6 +29,7 @@ The iOS project stays where it is at the repository root. Moving it into `ios/` 
  iOS app (existing, optional)          │      ml-service :8001  (127.0.0.1 only)       │
  ─────── HTTPS / .local ──────────────▶│      decode → landmarks → recognizer          │
                                        │             → constrained generator           │
+                                       │      generator: MLX server :8002 (Metal)      │
                                        │      model weights: ml-service/models/        │
                                        └───────────────────────────────────────────────┘
                                                          │ (milestone 7, optional)
@@ -41,6 +42,7 @@ The iOS project stays where it is at the repository root. Moving it into `ios/` 
 | `web/` | React, TypeScript, Vite, Tailwind, Framer Motion or CSS | `0.0.0.0:5173` over HTTPS | LAN phones | Web frontend |
 | `backend-go/` | Go, `net/http` | `127.0.0.1:8080` by default; LAN only if a native client needs it | Vite proxy, optionally the iOS app | Go backend |
 | `ml-service/` | Python HTTP service | `127.0.0.1:8001` | Go only | Recognition + Language/inference |
+| Generator server | MLX `mlx_lm.server` | `127.0.0.1:8002` | ml-service only | Language/inference |
 | Supabase | hosted | — | Go (service role), browser (anon key only) | Go backend |
 
 ### Why the browser talks only to Vite in development
@@ -59,7 +61,7 @@ In production a reverse proxy (or Go itself) plays Vite's role. Production hosti
    - Caps the body with `http.MaxBytesReader` and parses the multipart stream.
    - Sniffs the container from magic bytes rather than trusting `Content-Type`.
    - Spools the clip to a temporary file and validates the metadata.
-   - Waits for a free inference slot (only one by default, because the laptop serves everyone).
+   - Waits for a free inference slot (only one by default, because one Mac serves everyone).
    - Calls `ml-service` with a deadline.
 4. **Python.**
    - Decodes the clip and extracts pose and hand landmarks.
@@ -77,7 +79,7 @@ The request is **synchronous** for the MVP. A clip of 10 s or less should finish
 | Browser → Go | TLS (via Vite in dev). Body size cap, multipart part allowlist, magic-byte sniffing, metadata schema validation, per-client rate limit, Supabase JWT verification on protected routes. CORS is an exact-origin allowlist from env and is not needed in dev. |
 | Go → Python | Loopback only, plus a shared `ML_INTERNAL_TOKEN` header so another local process cannot call the service by accident. Go passes the clip it already validated and never forwards client headers. |
 | Go → Supabase | The service-role key lives **only** in the Go environment. The browser may hold only the public anon key and the user's own access token. |
-| Model weights | Stored under `ml-service/models/` on the laptop and git-ignored. They never go into the web bundle, an APK or the iOS app, and nothing downloads them automatically. |
+| Model weights | Stored under `ml-service/models/` on the M4 Mac and git-ignored. They never go into the web bundle, an APK or the iOS app, and nothing downloads them automatically. |
 
 **Privacy.** Clips of people signing are biometric-adjacent personal data. By default the system does not retain clips. Go deletes the temporary file after each request, Python works in memory or deletes its own temporary files, and logs never contain clip bytes or the full result text. Retention is decision D4.
 
@@ -108,7 +110,7 @@ docs/                      this document and the other team docs
 
 - Continuous streaming or WebSockets.
 - Downloading or bundling models into any client.
-- Claims of NPU or GPU acceleration on Snapdragon before the team measures it.
+- Claims of GPU or Neural Engine acceleration that the team has not measured.
 - Clip storage.
 - Production deployment.
 - Languages other than the one chosen under D1.

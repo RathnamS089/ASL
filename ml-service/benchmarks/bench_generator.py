@@ -1,6 +1,6 @@
 """Benchmark a gloss-to-text generator on the fixed gloss set.
 
-Measures what the laptop actually does; it downloads nothing. Point it at a running
+Measures what the model host (the M4 Mac) actually does; it downloads nothing. Point it at a running
 server (vLLM or llama-server) or use the template baseline:
 
     python benchmarks/bench_generator.py --backend template

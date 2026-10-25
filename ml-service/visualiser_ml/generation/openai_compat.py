@@ -1,9 +1,9 @@
 """Generator backed by any OpenAI-compatible chat server.
 
-Two servers are targeted, both exposing POST {base}/chat/completions:
-- vLLM (`vllm serve <model>`): Linux/WSL2 or a GPU box. vLLM does not document
-  native Windows support, so on the Snapdragon laptop it would run under WSL2.
-- llama.cpp `llama-server`: has Windows ARM64 builds and runs natively on the laptop.
+Servers that expose POST {base}/chat/completions:
+- MLX `mlx_lm.server`: the default on the Apple Silicon (M4) model host; runs on Metal.
+- llama.cpp `llama-server`: also native on Apple Silicon (Metal), for GGUF files.
+- vLLM (`vllm serve <model>`): for a Linux GPU machine later; CPU-only on macOS.
 
 The model is asked for JSON `{"sentence": ..., "emphasize": [...]}`. Its output is
 never trusted: it is parsed, checked against the gloss constraint, and replaced by

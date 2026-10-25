@@ -128,8 +128,8 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
 
     def _run(clip: UploadFile, request_id: str, sign_language: str, limits: Limits, generate: bool):
         started = time.perf_counter()
-        # delete=False + explicit unlink: on Windows an open NamedTemporaryFile cannot be
-        # reopened by name, which decoders need.
+        # delete=False + explicit unlink: the decoder reopens the file by name, which an open
+        # NamedTemporaryFile does not allow on every platform.
         with tempfile.NamedTemporaryFile(suffix=".clip", delete=False) as tmp:
             clip.file.seek(0)
             while chunk := clip.file.read(1 << 20):

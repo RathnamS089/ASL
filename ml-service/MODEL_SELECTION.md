@@ -1,6 +1,6 @@
 # Generator model selection: vLLM and small reasoning models
 
-Owner: Language/inference. Status: **Qwen3.5-2B downloaded and benchmarked on an Apple M4 development Mac (2026-10-25). Not yet measured on the Snapdragon laptop.** Numbers in the candidate table come from the cited sources. Numbers in "Our measurements" come from `benchmarks/bench_generator.py`, with the raw reports in `benchmarks/reports/`.
+Owner: Language/inference. Status: **Qwen3.5-2B downloaded and benchmarked on the Apple M4 Mac that hosts the models (2026-10-25).** Numbers in the candidate table come from the cited sources. Numbers in "Our measurements" come from `benchmarks/bench_generator.py`, with the raw reports in `benchmarks/reports/`.
 
 ## Our measurements
 
@@ -26,7 +26,7 @@ What the outputs show (human reading of the thinking-off report, not a formal sc
 
 Decision input for D9:
 - **Use the model.** With thinking off, Qwen3.5-2B is clearly more fluent than the template ("Where is the bathroom?" vs "Where bathroom.") at about 1 s on the M4.
-- **Measure the laptop next.** The Snapdragon laptop has no Metal or MLX, so it needs a separate run with llama.cpp. M4 numbers do not carry over.
+- **Benchmark one more candidate** (SmolLM3-3B, then Qwen3.5-4B) on the same M4 setup before deciding.
 - **Fine-tuning, if done**, should target meaning errors like the "name" row. A small team-written corpus and an MLX LoRA run are enough to try that; see [`docs/DATASETS.md`](../docs/DATASETS.md).
 - **Template bug found.** The template produces "Please help I." for `PLEASE HELP IX-1`, because it always renders IX-1 as "I". This is a known weakness of the fallback.
 
@@ -35,40 +35,24 @@ Decision input for D9:
 It turns a short gloss sequence from the recognizer, typically one to eight glosses such as `IX-1 GO STORE TOMORROW`, into one English sentence ("I will go to the store tomorrow."). The task is short, needs only a little grammar knowledge, and must not hallucinate. So the requirements are, in order:
 
 1. **Faithfulness.** Enforced in code by `generation/constraints.py`. When the model invents a content word or drops a sign, the template fallback takes over.
-2. **Latency on the laptop CPU.** It should add well under a second per request. This is a target to measure, not a promise.
-3. **Memory.** The model must fit next to the recognizer on a 16–32 GB laptop.
+2. **Latency on the M4.** It should add about a second or less per request. Measured: 976 ms p50 for Qwen3.5-2B.
+3. **Memory.** The model must fit next to the recognizer, the Go API and a browser in the Mac's 16 GB of unified memory. Qwen3.5-2B in bf16 is 4.55 GB.
 4. **Licence.** Permissive (Apache-2.0 or MIT) so the project can be shown or shared without legal review.
 
-Step-by-step "reasoning" (thinking) mode works **against** goal 2 and adds nothing for goal 1, which code enforces. The adapter therefore turns thinking off by default (`GEN_DISABLE_THINKING=1` sends `chat_template_kwargs: {enable_thinking: false}`) and strips any `<think>…</think>` block it receives. The benchmark has a `--thinking` flag so the team can measure whether thinking helps at all.
+Step-by-step "reasoning" (thinking) mode works **against** goal 2 and adds nothing for goal 1, which code enforces. The measurements above confirm it. The adapter therefore turns thinking off by default (`GEN_DISABLE_THINKING=1` sends `chat_template_kwargs: {enable_thinking: false}`) and strips any `<think>…</think>` block it receives.
 
-## Serving: vLLM vs llama.cpp
+## Serving on the M4: MLX, llama.cpp or vLLM
 
-The adapter (`generation/openai_compat.py`) talks to the OpenAI-compatible `POST /v1/chat/completions` endpoint, so both servers work without code changes.
+The adapter (`generation/openai_compat.py`) talks to the OpenAI-compatible `POST /v1/chat/completions` endpoint, so any of these servers works without code changes. Bind the server to `127.0.0.1:8002` and never expose it to the LAN.
 
-| | vLLM | llama.cpp `llama-server` |
-| --- | --- | --- |
-| Windows on ARM (Snapdragon X) | **Not documented as supported.** The ARM CPU docs list Linux/macOS, and no prebuilt ARM CPU wheels are offered, so you build from source ([vLLM ARM CPU docs](https://docs.vllm.ai/en/v0.6.6/getting_started/arm-installation.html), [CPU install docs](https://docs.vllm.ai/en/v0.11.2/getting_started/installation/cpu/)). The realistic route is WSL2 (Ubuntu, aarch64) and a CPU source build. That route is **unverified by us**. | Native Windows ARM64 build path documented upstream ([Snapdragon X discussion](https://github.com/ggml-org/llama.cpp/discussions/8336), [Qualcomm blog](https://www.qualcomm.com/developer/blog/2024/04/big-performance-boost-llama-cpp-and-chatglm-cpp-with-windows)) |
-| Model format | Hugging Face safetensors | GGUF (quantised: Q4_K_M, Q8_0, …) |
-| Structured output | `response_format` with `json_schema` | JSON schema / grammar constrained sampling. Check that your build accepts the OpenAI `response_format` form; the adapter also validates the output, so it is safe either way. |
-| Best use for us | A Linux GPU machine, or a later shared server | **Recommended for the MVP on the laptop** |
+| | **MLX `mlx_lm.server`** (recommended) | llama.cpp `llama-server` | vLLM |
+| --- | --- | --- | --- |
+| On Apple Silicon | Native, runs on the Metal GPU. **Measured by us.** | Native with the Metal backend (`brew install llama.cpp`). Not measured yet. | CPU only on macOS, built from source ([CPU install docs](https://docs.vllm.ai/en/v0.11.2/getting_started/installation/cpu/)). No Metal, so it is a poor fit for the M4. |
+| Model format | Hugging Face safetensors (the official weights) | GGUF (quantised: Q4_K_M, Q8_0, …) | Hugging Face safetensors |
+| Structured output | Ignores `response_format`; the adapter validates | JSON schema / grammar sampling | `response_format` with `json_schema` |
+| Fine-tuning | **LoRA built in** (`mlx_lm.lora`), on the same files | No | No (serving only) |
 
-**Recommendation.** Use `llama-server` natively on the laptop for the MVP. Try vLLM in WSL2 only if someone wants to compare. In either case the inference service runs unchanged with `GEN_BACKEND=openai_compat`. Neither server is exposed to the LAN. Bind it to `127.0.0.1:8002`.
-
-Example commands, after **manually** placing a model file in `ml-service/models/` and checking its licence:
-
-```bash
-llama-server -m ml-service/models/<model>.gguf --host 127.0.0.1 --port 8002 -c 2048
-```
-
-```bash
-vllm serve <hf-model-id-or-local-path> --host 127.0.0.1 --port 8002 --max-model-len 2048
-```
-
-Then:
-
-```bash
-GEN_BACKEND=openai_compat GEN_MODEL=<served-model-name> ML_INTERNAL_TOKEN=dev ML_MOCK=1 .venv/bin/uvicorn visualiser_ml.app:create_app --factory --host 127.0.0.1 --port 8001
-```
+**Recommendation.** Use MLX for the MVP. It runs the official weights on the GPU, it is already measured, and the same install does LoRA fine-tuning. Keep llama.cpp as a fallback if a 4-bit GGUF is needed to save memory. vLLM only makes sense later, on a Linux machine with a GPU.
 
 ## Running the model on a Mac (Apple Silicon)
 
@@ -96,14 +80,14 @@ These are small open-weight models with a reasoning or "thinking" mode, chosen f
 
 | Candidate | Size | Licence (per sources) | Why consider it | Watch out for |
 | --- | --- | --- | --- | --- |
-| Qwen3.5-2B | 2B | Apache-2.0 | Thinking can be switched on or off, and it is non-thinking by default per its card. Small enough for CPU. | Weaker than the 4B models. Confirm the GGUF conversion and chat template support `enable_thinking`. |
+| Qwen3.5-2B | 2B | Apache-2.0 | **Measured: 100% acceptance, ~1 s on the M4 with thinking off.** | Weaker than the 4B models. One meaning error in 16 rows. |
 | Qwen3.5-4B | 4B | Apache-2.0 | The strongest reported benchmarks in this size class | It may reason by default (sources disagree), and it is twice the memory and latency of the 2B. |
-| SmolLM3-3B | 3B | Apache-2.0 | Fully open (data and training recipe), with a dual reasoning mode | Check llama.cpp chat-template support for its thinking switch |
+| SmolLM3-3B | 3B | Apache-2.0 | Fully open (data and training recipe), with a dual reasoning mode | Check mlx-lm support and its chat-template thinking switch |
 | Phi-4-mini-reasoning | 3.8B | MIT | Built for step-by-step reasoning | Tuned for maths and STEM chain-of-thought, a poor match for short faithful rewriting. It is expected to be slow because it always reasons. |
 | Ministral 3 3B | ~3–4B | Apache-2.0 (per roundup) | Strong reasoning for its size | Licence and size need checking on the official card |
 | Qwen3.5-0.8B | 0.8B | Apache-2.0 | Fastest option; good for a latency floor | A roundup notes heavy token use in reasoning mode. Quality may be too low. |
 
-**Suggested benchmark order:** template baseline ✓ → Qwen3.5-2B (thinking off) ✓ → SmolLM3-3B (thinking off) → Qwen3.5-4B (thinking off) → the best of these with `--thinking`. Use a 4-bit quantisation (for example GGUF `Q4_K_M`) first, and record the exact quantisation in `--notes`.
+**Suggested benchmark order:** template baseline ✓ → Qwen3.5-2B (thinking off) ✓ → SmolLM3-3B (thinking off) → Qwen3.5-4B (thinking off) → the best of these with `--thinking`. Use the official weights with MLX first. If memory gets tight, try an MLX 4-bit conversion (`mlx_lm.convert -q`) and record it in `--notes`.
 
 ## Benchmark procedure (milestone 6)
 
@@ -112,13 +96,13 @@ python benchmarks/bench_generator.py --backend template --notes "baseline"
 ```
 
 ```bash
-python benchmarks/bench_generator.py --backend openai_compat --base-url http://127.0.0.1:8002/v1 --model <name> --runs 3 --notes "Snapdragon X <model SKU>, llama-server <build>, Q4_K_M, CPU, 16 threads"
+python benchmarks/bench_generator.py --backend openai_compat --base-url http://127.0.0.1:8002/v1 --model "$PWD/models/<model>" --runs 3 --notes "Apple M4 16 GB, mlx-lm <version>, <model> bf16, Metal"
 ```
 
 Report for each model:
 - `model_acceptance_rate`: how often the output passed the constraint
 - p50/p95 latency
-- peak memory, from Task Manager or `Get-Process`
+- peak memory, from Activity Monitor (Memory column for the server process)
 - model load time
 - a human 1–5 fluency score on the 16 rows
 
@@ -128,6 +112,6 @@ A model is worth shipping only if it beats the template on fluency **and** keeps
 
 **Not before the benchmark says so.** Few-shot prompting plus the constraint may be enough for the vocabulary size the recognizer can actually handle at first (tens to a few hundred glosses). If fine-tuning is needed, see [`docs/DATASETS.md`](../docs/DATASETS.md#gloss--text-for-the-generator). The main ASL gloss→English corpus (ASLG-PC12) is rule-generated and its licence is unclear. A small corpus written by the team for the chosen vocabulary, with LoRA on the chosen 2–4B model, is the more realistic plan.
 
-## NPU / GPU
+## GPU and Neural Engine
 
-The Snapdragon X has an NPU and an Adreno GPU. llama.cpp has experimental Snapdragon-related backends, and ONNX Runtime has a QNN execution provider. **We have not measured any of them.** Until a benchmark row in `benchmarks/results/` shows a real gain, all docs and `/health` report `execution_provider: "cpu"`.
+MLX runs the generator on the M4's GPU through Metal; that is what the measured numbers use. The Neural Engine is not used: neither MLX nor llama.cpp targets it. The ml-service process itself runs on the CPU, which is why `/health` reports `execution_provider: "cpu"`. The generator's device is whatever its separate server uses.

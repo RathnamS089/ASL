@@ -4,6 +4,7 @@ VISUALISER is a **web app**. Someone opens the site on a phone or laptop, allows
 
 ```text
 Browser (React)  ──HTTPS──▶  Go API  ──localhost──▶  Python ML service  ──▶  recognizer + text generator
+                                   (everything after the browser runs on one Apple M4 Mac)
 ```
 
 Read these first, in order:
@@ -72,7 +73,7 @@ Milestone 7 (only if we keep accounts): Supabase JWT check, a history table with
 Milestone 1:
 - [ ] Help the team choose the sign language (D1). Use [docs/DATASETS.md](docs/DATASETS.md) and check each licence.
 - [ ] Propose a first vocabulary of 20–50 signs and commit it as `ml-service/vocabulary/<lang>.txt`.
-- [ ] Check that video decoding and hand/pose landmark libraries install on the **Windows on ARM laptop**. Record the result in `ml-service/README.md`.
+- [ ] Check that video decoding and hand/pose landmark libraries install on the **M4 Mac** (macOS arm64). Record the result in `ml-service/README.md`.
 
 Milestone 5:
 - [ ] Turn a clip into landmark sequences, then use a small temporal model to produce signs with times and confidence.
@@ -93,8 +94,6 @@ Done (in `main`):
 - [x] Downloaded official Qwen3.5-2B and benchmarked it on an M4 Mac: 100% of outputs passed the no-invention rule, about 1 s each with thinking off; thinking on is unusable (~46 s, no answer). Results are in MODEL_SELECTION.md.
 
 Still to do:
-- [ ] On the Snapdragon laptop: install the service and fill in the Windows-on-ARM table in `ml-service/README.md`.
-- [ ] Install `llama-server` (native ARM64) on the Snapdragon laptop and benchmark Qwen3.5-2B there (4-bit GGUF; check the licence first). The M4 numbers don't carry over.
 - [ ] Benchmark one more candidate (SmolLM3-3B) and add a human fluency score.
 - [ ] Fix the template turning `PLEASE HELP IX-1` into "Please help I."
 - [ ] Choose: template only, or a model (decision D9).

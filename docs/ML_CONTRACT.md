@@ -21,7 +21,7 @@ Examples: `contracts/examples/ml-*.json`.
     "recognizer": { "name": "isolated-gru", "version": "0.1.0", "loaded": true },
     "generator":  { "name": "template",     "version": "0.1.0", "loaded": true }
   },
-  "runtime": { "python": "3.12.x", "machine": "ARM64", "execution_provider": "cpu" }
+  "runtime": { "python": "3.12.x", "machine": "arm64", "execution_provider": "cpu" }
 }
 ```
 
@@ -139,8 +139,8 @@ class Generator(Protocol):
 
 `RecognitionResult` and `GenerationResult` are dataclasses or Pydantic models with exactly the `recognition` and `generation` objects above. Their JSON form is the contract.
 
-## Windows on ARM notes (to verify, not assumptions)
+## Model host notes (Apple M4)
 
-- **Python architecture.** Python is available as native ARM64 and as x64, which runs under emulation. Before choosing, check that every dependency (video decoding, landmark extraction, the model runtime, the HTTP server) installs and runs under the chosen interpreter. Record the result in `ml-service/README.md`.
-- **Accelerators.** Use of the NPU or GPU (for example through an ONNX Runtime execution provider) is an **experiment for M9**. Until a benchmark shows it, the contract and the docs say `execution_provider: "cpu"`.
-- **Generator runtime.** If the generator is a local language model, pick a runtime and model size only after measuring memory and latency on the actual laptop. The template generator is the guaranteed fallback.
+- **Machine.** The models run on an Apple M4 Mac with 16 GB of unified memory, shared by the recognizer, the generator server, Go, Vite and a browser. Check memory in Activity Monitor whenever a model is added.
+- **Generator.** It runs in its own OpenAI-compatible server on `127.0.0.1:8002` (MLX by default, on Metal). Measured numbers are in `ml-service/MODEL_SELECTION.md`.
+- **Recognizer.** Video decoding and landmark extraction libraries must have macOS arm64 builds. Check each one before choosing it, and claim GPU or Neural Engine use only after measuring it.

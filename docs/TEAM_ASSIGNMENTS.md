@@ -50,9 +50,9 @@ Shared: `contracts/` (all four), `docs/` (author of each doc + one reviewer). Th
 
 **Responsibilities**
 - **Datasets.** Research and licence review for datasets in the language chosen under D1, followed by the MVP vocabulary choice.
-- **Vision pipeline.** Decoding, frame sampling, and pose or hand landmark extraction. Check that the chosen library actually runs on Windows on ARM before committing to it.
+- **Vision pipeline.** Decoding, frame sampling, and pose or hand landmark extraction. Check that the chosen library has macOS arm64 builds and runs on the M4 Mac before committing to it.
 - **Temporal model.** Isolated-sign classification first; multi-sign segmentation only if D8 requires it.
-- **Evaluation.** A held-out split separated by signer, top-1/top-5 accuracy, a confusion matrix, per-signer breakdown, and latency per clip on the target laptop.
+- **Evaluation.** A held-out split separated by signer, top-1/top-5 accuracy, a confusion matrix, per-signer breakdown, and latency per clip on the M4 Mac.
 - **Output.** `RecognitionResult` exactly as ML_CONTRACT.md defines it, including honest confidence scores.
 
 **Deliverables**
@@ -68,7 +68,7 @@ Shared: `contracts/` (all four), `docs/` (author of each doc + one reviewer). Th
 - **ML service.** The Python HTTP service: health and readiness, the internal token, mock mode, model loading from `ML_MODEL_DIR`.
 - **Generator adapter.** A `Generator` interface turns glosses into a sentence and tokens. There is a deterministic template implementation first, then a constrained model.
 - **Constraints.** Structured output validation: no content words that do not come from a recognized gloss, and fallback to the template on failure.
-- **Benchmarks.** Candidate generators on the target laptop: load time, memory, latency per request, and output quality on a fixed gloss test set. Report runtime architecture (ARM64 native or x64 emulated) and execution provider, and claim no acceleration that was not measured.
+- **Benchmarks.** Candidate generators on the M4 Mac: load time, memory, latency per request, and output quality on a fixed gloss test set. Report the runtime and device (for example MLX on Metal), and claim no acceleration that was not measured.
 - **Integration.** Wiring recognition into generation inside the service.
 
 **Deliverables**
@@ -94,7 +94,7 @@ Each change to a contract needs approval from both sides of it:
 | Duty | Primary | Backup |
 | --- | --- | --- |
 | LAN/HTTPS dev setup ([DEVELOPMENT_SETUP.md](DEVELOPMENT_SETUP.md)) | Web | Go |
-| Windows on ARM laptop environment | Language/inference | Recognition |
+| M4 Mac model-host environment | Language/inference | Recognition |
 | Shared `contracts/` checks | Go | Web |
 | Physical device testing (M8) | Web | everyone brings a phone |
 | Latency and resource measurement (M9) | Language/inference | Recognition |

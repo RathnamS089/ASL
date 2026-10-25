@@ -6,13 +6,14 @@ Status: **proposal**. The `web/`, `backend-go/` and `ml-service/` commands below
 
 | Process | Bind | Port | Firewall rule | Reached by |
 | --- | --- | --- | --- | --- |
-| Vite dev server (HTTPS) | `0.0.0.0` | 5173 | **yes**, Private profile only | phones and laptops on the Wi-Fi |
+| Vite dev server (HTTPS) | `0.0.0.0` | 5173 | allow `node` if the macOS firewall is on | phones and laptops on the Wi-Fi |
 | Go API | `127.0.0.1` (`API_LISTEN_ADDR`) | 8080 | no, unless the iOS app needs direct access | Vite proxy |
 | Python ML service | `127.0.0.1` | 8001 | **never** | Go only |
+| Generator server (`mlx_lm.server`) | `127.0.0.1` | 8002 | **never** | ML service only |
 
 ## Configuration, never hard-coded IPs
 
-The laptop's LAN IP changes between networks, so it must not appear in source. Each component reads a git-ignored `.env` file, and a committed `.env.example` lists every key with a safe default.
+The Mac's LAN IP changes between networks, so it must not appear in source. Each component reads a git-ignored `.env` file, and a committed `.env.example` lists every key with a safe default.
 
 `web/.env.local`:
 
@@ -90,18 +91,17 @@ export default defineConfig(({ mode }) => {
 
 `navigator.mediaDevices.getUserMedia` exists only in a **secure context**:
 
-- `http://localhost` and `http://127.0.0.1` count as secure, so on the laptop itself plain `npm run dev` works.
+- `http://localhost` and `http://127.0.0.1` count as secure, so on the Mac itself plain `npm run dev` works.
 - `http://192.168.x.y:5173` opened on a phone is **not** secure. `navigator.mediaDevices` is `undefined`, and no permission prompt ever appears. The web app should detect this (`window.isSecureContext === false`) and show a clear message rather than a generic error.
 
 ### Recommended: mkcert (a local CA trusted by each test device)
 
-1. On the laptop, install [mkcert](https://github.com/FiloSottile/mkcert). On Windows, `winget install FiloSottile.mkcert` or `choco install mkcert` are options; check that the package is the ARM64 build or that it runs under emulation.
+1. On the Mac, install [mkcert](https://github.com/FiloSottile/mkcert) with `brew install mkcert` (add `brew install nss` if you test in Firefox).
 2. Create the local CA with `mkcert -install`.
-3. Create a certificate for the names phones will use. Include the current LAN IP; look it up with `ipconfig` under the Wi-Fi adapter.
+3. Create a certificate for the names phones will use. Include the current LAN IP (`ipconfig getifaddr en0` prints the Wi-Fi address) and the Mac's Bonjour name (`scutil --get LocalHostName`, then add `.local`).
 
-   ```powershell
-   mkdir .certs
-   mkcert -cert-file .certs/dev-cert.pem -key-file .certs/dev-key.pem localhost 127.0.0.1 ::1 <LAN-IP> <laptop-hostname>.local
+   ```bash
+   mkdir -p .certs && mkcert -cert-file .certs/dev-cert.pem -key-file .certs/dev-key.pem localhost 127.0.0.1 ::1 <LAN-IP> <LocalHostName>.local
    ```
 
    Reissue it when the LAN IP changes. The IP appears only in this command and in the URL typed on the phone, never in source.
@@ -120,40 +120,27 @@ Remove the CA from phones when the project ends. Anyone holding `rootCA-key.pem`
 | Android Chrome `chrome://flags/#unsafely-treat-insecure-origin-as-secure` with `http://<LAN-IP>:5173` | Yes, on Android Chrome only | Per-device flag, no iOS equivalent, and easy to forget it is enabled |
 | Public tunnel (ngrok, Cloudflare Tunnel) | Yes (real certificate) | **Sends video of signers through a third party.** Avoid it unless the team explicitly accepts that. |
 
-## Windows Firewall (Snapdragon laptop)
+## macOS firewall (M4 Mac)
 
-Run these in an **elevated PowerShell**.
+The macOS firewall works per app, not per port, and it is off by default. Check it under *System Settings → Network → Firewall*, or:
 
-1. Make sure the Wi-Fi network is classified as *Private*. Public networks block inbound connections.
+```bash
+/usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
+```
 
-   ```powershell
-   Get-NetConnectionProfile
-   Set-NetConnectionProfile -InterfaceAlias "Wi-Fi" -NetworkCategory Private
-   ```
+- **Firewall off.** Phones can reach Vite on port 5173 with no extra steps. Go (8080), ML (8001) and MLX (8002) stay unreachable anyway, because they bind to `127.0.0.1`.
+- **Firewall on.** The first time Vite listens, macOS asks whether `node` may accept incoming connections. Click **Allow**. Make sure *Block all incoming connections* is off. To allow it ahead of time (asks for your password):
 
-2. Allow only the Vite port, only on Private networks:
+  ```bash
+  sudo /usr/libexec/ApplicationFirewall/socketfilterfw --add "$(which node)" && sudo /usr/libexec/ApplicationFirewall/socketfilterfw --unblockapp "$(which node)"
+  ```
 
-   ```powershell
-   New-NetFirewallRule -DisplayName "VISUALISER Vite dev (5173)" -Direction Inbound -Protocol TCP -LocalPort 5173 -Action Allow -Profile Private
-   ```
-
-3. Only if a native client must reach Go directly (and Go is then bound to the LAN with TLS):
-
-   ```powershell
-   New-NetFirewallRule -DisplayName "VISUALISER Go API (8080)" -Direction Inbound -Protocol TCP -LocalPort 8080 -Action Allow -Profile Private
-   ```
-
-4. Remove the rules when you are done:
-
-   ```powershell
-   Remove-NetFirewallRule -DisplayName "VISUALISER Vite dev (5173)"
-   ```
-
-When Node first listens, Windows may also show an "allow access" prompt. Allow it on **Private networks only**. Create no rule for port 8001.
+- **Never** allow Python or the MLX server through the firewall. They have no reason to accept LAN traffic.
+- If macOS asks whether your terminal app may find devices on the local network, allow it while you develop.
 
 ## Network checklist
 
-- The phone and the laptop are on the **same SSID**, not a guest network. Many campus, office and guest networks enable **client isolation**, which blocks device-to-device traffic. A phone hotspot or a home router avoids that.
+- The phone and the Mac are on the **same SSID**, not a guest network. Many campus, office and guest networks enable **client isolation**, which blocks device-to-device traffic. A phone hotspot or a home router avoids that.
 - **Connectivity test.** From the phone, `https://<LAN-IP>:5173` loads. If it times out, suspect the firewall or client isolation. If it shows a certificate error, the CA is not trusted on the phone.
 - **Proxy test.** `https://<LAN-IP>:5173/api/health` returns `{"status":"ok",...}`, which proves the Vite → Go proxy works.
 
@@ -170,11 +157,11 @@ When Node first listens, Windows may also show an "allow access" prompt. Allow i
 
 iOS Safari requires the `playsinline` and `muted` attributes on the preview `<video>`. The MIME type `MediaRecorder` produces differs by browser, so always negotiate with `MediaRecorder.isTypeSupported`.
 
-## Python on Windows on ARM
+## Python and models on the M4 Mac
 
-- Decide between native ARM64 Python and x64 Python under emulation per dependency (see [ML_CONTRACT.md](ML_CONTRACT.md#windows-on-arm-notes-to-verify-not-assumptions)). Record the interpreter (`python -c "import platform; print(platform.machine())"`) and the lockfile in `ml-service/README.md`.
-- Use a virtual environment inside `ml-service/` (`.venv/`, git-ignored).
-- Put weights in `ml-service/models/` by hand. Nothing downloads them automatically, and they are never committed.
+- Use Python 3.12 (arm64) in a virtual environment inside `ml-service/` (`.venv/`, git-ignored).
+- Put weights in `ml-service/models/`. They are downloaded by hand, only after the licence is checked, and never committed. Watch disk space: Qwen3.5-2B alone takes 4.55 GB.
+- 16 GB of unified memory is shared by everything. Stop `mlx_lm.server` when you are not using it (Ctrl-C), and check Activity Monitor before adding a second model.
 
 ## Shared checks available today
 
