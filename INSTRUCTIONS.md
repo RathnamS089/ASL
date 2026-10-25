@@ -95,7 +95,8 @@ Done (in `main`):
 
 Still to do:
 - [x] MLX LoRA fine-tuning set up and run once (`ml-service/finetune/`): better on held-out rows (80% exact vs 60%), not yet better on the benchmark; base model stays the default.
-- [ ] Fine-tuning round 2: add WH-question pairs, get a fluent signer to review `finetune/pairs.tsv`, retrain and compare.
+- [x] Fine-tuning round 2: 60 WH-question pairs added and retrained. 81% exact on the benchmark (base 75%), and WH-questions are fixed. The round-2 adapter is now the recommended generator.
+- [ ] Get a fluent signer to review `finetune/pairs.tsv`, and fix the `IX-1 GO STORE TOMORROW` drop.
 - [ ] Benchmark one more candidate (SmolLM3-3B) and add a human fluency score.
 - [ ] Fix the template turning `PLEASE HELP IX-1` into "Please help I."
 - [ ] Choose: template only, or a model (decision D9).

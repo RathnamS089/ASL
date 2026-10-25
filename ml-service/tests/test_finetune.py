@@ -31,3 +31,11 @@ def test_split_is_deterministic_and_disjoint(tmp_path):
     keys = {name: {tuple(json.loads(l)["glosses"]) for l in (tmp_path / "a" / f"{name}_glosses.jsonl").read_text().splitlines()}
             for name in ("train", "valid", "test")}
     assert not keys["train"] & keys["test"] and not keys["train"] & keys["valid"]
+
+
+def test_adding_pairs_never_moves_existing_ones():
+    pairs = build_dataset.load_pairs()
+    before = {tuple(g): build_dataset.split_of(g, 10, 10) for g, _ in pairs}
+    extra = [(["NEW", "SIGN", str(i)], "x") for i in range(50)]
+    after = {tuple(g): build_dataset.split_of(g, 10, 10) for g, _ in pairs + extra}
+    assert all(after[k] == v for k, v in before.items())

@@ -4,13 +4,13 @@ model: models/Qwen3.5-2B
 train: true
 test: true
 data: finetune/data
-adapter_path: finetune/adapters/qwen35-2b-gloss
+adapter_path: finetune/adapters/qwen35-2b-gloss-r2
 fine_tune_type: lora
 mask_prompt: true          # learn only the answer, not the long fixed prompt
 num_layers: 16
 batch_size: 4
 grad_accumulation_steps: 1
-iters: 300                 # ~5 epochs over ~245 training rows; watch validation loss
+iters: 300                 # ~4 epochs over 306 training rows (round 2); watch validation loss
 learning_rate: 1.0e-4
 steps_per_report: 10
 steps_per_eval: 50

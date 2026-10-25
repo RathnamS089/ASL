@@ -27,7 +27,7 @@ What the outputs show (human reading of the thinking-off report, not a formal sc
 Decision input for D9:
 - **Use the model.** With thinking off, Qwen3.5-2B is clearly more fluent than the template ("Where is the bathroom?" vs "Where bathroom.") at about 1 s on the M4.
 - **Benchmark one more candidate** (SmolLM3-3B, then Qwen3.5-4B) on the same M4 setup before deciding.
-- **Fine-tuning has been tried.** A LoRA adapter trained on 244 starter pairs fixes the "name" row and tense, but adds a WH-question regression. It does not beat the base model on this benchmark yet, so the base model stays the default. Details are in [`finetune/README.md`](finetune/README.md).
+- **Fine-tuning works.** The round-2 LoRA adapter (306 pairs, including WH-questions) beats the base model on the benchmark: 81% exact vs 75%. It is the recommended generator setting, with the template fallback kept. Details are in [`finetune/README.md`](finetune/README.md).
 - **Template bug found.** The template produces "Please help I." for `PLEASE HELP IX-1`, because it always renders IX-1 as "I". This is a known weakness of the fallback.
 
 ## What the generator does

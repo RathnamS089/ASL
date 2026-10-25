@@ -5,13 +5,14 @@
 Each example is exactly the chat the generator sends at serving time
 (`build_messages`), plus the expected JSON answer, so training and serving prompts
 match. Every pair must pass the generation constraint and must not repeat a
-benchmark gloss sequence. The split is deterministic (seeded shuffle).
+benchmark gloss sequence. Each pair's split comes from a hash of its glosses, so
+adding pairs never moves an existing pair between train, valid and test.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
-import random
 import sys
 from pathlib import Path
 
@@ -24,7 +25,7 @@ from visualiser_ml.schemas import Segment  # noqa: E402
 
 PAIRS = ROOT / "finetune" / "pairs.tsv"
 BENCHMARK = ROOT / "benchmarks" / "glosses.jsonl"
-WH = {"WHAT", "WHERE", "WHO", "WHEN", "WHY", "HOW"}
+WH = {"WHAT", "WHERE", "WHO", "WHEN", "WHY", "HOW", "WHICH", "HOW-MUCH"}
 
 
 def load_pairs(path: Path = PAIRS) -> list[tuple[list[str], str]]:
@@ -57,6 +58,13 @@ def problems(pairs: list[tuple[list[str], str]]) -> list[str]:
     return found
 
 
+def split_of(glosses: list[str], valid_pct: int, test_pct: int) -> str:
+    bucket = int(hashlib.sha256(" ".join(glosses).encode()).hexdigest(), 16) % 100
+    if bucket < test_pct:
+        return "test"
+    return "valid" if bucket < test_pct + valid_pct else "train"
+
+
 def example(glosses: list[str], sentence: str) -> dict:
     # Emphasise the WH-sign in questions, like the few-shot examples; nothing otherwise.
     emphasize = [i for i, g in enumerate(glosses) if g in WH] if sentence.endswith("?") else []
@@ -67,18 +75,17 @@ def example(glosses: list[str], sentence: str) -> dict:
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, default=ROOT / "finetune" / "data")
-    ap.add_argument("--valid", type=float, default=0.1)
-    ap.add_argument("--test", type=float, default=0.1)
-    ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--valid-pct", type=int, default=10)
+    ap.add_argument("--test-pct", type=int, default=10)
     args = ap.parse_args(argv)
 
     pairs = load_pairs()
     if found := problems(pairs):
         print("\n".join(found))
         return 1
-    random.Random(args.seed).shuffle(pairs)
-    n_test, n_valid = round(len(pairs) * args.test), round(len(pairs) * args.valid)
-    splits = {"test": pairs[:n_test], "valid": pairs[n_test:n_test + n_valid], "train": pairs[n_test + n_valid:]}
+    splits: dict[str, list] = {"train": [], "valid": [], "test": []}
+    for glosses, sentence in pairs:
+        splits[split_of(glosses, args.valid_pct, args.test_pct)].append((glosses, sentence))
     args.out.mkdir(parents=True, exist_ok=True)
     for name, rows in splits.items():
         with open(args.out / f"{name}.jsonl", "w", encoding="utf-8") as f:
