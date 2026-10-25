@@ -1,0 +1,21 @@
+{
+  "id": "tr_01JBK6Q2Z8X4M5N7P9R1S3T5V7",
+  "created_at": "2026-10-25T12:00:05Z",
+  "sentence": "Hello, my friend.",
+  "signs": [
+    { "label": "HELLO", "start_seconds": 0.40, "end_seconds": 1.30, "confidence": 0.91 },
+    { "label": "MY", "start_seconds": 1.45, "end_seconds": 1.90, "confidence": 0.62 },
+    { "label": "FRIEND", "start_seconds": 2.05, "end_seconds": 3.10, "confidence": 0.84 }
+  ],
+  "tokens": [
+    { "text": "Hello,", "sign_index": 0, "emphasis": "strong" },
+    { "text": "my", "sign_index": 1, "emphasis": "low_confidence" },
+    { "text": "friend.", "sign_index": 2, "emphasis": "normal" }
+  ],
+  "sign_language": "ase",
+  "low_confidence": false,
+  "generation": { "source": "model", "constrained": true },
+  "is_mock": false,
+  "models": { "recognizer": "isolated-gru@0.1.0", "generator": "template@0.1.0" },
+  "timings_ms": { "queue": 0, "inference": 1340, "total": 2210 }
+}

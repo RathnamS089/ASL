@@ -1,0 +1,33 @@
+{
+  "request_id": "0b7c2a8e-1d7e-4a3c-8f55-0e6d2b9a4c11",
+  "mock": false,
+  "recognition": {
+    "duration_seconds": 4.17,
+    "frames_decoded": 125,
+    "frames_used": 63,
+    "fps": 30.0,
+    "segments": [
+      { "label": "HELLO", "start_seconds": 0.40, "end_seconds": 1.30, "confidence": 0.91, "alternatives": [] },
+      { "label": "MY", "start_seconds": 1.45, "end_seconds": 1.90, "confidence": 0.62, "alternatives": [] },
+      { "label": "FRIEND", "start_seconds": 2.05, "end_seconds": 3.10, "confidence": 0.84, "alternatives": [] }
+    ],
+    "overall_confidence": 0.79,
+    "low_confidence": false
+  },
+  "generation": {
+    "text": "Hello, my friend.",
+    "tokens": [
+      { "text": "Hello,", "segment_index": 0, "emphasis": "strong" },
+      { "text": "my", "segment_index": 1, "emphasis": "low_confidence" },
+      { "text": "friend.", "segment_index": 2, "emphasis": "normal" }
+    ],
+    "source": "model",
+    "constrained": true,
+    "rejected_reason": null
+  },
+  "models": {
+    "recognizer": { "name": "isolated-gru", "version": "0.1.0" },
+    "generator": { "name": "template", "version": "0.1.0" }
+  },
+  "timings_ms": { "decode": 210, "landmarks": 980, "recognition": 120, "generation": 15, "total": 1340 }
+}

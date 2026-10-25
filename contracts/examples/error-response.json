@@ -1,0 +1,9 @@
+{
+  "error": {
+    "code": "clip_too_long",
+    "message": "The clip is 12.4 s long. Record 10 seconds or less.",
+    "request_id": "0b7c2a8e-1d7e-4a3c-8f55-0e6d2b9a4c11",
+    "retryable": false,
+    "details": { "max_seconds": 10.0, "actual_seconds": 12.4 }
+  }
+}

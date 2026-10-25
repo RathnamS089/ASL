@@ -1,0 +1,19 @@
+{
+  "request_id": "5d2e9f41-7a3b-4c6d-9e8f-1a2b3c4d5e6f",
+  "mock": false,
+  "recognition": {
+    "duration_seconds": 3.02,
+    "frames_decoded": 91,
+    "frames_used": 46,
+    "fps": 30.0,
+    "segments": [],
+    "overall_confidence": null,
+    "low_confidence": true
+  },
+  "generation": null,
+  "models": {
+    "recognizer": { "name": "isolated-gru", "version": "0.1.0" },
+    "generator": { "name": "template", "version": "0.1.0" }
+  },
+  "timings_ms": { "decode": 180, "landmarks": 720, "recognition": 95, "generation": 0, "total": 1001 }
+}

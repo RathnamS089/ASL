@@ -1,0 +1,14 @@
+{
+  "client_request_id": "6f1c8a52-4f0e-4a4e-9a51-3e2b7d1c9a10",
+  "sign_language": "ase",
+  "recording": {
+    "started_at": "2026-10-25T12:00:00Z",
+    "duration_ms": 4200,
+    "mime_type": "video/webm;codecs=vp8",
+    "width": 640,
+    "height": 480,
+    "frame_rate": 30,
+    "facing_mode": "user"
+  },
+  "client": { "platform": "web", "app_version": "0.1.0", "user_agent_family": "chrome-android" }
+}

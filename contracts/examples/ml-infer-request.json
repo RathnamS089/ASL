@@ -1,0 +1,7 @@
+{
+  "request_id": "0b7c2a8e-1d7e-4a3c-8f55-0e6d2b9a4c11",
+  "sign_language": "ase",
+  "clip": { "container": "webm", "size_bytes": 1843200, "client_duration_ms": 4200 },
+  "limits": { "min_seconds": 0.5, "max_seconds": 10.0, "max_signs": 8 },
+  "options": { "generate": true, "include_alternatives": false }
+}

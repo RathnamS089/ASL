@@ -1,0 +1,18 @@
+.DS_Store
+.build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+.swiftpm/
+
+# Web / Go / Python services (see docs/DEVELOPMENT_SETUP.md)
+.env
+.env.*
+!.env.example
+.certs/
+*.pem
+node_modules/
+web/dist/
+.venv/
+__pycache__/
+ml-service/models/
