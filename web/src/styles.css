@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0c0d0c;
+  --color-surface: #161715;
+  --color-raised: #1f211d;
+  --color-paper: #f2f0e3;
+  --color-muted: #a8ada0;
+  --color-lime: #ccf563;
+  --color-violet: #bdabfa;
+  --color-danger: #ff8f7a;
+  --font-serif: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
+  --font-sans: ui-sans-serif, -apple-system, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+:root {
+  color-scheme: dark;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgb(189 171 250 / 0.10), transparent 60%),
+    radial-gradient(50rem 30rem at -10% 110%, rgb(204 245 99 / 0.06), transparent 60%),
+    var(--color-ink);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+  border-radius: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

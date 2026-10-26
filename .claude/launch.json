@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "visualiser-mock",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "cd backend-go && MOCK_TRANSLATION=1 API_LISTEN_ADDR=127.0.0.1:8080 go run ./cmd/server"],
+      "port": 8080
+    }
+  ]
+}
