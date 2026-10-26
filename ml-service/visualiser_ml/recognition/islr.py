@@ -100,9 +100,18 @@ def load_classifier(model_dir: Path) -> Classifier:
     raise FileNotFoundError(f"no model.tflite or weights.safetensors in {model_dir}")
 
 
+# ISLR joins multi-word signs into one label; split them so the generator sees real words.
+ISLR_GLOSSES = {
+    "thankyou": "THANK-YOU", "callonphone": "CALL-PHONE", "haveto": "HAVE-TO", "glasswindow": "WINDOW",
+    "minemy": "MY", "hesheit": "IX-3", "weus": "WE", "frenchfries": "FRENCH-FRIES", "icecream": "ICE-CREAM",
+    "toothbrush": "TOOTHBRUSH", "shhh": "SHH", "owie": "OUCH", "potty": "POTTY", "TV": "TV",
+}
+
+
 def gloss(label: str) -> str:
-    """ISLR labels are lower-case words ("TV", "after", "glasswindow") → upper-case glosses."""
-    return label.strip().upper().replace(" ", "-").replace("_", "-")
+    """ISLR labels ("TV", "after", "thankyou") → upper-case glosses ("TV", "AFTER", "THANK-YOU")."""
+    label = label.strip()
+    return ISLR_GLOSSES.get(label, label.upper().replace(" ", "-").replace("_", "-"))
 
 
 class IslrRecognizer:

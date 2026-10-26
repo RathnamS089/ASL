@@ -231,3 +231,14 @@ def test_pretrained_tflite_classifier():
     seg = result.segments[0]
     assert seg.label == seg.label.upper() and 0 <= seg.confidence <= 1
     assert 0.2 < seg.start_seconds < seg.end_seconds < 1.5
+
+
+def test_islr_compound_labels_become_real_words():
+    from visualiser_ml.generation.constraints import align
+    from visualiser_ml.recognition.islr import gloss
+    from visualiser_ml.schemas import Segment
+
+    assert [gloss(l) for l in ("thankyou", "minemy", "weus", "dog", "TV")] == ["THANK-YOU", "MY", "WE", "DOG", "TV"]
+    segs = [Segment(gloss(l), i, i + 0.5) for i, l in enumerate(["thankyou", "minemy", "mom"])]
+    _, reason = align("Thank you, my mom.", segs, None)
+    assert reason is None

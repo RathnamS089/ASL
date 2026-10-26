@@ -41,6 +41,7 @@ GLOSS_ALIASES = {
     "DON'T": NEGATIONS,
     "CAN'T": ("can't", "cannot", "not", "can"),
     "NO": ("no", "not", "none"),
+    "WE": ("we", "us", "our", "we're", "we'll", "we've"),
     "NONE": ("none", "no"),
 }
 
