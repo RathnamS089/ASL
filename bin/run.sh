@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Start the whole stack on this Mac, all on loopback:
 #   generator (mlx_lm.server :8002, optional) -> ml-service (:8001) -> backend-go (:8080, serves web/dist)
-# Expose it to your devices with scripts/expose.sh (Tailscale Serve).
+# Expose it to your devices with bin/expose.sh (Tailscale Serve).
 #
-#   scripts/run.sh            real recognizer + fine-tuned generator if present, else what exists
-#   scripts/run.sh --mock     mock ML (no models needed), useful for UI work
+#   bin/run.sh            real recognizer + fine-tuned generator if present, else what exists
+#   bin/run.sh --mock     mock ML (no models needed), useful for UI work
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MOCK=0
@@ -53,5 +53,5 @@ wait_for http://127.0.0.1:8080/health api
 
 echo
 echo "VISUALISER is running at http://127.0.0.1:8080 (this Mac only)."
-echo "For your phone: scripts/expose.sh   then open the https://….ts.net address it prints."
+echo "For your phone: bin/expose.sh   then open the https://….ts.net address it prints."
 wait

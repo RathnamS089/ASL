@@ -51,7 +51,7 @@ The result is written to `models/recognizer/islr/`:
 | `metrics.json` | Test top-1/top-5 on held-out signers, plus per-epoch history |
 | `VERSION` | Model version string |
 
-`scripts/run.sh` loads the model automatically when these files exist.
+`bin/run.sh` loads the model automatically when these files exist.
 
 ## What the numbers mean
 

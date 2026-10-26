@@ -5,13 +5,13 @@ Sign to your phone's camera, and VISUALISER writes the signs out as moving type.
 **Start here:** [INSTRUCTIONS.md](INSTRUCTIONS.md) · [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/DEVELOPMENT_SETUP.md](docs/DEVELOPMENT_SETUP.md#quick-start-recommended-one-mac-phones-over-tailscale)
 
 ```bash
-scripts/run.sh
+bin/run.sh
 ```
 
 `run.sh` starts the generator, the ML service and the Go API, with Go serving the web app at http://127.0.0.1:8080. Then:
 
 ```bash
-scripts/expose.sh
+bin/expose.sh
 ```
 
 That prints a private `https://….ts.net` address for your phone.

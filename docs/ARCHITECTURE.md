@@ -27,9 +27,9 @@ VISUALISER turns a short sign-language clip into English text and plays the text
 | API | `backend-go/` (Go, standard library only) | `127.0.0.1:8080` | Tailscale Serve |
 | ML service | `ml-service/` (FastAPI) | `127.0.0.1:8001` | Go only (internal token) |
 | Generator | `mlx_lm.server`, Qwen3.5-2B + LoRA adapter | `127.0.0.1:8002` | ML service only |
-| Exposure | Tailscale Serve (`scripts/expose.sh`) | `https://<mac>.<tailnet>.ts.net` | devices signed in to your tailnet |
+| Exposure | Tailscale Serve (`bin/expose.sh`) | `https://<mac>.<tailnet>.ts.net` | devices signed in to your tailnet |
 
-Run the whole stack with `scripts/run.sh` (add `--mock` to skip the models). Expose it with `scripts/expose.sh`.
+Run the whole stack with `bin/run.sh` (add `--mock` to skip the models). Expose it with `bin/expose.sh`.
 
 ## Why Tailscale Serve
 
@@ -77,7 +77,7 @@ The LAN-only alternative (mkcert on the same Wi-Fi) is still documented in [DEVE
 | Boundary | Controls |
 | --- | --- |
 | Phone → Go | Tailscale (only your devices) plus HTTPS. Upload validation, rate limit, queue, and security headers (CSP, `Permissions-Policy: camera=(self)`, no framing). |
-| Go → Python | Loopback only. A per-run random `ML_INTERNAL_TOKEN` (made by `scripts/run.sh`), compared in constant time. |
+| Go → Python | Loopback only. A per-run random `ML_INTERNAL_TOKEN` (made by `bin/run.sh`), compared in constant time. |
 | Python → generator | Loopback only. The output is never trusted: it is parsed, constraint-checked, and falls back to the template. |
 | Data | Clips are temporary files, deleted after every request. Logs hold no clip bytes or result text. Weights and datasets stay on the Mac (git-ignored). |
 
@@ -90,7 +90,8 @@ web/            React app (served by Go from web/dist)
 backend-go/     Go API + static serving
 ml-service/     recognizer, generator, fine-tuning, benchmarks, ISLR training
 contracts/      shared JSON examples + checks used by every component's tests
-scripts/        run.sh (whole stack), expose.sh (Tailscale Serve), smoke.sh (end-to-end check)
+bin/            run.sh (whole stack), expose.sh (Tailscale Serve), smoke.sh (end-to-end check)
+Scripts/        Swift verification scripts for the iOS client
 docs/           this file, contracts, setup, datasets, plan
 Visualiser*/    the earlier native iOS client (see README)
 ```

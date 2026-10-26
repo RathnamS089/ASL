@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # End-to-end check through the real Go server: upload a generated clip, expect the contract back.
-# Run while scripts/run.sh is up. Exit code 0 = pass.
+# Run while bin/run.sh is up. Exit code 0 = pass.
 set -euo pipefail
 BASE="${1:-http://127.0.0.1:8080}"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT

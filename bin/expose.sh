@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Expose the Go server (127.0.0.1:8080) to devices on YOUR tailnet only, over HTTPS.
 # Phones need the Tailscale app, signed in to the same account. Never uses Funnel (public).
-#   scripts/expose.sh          start serving
-#   scripts/expose.sh off      stop serving
+#   bin/expose.sh          start serving
+#   bin/expose.sh off      stop serving
 set -euo pipefail
 TS="$(command -v tailscale || echo /Applications/Tailscale.app/Contents/MacOS/Tailscale)"
 if [[ ! -x "$TS" ]]; then

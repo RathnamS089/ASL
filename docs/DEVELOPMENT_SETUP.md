@@ -113,23 +113,23 @@ The Mac mini has no camera, so you sign to a phone that opens the app on the Mac
 3. **Start everything:**
 
    ```bash
-   scripts/run.sh
+   bin/run.sh
    ```
 
-   It works without models too: `scripts/run.sh --mock`.
+   It works without models too: `bin/run.sh --mock`.
 
 4. **Tailscale.** Install Tailscale on the Mac (`brew install --cask tailscale`, then open it and sign in) and on each phone (App Store or Play Store, same account). Then expose the app:
 
    ```bash
-   scripts/expose.sh
+   bin/expose.sh
    ```
 
-   The first time, Tailscale may ask you to enable HTTPS certificates for your tailnet; follow its link. Open the `https://<mac>.<tailnet>.ts.net` address it prints on the phone. To stop exposing it, run `scripts/expose.sh off`.
+   The first time, Tailscale may ask you to enable HTTPS certificates for your tailnet; follow its link. Open the `https://<mac>.<tailnet>.ts.net` address it prints on the phone. To stop exposing it, run `bin/expose.sh off`.
 
 5. **Check it end to end:**
 
    ```bash
-   scripts/smoke.sh
+   bin/smoke.sh
    ```
 
 Nothing extra needs opening in the macOS firewall: Tailscale carries the traffic, and every server listens on `127.0.0.1` only.
