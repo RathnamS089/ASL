@@ -24,6 +24,7 @@ from .generation import Generator
 from .generation.openai_compat import OpenAICompatConfig, OpenAICompatGenerator
 from .generation.template import TemplateGenerator
 from .recognition import Recognizer
+from .recognition.islr import ClipError
 from .schemas import Limits, segment_from_dict
 
 MOCK_FIXTURE = Path(__file__).resolve().parents[2] / "contracts" / "examples" / "ml-infer-response.json"
@@ -51,10 +52,23 @@ def build_generator(s: Settings) -> Generator:
     raise RuntimeError(f"unknown GEN_BACKEND {s.gen_backend!r}")
 
 
+def build_recognizer(s: Settings) -> Recognizer | None:
+    """The ISLR recognizer if a trained model is on disk; None otherwise (health says why)."""
+    if s.mock or not (s.recognizer_dir / "weights.safetensors").is_file():
+        return None
+    from .recognition.islr import IslrRecognizer
+    from .recognition.landmarks import HolisticExtractor
+
+    return IslrRecognizer(s.recognizer_dir, HolisticExtractor(s.mediapipe_model),
+                          min_sign_confidence=s.min_sign_confidence,
+                          low_confidence_threshold=s.low_confidence_threshold or 0.5)
+
+
 def create_app(settings: Settings | None = None, recognizer: Recognizer | None = None,
                generator: Generator | None = None) -> FastAPI:
     s = settings or Settings.from_env()
     gen = generator or build_generator(s)
+    recognizer = recognizer or (build_recognizer(s) if settings is None else None)
     busy = threading.Lock()
     app = FastAPI(title="VISUALISER ML", version="0.1.0", docs_url=None, redoc_url=None)
 
@@ -123,6 +137,8 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
                     body["generation"]["source"] = "mock"
                 return body
             return await run_in_threadpool(_run, clip, request_id, sign_language, limits, generate)
+        except ClipError as e:
+            return error(422, e.code, e.message, request_id, details=e.details)
         finally:
             busy.release()
 

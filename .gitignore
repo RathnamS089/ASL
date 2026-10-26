@@ -27,3 +27,6 @@ ml-service/benchmarks/results/
 # Fine-tuning outputs (regenerate with finetune/build_dataset.py; adapters are local)
 ml-service/finetune/data/
 ml-service/finetune/adapters/
+
+# Datasets (downloaded by hand; never committed)
+ml-service/data/
