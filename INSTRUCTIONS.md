@@ -68,7 +68,7 @@ Milestone 4: call Python.
 
 Milestone 7 (only if we keep accounts): Supabase JWT check, a history table with row-level security, and the service-role key **only** in Go's `.env`.
 
-### Member 3: Recognition (`ml-service/visualiser_ml/recognition/`) — pipeline built; next: train on ISLR and test on phone clips
+### Member 3: Recognition (`ml-service/visualiser_ml/recognition/`) — pipeline built with the pretrained ISLR 1st-place model; next: test on real phone clips and tune the segmenter
 
 Milestone 1:
 - [ ] Help the team choose the sign language (D1). Use [docs/DATASETS.md](docs/DATASETS.md) and check each licence.

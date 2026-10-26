@@ -207,3 +207,27 @@ def test_extractor_decodes_real_video_files(tmp_path):
     bad.write_bytes(b"\x1a\x45\xdf\xa3not really a video")
     with pytest.raises(UndecodableClip):
         HolisticExtractor(model).extract(bad)
+
+
+PRETRAINED = ROOT / "models" / "recognizer" / "islr-1st-place"
+
+
+@pytest.mark.skipif(not (PRETRAINED / "model.tflite").exists(), reason="pretrained ISLR model not downloaded")
+def test_pretrained_tflite_classifier():
+    from visualiser_ml.recognition.islr import IslrRecognizer, TFLiteClassifier, load_classifier
+
+    clf = load_classifier(PRETRAINED)
+    assert isinstance(clf, TFLiteClassifier) and len(clf.labels) == 250 and clf.labels[0] == "TV"
+    probs = clf.probabilities([body(20), body(45, "left")])
+    assert probs.shape == (2, 250) and np.allclose(probs.sum(axis=1), 1, atol=1e-5)
+
+    frames = 90
+    xyz = np.full((frames, N_LANDMARKS, 3), np.nan, np.float32)
+    xyz[10:40] = body(30)
+    track = LandmarkTrack(xyz, np.arange(frames, dtype=np.float32) / 30, 30.0, frames, 3.0)
+    result = IslrRecognizer(clf, FakeExtractor(track), min_sign_confidence=0.0).recognize(
+        Path("unused"), sign_language="ase", limits=Limits())
+    assert len(result.segments) == 1
+    seg = result.segments[0]
+    assert seg.label == seg.label.upper() and 0 <= seg.confidence <= 1
+    assert 0.2 < seg.start_seconds < seg.end_seconds < 1.5

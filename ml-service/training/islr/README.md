@@ -1,5 +1,7 @@
 # Training the sign recognizer on Google ISLR
 
+> **Optional.** The app uses the pretrained 1st-place ISLR model by default (`models/recognizer/islr-1st-place`, see docs/ARCHITECTURE.md). Train our own only to change the vocabulary or architecture. Both share the same landmarks, segmenter and recognizer.
+
 Data: [Google — Isolated Sign Language Recognition](https://www.kaggle.com/competitions/asl-signs) (Kaggle `asl-signs`). It has 250 ASL signs recorded on phones by Deaf signers, with MediaPipe Holistic landmarks already extracted. The licence is CC-BY 4.0 per the competition page; keep the attribution if you publish a model.
 
 ## 1. Get the data (your Kaggle account)

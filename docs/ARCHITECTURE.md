@@ -12,8 +12,8 @@ VISUALISER turns a short sign-language clip into English text and plays the text
 └───────────────────────┘                  │                          ▼                                │
                                            │                    ml-service :8001 (FastAPI)              │
                                            │   decode (OpenCV) → landmarks (MediaPipe Holistic:        │
-                                           │   hands, pose, face) → segment → classify (MLX            │
-                                           │   transformer, ISLR-trained) → glosses                    │
+                                           │   hands, pose, face) → segment → classify (pretrained     │
+                                           │   ISLR 1st-place TFLite model) → glosses                  │
                                            │                          │ glosses                        │
                                            │                          ▼                                │
                                            │   generator: mlx_lm.server :8002 — Qwen3.5-2B + LoRA r2   │
@@ -55,7 +55,7 @@ The LAN-only alternative (mkcert on the same Wi-Fi) is still documented in [DEVE
    - decodes the clip with OpenCV and samples it at 15 fps
    - runs MediaPipe HolisticLandmarker for 543 landmarks per frame (face, hands, pose), in the same layout as the Google ISLR training data
    - splits the clip into signs at hands-down gaps and pauses in motion
-   - classifies each segment with the MLX transformer, keeping signs above the confidence floor
+   - classifies each segment with the pretrained ISLR model (TFLite, the Kaggle 1st-place solution), keeping signs above the confidence floor
 6. **Python generates.** Glosses go to the generator: Qwen3.5-2B with the round-2 LoRA adapter, with thinking off. The output must pass the constraint check, or the literal template is used.
 7. **Go answers.** It maps the result to the public response (no signs → `422 no_signs_detected`) and deletes the temporary clip.
 8. **Phone.** The words animate in time with the signs they came from. Low-confidence words are faded and underlined.
@@ -67,8 +67,8 @@ The LAN-only alternative (mkcert on the same Wi-Fi) is still documented in [DEVE
 | Landmarks | `ml-service/visualiser_ml/recognition/landmarks.py` | MediaPipe 1.1.1 `HolisticLandmarker` (model `holistic_landmarker.task`, 13.7 MB, pinned v1), ISLR landmark order |
 | Features | `recognition/features.py` | **Shared by training and serving.** Dominant hand first, with left-handed signing mirrored. Uses 21+21 hand points, 7 pose points, and 56 face points (lips, brows, eye corners, nose). Centred on the shoulders and scaled by shoulder width, then resampled to 32 frames with velocities and hand-presence flags added. |
 | Segmenter | `recognition/segmenter.py` | Bridges hand-tracking gaps under 0.25 s, drops flicker under 0.3 s, and splits runs over 2.4 s at motion minima. **Untuned:** measure it on real phone clips. |
-| Classifier | `recognition/model.py` | 3-layer transformer (dim 192), MLX on the M4 GPU |
-| Training | `ml-service/training/islr/` | Google ISLR (Kaggle `asl-signs`, CC-BY 4.0): 250 isolated ASL signs, signer-held-out split |
+| Classifier (default) | `recognition/islr.py` → `TFLiteClassifier` | **Pretrained:** the 1st-place Kaggle ISLR model from [huggingface.co/sign/kaggle-asl-signs-1st-place](https://huggingface.co/sign/kaggle-asl-signs-1st-place) (MIT, 11.2 MB). It takes raw `[frames, 543, 3]` landmarks and returns 250 signs; runs with `ai-edge-litert` on the CPU at about 4–14 ms per sign. Clips are sampled at 30 fps for it. |
+| Classifier (alternative) | `recognition/model.py` → `MlxClassifier` | Our own 3-layer MLX transformer, trained with `ml-service/training/islr/` on Google ISLR if we ever need a different vocabulary. Not trained yet. |
 
 **"Face" means expression, not identity.** Facial movement carries grammar in sign languages, so face landmarks are model input. Nothing identifies, stores or matches who is signing.
 

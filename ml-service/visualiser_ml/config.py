@@ -27,7 +27,7 @@ class Settings:
     gen_timeout_s: float
     gen_max_tokens: int
     gen_disable_thinking: bool
-    recognizer_dir: Path = Path("models/recognizer/islr")
+    recognizer_dir: Path = Path("models/recognizer/islr-1st-place")
     mediapipe_model: Path = Path("models/mediapipe/holistic_landmarker.task")
     min_sign_confidence: float = 0.25
 
@@ -52,7 +52,7 @@ class Settings:
             gen_timeout_s=float(env("GEN_TIMEOUT_S", "20")),
             gen_max_tokens=int(env("GEN_MAX_TOKENS", "96")),
             gen_disable_thinking=env("GEN_DISABLE_THINKING", "1") == "1",
-            recognizer_dir=Path(env("ML_RECOGNIZER_DIR", "models/recognizer/islr")),
+            recognizer_dir=Path(env("ML_RECOGNIZER_DIR", "models/recognizer/islr-1st-place")),
             mediapipe_model=Path(env("ML_MEDIAPIPE_MODEL", "models/mediapipe/holistic_landmarker.task")),
             min_sign_confidence=float(env("ML_MIN_SIGN_CONFIDENCE", "0.25")),
         )

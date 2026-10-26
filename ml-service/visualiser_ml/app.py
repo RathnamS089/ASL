@@ -54,12 +54,14 @@ def build_generator(s: Settings) -> Generator:
 
 def build_recognizer(s: Settings) -> Recognizer | None:
     """The ISLR recognizer if a trained model is on disk; None otherwise (health says why)."""
-    if s.mock or not (s.recognizer_dir / "weights.safetensors").is_file():
+    d = s.recognizer_dir
+    if s.mock or not ((d / "model.tflite").is_file() or (d / "weights.safetensors").is_file()):
         return None
-    from .recognition.islr import IslrRecognizer
+    from .recognition.islr import IslrRecognizer, load_classifier
     from .recognition.landmarks import HolisticExtractor
 
-    return IslrRecognizer(s.recognizer_dir, HolisticExtractor(s.mediapipe_model),
+    classifier = load_classifier(d)
+    return IslrRecognizer(classifier, HolisticExtractor(s.mediapipe_model, target_fps=classifier.target_fps),
                           min_sign_confidence=s.min_sign_confidence,
                           low_confidence_threshold=s.low_confidence_threshold or 0.5)
 
