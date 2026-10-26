@@ -1,6 +1,31 @@
 # VISUALISER
 
-> **Start here:** [INSTRUCTIONS.md](INSTRUCTIONS.md). **Team docs:** the web app, Go API and Python inference service are planned in [`docs/`](docs/) — start with [ARCHITECTURE.md](docs/ARCHITECTURE.md), [TEAM_ASSIGNMENTS.md](docs/TEAM_ASSIGNMENTS.md), [API_CONTRACT.md](docs/API_CONTRACT.md), [ML_CONTRACT.md](docs/ML_CONTRACT.md), [DEVELOPMENT_SETUP.md](docs/DEVELOPMENT_SETUP.md) and [INTEGRATION_PLAN.md](docs/INTEGRATION_PLAN.md). The rest of this README describes the existing iOS client.
+Sign to your phone's camera, and VISUALISER writes the signs out as moving type. Everything runs on one Apple M4 Mac: a React web app, a Go API, a Python recognizer (MediaPipe hands and face landmarks with an MLX transformer trained on Google ISLR), and a fine-tuned Qwen3.5-2B that turns glosses into sentences. Phones connect privately over Tailscale.
+
+**Start here:** [INSTRUCTIONS.md](INSTRUCTIONS.md) · [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/DEVELOPMENT_SETUP.md](docs/DEVELOPMENT_SETUP.md#quick-start-recommended-one-mac-phones-over-tailscale)
+
+```bash
+scripts/run.sh
+```
+
+`run.sh` starts the generator, the ML service and the Go API, with Go serving the web app at http://127.0.0.1:8080. Then:
+
+```bash
+scripts/expose.sh
+```
+
+That prints a private `https://….ts.net` address for your phone.
+
+| Folder | What | Tests |
+| --- | --- | --- |
+| `web/` | React camera app with kinetic typography | `npm test` (16) |
+| `backend-go/` | Go API: validation, queue, rate limit, ML client, static serving | `go test -race ./...` |
+| `ml-service/` | Recognizer, generator, LoRA fine-tuning, ISLR training | `.venv/bin/python -m pytest` (51) |
+| `contracts/` | Shared JSON examples | `python3 contracts/check_examples.py` |
+
+---
+
+## Earlier native iOS client
 
 A native SwiftUI frontend for sign-language video-to-text, expressed through kinetic typography. The app uses a near-black canvas, warm white serif typography, violet word accents and lime actions. Supports iPhone and iPad with iOS 17 or later.
 

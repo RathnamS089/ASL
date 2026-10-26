@@ -32,7 +32,7 @@ Read these first, in order:
 
 Replace the names once agreed. Tick items off in your PRs.
 
-### Member 1: Web frontend (`web/`)
+### Member 1: Web frontend (`web/`) — built; next: test on real phones (M8)
 
 Milestone 2: camera UI with fake results.
 - [ ] Create `web/` with Vite + React + TypeScript + Tailwind. Add Vitest.
@@ -48,7 +48,7 @@ Milestone 3: talk to Go.
 - [ ] `vite.config.ts` with LAN access, HTTPS from env, and the `/api` proxy to Go (template in DEVELOPMENT_SETUP.md).
 - [ ] Test on one iPhone and one Android phone over the Wi-Fi.
 
-### Member 2: Go backend (`backend-go/`)
+### Member 2: Go backend (`backend-go/`) — built (M3 + M4); next: auth/history only if needed (M7)
 
 Milestone 3: fake endpoint.
 - [ ] Create `backend-go/` (Go modules, `net/http` only, config from env, see DEVELOPMENT_SETUP.md).
@@ -68,7 +68,7 @@ Milestone 4: call Python.
 
 Milestone 7 (only if we keep accounts): Supabase JWT check, a history table with row-level security, and the service-role key **only** in Go's `.env`.
 
-### Member 3: Recognition (`ml-service/visualiser_ml/recognition/`)
+### Member 3: Recognition (`ml-service/visualiser_ml/recognition/`) — pipeline built; next: train on ISLR and test on phone clips
 
 Milestone 1:
 - [ ] Help the team choose the sign language (D1). Use [docs/DATASETS.md](docs/DATASETS.md) and check each licence.

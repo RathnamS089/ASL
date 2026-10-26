@@ -1,116 +1,96 @@
 # VISUALISER architecture
 
-Status: **proposal for team review** (milestone 1). Nothing described under `web/`, `backend-go/` or `ml-service/` exists yet.
-
-VISUALISER turns a short recorded sign-language clip into English text and renders the text with kinetic typography. The MVP is short clips: Start camera → Preview → Record → Stop → Submit → Processing → Result. Continuous live translation is a later goal, and the design leaves room for it without building it now.
-
-## What already exists
-
-The repository already contains a **native SwiftUI iOS client** (`Visualiser/`, `VisualiserCore/`, `Visualiser.xcodeproj`). It imports a video from Photos (it does not use the camera), runs a mock translation, and plays the sentence back as kinetic typography. It also has an untested "Real API" adapter for a provisional contract:
-
-- `GET {base}/health`
-- `POST {base}/v1/translations` with the **raw video as the request body** (not multipart)
-- JSON response `{ id, sentence, signs[{label, start_seconds, end_seconds}], is_mock }`
-
-The contracts in [API_CONTRACT.md](API_CONTRACT.md) keep that response shape. New fields are additive, and the Swift decoder ignores unknown keys. Whether Go also accepts the raw-body upload is decision **D5** in [INTEGRATION_PLAN.md](INTEGRATION_PLAN.md#unresolved-decisions).
-
-The iOS project stays where it is at the repository root. Moving it into `ios/` would require changing Xcode project paths, so that is left as decision D11.
-
-## Components
+VISUALISER turns a short sign-language clip into English text and plays the text back as kinetic typography. Everything runs on one **Apple M4 Mac mini (16 GB)**. That Mac has no camera, so **phones are the cameras**: they open the web app over a private HTTPS address from Tailscale.
 
 ```text
- Phone / laptop browser                  Model host: Apple M4 Mac (16 GB)
-┌──────────────────────────┐   HTTPS   ┌───────────────────────────────────────────────┐
-│ web/  React + TS + Vite  │──────────▶│ Vite dev server :5173 (HTTPS, LAN)            │
-│  camera, recorder,       │  /api/*   │   └─ proxy /api/* ─▶ backend-go :8080         │
-│  API client, typography  │           │                      (loopback in dev)        │
-└──────────────────────────┘           │                         │ multipart, loopback │
-                                       │                         ▼                     │
- iOS app (existing, optional)          │      ml-service :8001  (127.0.0.1 only)       │
- ─────── HTTPS / .local ──────────────▶│      decode → landmarks → recognizer          │
-                                       │             → constrained generator           │
-                                       │      generator: MLX server :8002 (Metal)      │
-                                       │      model weights: ml-service/models/        │
-                                       └───────────────────────────────────────────────┘
-                                                         │ (milestone 7, optional)
-                                                         ▼
-                                       Supabase Auth + PostgreSQL (hosted)
+ Phone (camera)                          Mac mini M4 — everything on 127.0.0.1
+┌───────────────────────┐  HTTPS (tailnet  ┌──────────────────────────────────────────────────────────┐
+│ Safari / Chrome       │  only, real cert)│ tailscale serve ─▶ backend-go :8080                       │
+│  web app (React)      │─────────────────▶│                     ├─ /            web/dist (the app)    │
+│  camera → 10 s clip   │  https://<mac>   │                     └─ /api/v1/...  validate, queue, map  │
+│  kinetic result       │  .ts.net         │                          │ multipart + X-Internal-Token   │
+└───────────────────────┘                  │                          ▼                                │
+                                           │                    ml-service :8001 (FastAPI)              │
+                                           │   decode (OpenCV) → landmarks (MediaPipe Holistic:        │
+                                           │   hands, pose, face) → segment → classify (MLX            │
+                                           │   transformer, ISLR-trained) → glosses                    │
+                                           │                          │ glosses                        │
+                                           │                          ▼                                │
+                                           │   generator: mlx_lm.server :8002 — Qwen3.5-2B + LoRA r2   │
+                                           │   (constraint check; template fallback)                   │
+                                           └──────────────────────────────────────────────────────────┘
 ```
 
-| Component | Language | Listens on (dev) | Reachable from | Owner |
-| --- | --- | --- | --- | --- |
-| `web/` | React, TypeScript, Vite, Tailwind, Framer Motion or CSS | `0.0.0.0:5173` over HTTPS | LAN phones | Web frontend |
-| `backend-go/` | Go, `net/http` | `127.0.0.1:8080` by default; LAN only if a native client needs it | Vite proxy, optionally the iOS app | Go backend |
-| `ml-service/` | Python HTTP service | `127.0.0.1:8001` | Go only | Recognition + Language/inference |
-| Generator server | MLX `mlx_lm.server` | `127.0.0.1:8002` | ml-service only | Language/inference |
-| Supabase | hosted | — | Go (service role), browser (anon key only) | Go backend |
+| Component | Code | Listens on | Reachable from |
+| --- | --- | --- | --- |
+| Web app | `web/` (React 19, TypeScript, Vite 8, Tailwind 4, Motion) | served by Go | your tailnet devices |
+| API | `backend-go/` (Go, standard library only) | `127.0.0.1:8080` | Tailscale Serve |
+| ML service | `ml-service/` (FastAPI) | `127.0.0.1:8001` | Go only (internal token) |
+| Generator | `mlx_lm.server`, Qwen3.5-2B + LoRA adapter | `127.0.0.1:8002` | ML service only |
+| Exposure | Tailscale Serve (`scripts/expose.sh`) | `https://<mac>.<tailnet>.ts.net` | devices signed in to your tailnet |
 
-### Why the browser talks only to Vite in development
+Run the whole stack with `scripts/run.sh` (add `--mock` to skip the models). Expose it with `scripts/expose.sh`.
 
-- **One origin.** The page and `/api` share an origin, so development needs no CORS and no mixed-content workaround. An HTTPS page cannot call a plain-HTTP Go server on another port.
-- **One certificate.** Only Vite needs a LAN TLS certificate, which keeps the phone camera setup to a single trusted origin.
-- **Small exposure.** Go and Python stay on loopback, and only port 5173 needs a firewall rule.
+## Why Tailscale Serve
 
-In production a reverse proxy (or Go itself) plays Vite's role. Production hosting is out of scope for the MVP (D12).
+- **A real HTTPS certificate.** Phones only allow the camera on secure pages, and a `*.ts.net` address passes that check with no certificate setup on the phones.
+- **Private by default.** Only devices signed in to your Tailscale account can connect. Nothing is published on the internet (Funnel is never used), and clips never pass through a third-party relay in readable form.
+- **One port.** Go serves both the app and the API, so the page and its API share an origin. There is no CORS to configure.
+- **Works from any network.** The phone doesn't need to be on the Mac's Wi-Fi.
 
-## Request flow (MVP)
+The LAN-only alternative (mkcert on the same Wi-Fi) is still documented in [DEVELOPMENT_SETUP.md](DEVELOPMENT_SETUP.md).
 
-1. **Browser.** `getUserMedia` starts a preview, and `MediaRecorder` records a clip of up to 10 s. Chrome on Android usually produces `video/webm`, while Safari on iOS produces `video/mp4`. The client enforces the duration limit, shows a preview, and lets the user re-record.
-2. **Submit.** The browser sends `POST /api/v1/translations` (multipart: `clip` plus a `metadata` JSON part), with `Authorization: Bearer <Supabase access token>` when auth is enabled.
-3. **Go.**
-   - Caps the body with `http.MaxBytesReader` and parses the multipart stream.
-   - Sniffs the container from magic bytes rather than trusting `Content-Type`.
-   - Spools the clip to a temporary file and validates the metadata.
-   - Waits for a free inference slot (only one by default, because one Mac serves everyone).
-   - Calls `ml-service` with a deadline.
-4. **Python.**
-   - Decodes the clip and extracts pose and hand landmarks.
-   - Runs the recognizer to get a sequence of gloss segments with timestamps and confidence scores.
-   - Runs the constrained generator to turn the glosses into an English sentence and tokens. If generation fails validation, it falls back to a template.
-5. **Go response.** Go maps the result to the public response (or to a typed error), deletes the temporary file, and records timings. When history is enabled, it stores the **text result only**.
-6. **Browser result.** The browser renders the result. Each token links to the sign it came from, so the typography can time words to the video and emphasise low-confidence words differently.
+## Request flow
 
-The request is **synchronous** for the MVP. A clip of 10 s or less should finish well inside the timeouts in API_CONTRACT.md, but this is unmeasured until milestone 9. If it does not, the contract already reserves an asynchronous `202` path.
+1. **Phone.** `getUserMedia` (video only, 640×480 ideal) shows a preview. After a 3-2-1 countdown, `MediaRecorder` records up to 10 s: MP4 on Safari, WebM on Chrome.
+2. **Upload.** `POST /api/v1/translations` sends multipart `metadata` + `clip` ([API_CONTRACT.md](API_CONTRACT.md)).
+3. **Go checks the upload:**
+   - caps the body at 20 MiB
+   - accepts exactly the `metadata` and `clip` parts
+   - checks the container from its first bytes (WebM or MP4/MOV)
+   - validates the metadata, the sign language and the client-reported duration
+   - applies a per-user rate limit, keyed on the Tailscale login when it is present
+4. **Go queues and forwards.** It waits for the single inference slot (`503 busy` when the queue is full), then streams the clip to Python with a 45 s deadline ([ML_CONTRACT.md](ML_CONTRACT.md)).
+5. **Python recognizes:**
+   - decodes the clip with OpenCV and samples it at 15 fps
+   - runs MediaPipe HolisticLandmarker for 543 landmarks per frame (face, hands, pose), in the same layout as the Google ISLR training data
+   - splits the clip into signs at hands-down gaps and pauses in motion
+   - classifies each segment with the MLX transformer, keeping signs above the confidence floor
+6. **Python generates.** Glosses go to the generator: Qwen3.5-2B with the round-2 LoRA adapter, with thinking off. The output must pass the constraint check, or the literal template is used.
+7. **Go answers.** It maps the result to the public response (no signs → `422 no_signs_detected`) and deletes the temporary clip.
+8. **Phone.** The words animate in time with the signs they came from. Low-confidence words are faded and underlined.
 
-## Trust boundaries and security
+## The recognizer
+
+| Piece | File | Notes |
+| --- | --- | --- |
+| Landmarks | `ml-service/visualiser_ml/recognition/landmarks.py` | MediaPipe 1.1.1 `HolisticLandmarker` (model `holistic_landmarker.task`, 13.7 MB, pinned v1), ISLR landmark order |
+| Features | `recognition/features.py` | **Shared by training and serving.** Dominant hand first, with left-handed signing mirrored. Uses 21+21 hand points, 7 pose points, and 56 face points (lips, brows, eye corners, nose). Centred on the shoulders and scaled by shoulder width, then resampled to 32 frames with velocities and hand-presence flags added. |
+| Segmenter | `recognition/segmenter.py` | Bridges hand-tracking gaps under 0.25 s, drops flicker under 0.3 s, and splits runs over 2.4 s at motion minima. **Untuned:** measure it on real phone clips. |
+| Classifier | `recognition/model.py` | 3-layer transformer (dim 192), MLX on the M4 GPU |
+| Training | `ml-service/training/islr/` | Google ISLR (Kaggle `asl-signs`, CC-BY 4.0): 250 isolated ASL signs, signer-held-out split |
+
+**"Face" means expression, not identity.** Facial movement carries grammar in sign languages, so face landmarks are model input. Nothing identifies, stores or matches who is signing.
+
+## Trust boundaries
 
 | Boundary | Controls |
 | --- | --- |
-| Browser → Go | TLS (via Vite in dev). Body size cap, multipart part allowlist, magic-byte sniffing, metadata schema validation, per-client rate limit, Supabase JWT verification on protected routes. CORS is an exact-origin allowlist from env and is not needed in dev. |
-| Go → Python | Loopback only, plus a shared `ML_INTERNAL_TOKEN` header so another local process cannot call the service by accident. Go passes the clip it already validated and never forwards client headers. |
-| Go → Supabase | The service-role key lives **only** in the Go environment. The browser may hold only the public anon key and the user's own access token. |
-| Model weights | Stored under `ml-service/models/` on the M4 Mac and git-ignored. They never go into the web bundle, an APK or the iOS app, and nothing downloads them automatically. |
+| Phone → Go | Tailscale (only your devices) plus HTTPS. Upload validation, rate limit, queue, and security headers (CSP, `Permissions-Policy: camera=(self)`, no framing). |
+| Go → Python | Loopback only. A per-run random `ML_INTERNAL_TOKEN` (made by `scripts/run.sh`), compared in constant time. |
+| Python → generator | Loopback only. The output is never trusted: it is parsed, constraint-checked, and falls back to the template. |
+| Data | Clips are temporary files, deleted after every request. Logs hold no clip bytes or result text. Weights and datasets stay on the Mac (git-ignored). |
 
-**Privacy.** Clips of people signing are biometric-adjacent personal data. By default the system does not retain clips. Go deletes the temporary file after each request, Python works in memory or deletes its own temporary files, and logs never contain clip bytes or the full result text. Retention is decision D4.
+Auth and history (Supabase, milestone 7) are not built. With Tailscale, only your own devices can reach the app. Add accounts if you ever open it wider.
 
-## Extensibility toward live translation (not built in MVP)
-
-The web frontend separates three concerns, so the transport can change later without rewriting the UI:
-
-- **`CaptureSource`.** The camera lifecycle (start, stop, device switching, permission state). This piece stays as it is for live mode.
-- **`ClipRecorder`.** Wraps `MediaRecorder` for the MVP. A later `FrameSampler` (canvas or `VideoFrame` sampling, possibly landmarks on the device) would sit beside it.
-- **`TranslationClient`.** `translateClip(blob, metadata)` now. Later, `openSession()` returns a stream of partial results.
-
-On the server side, the ML contract's `RecognitionResult` already uses clip-relative timestamps and ordered segments. A streaming recognizer could emit the same segment type incrementally. WebSockets and frame streaming are explicitly deferred until the clip flow is stable (see INTEGRATION_PLAN.md).
-
-## Proposed repository layout
+## Repository layout
 
 ```text
-/                          existing iOS app (unchanged)
-  Visualiser/ VisualiserCore/ VisualiserTests/ Visualiser.xcodeproj Scripts/
-web/                       React frontend                       (milestone 2)
-backend-go/                Go API                               (milestone 3)
-ml-service/                Python inference                     (milestone 4)
-  models/                  local weights, git-ignored
-contracts/                 shared JSON examples + checks used by every team's tests
-docs/                      this document and the other team docs
+web/            React app (served by Go from web/dist)
+backend-go/     Go API + static serving
+ml-service/     recognizer, generator, fine-tuning, benchmarks, ISLR training
+contracts/      shared JSON examples + checks used by every component's tests
+scripts/        run.sh (whole stack), expose.sh (Tailscale Serve), smoke.sh (end-to-end check)
+docs/           this file, contracts, setup, datasets, plan
+Visualiser*/    the earlier native iOS client (see README)
 ```
-
-## Non-goals for the MVP
-
-- Continuous streaming or WebSockets.
-- Downloading or bundling models into any client.
-- Claims of GPU or Neural Engine acceleration that the team has not measured.
-- Clip storage.
-- Production deployment.
-- Languages other than the one chosen under D1.

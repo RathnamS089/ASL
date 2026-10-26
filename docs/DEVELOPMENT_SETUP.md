@@ -87,6 +87,57 @@ export default defineConfig(({ mode }) => {
 });
 ```
 
+## Quick start (recommended): one Mac, phones over Tailscale
+
+The Mac mini has no camera, so you sign to a phone that opens the app on the Mac.
+
+1. **Install the toolchain on the Mac:**
+
+   ```bash
+   brew install go node ffmpeg
+   ```
+
+   ```bash
+   cd ml-service && python3.12 -m venv .venv && .venv/bin/pip install -e '.[dev,recognition,llm]'
+   ```
+
+   ```bash
+   cd web && npm install && npm run build
+   ```
+
+2. **Models** (downloaded by hand and git-ignored; see [ml-service/MODEL_SELECTION.md](../ml-service/MODEL_SELECTION.md) and [ml-service/training/islr/README.md](../ml-service/training/islr/README.md)):
+   - `ml-service/models/mediapipe/holistic_landmarker.task` (13.7 MB)
+   - `ml-service/models/Qwen3.5-2B` (4.55 GB), plus the LoRA adapter from `finetune/`
+   - `ml-service/models/recognizer/islr`, produced by training on ISLR
+
+3. **Start everything:**
+
+   ```bash
+   scripts/run.sh
+   ```
+
+   It works without models too: `scripts/run.sh --mock`.
+
+4. **Tailscale.** Install Tailscale on the Mac (`brew install --cask tailscale`, then open it and sign in) and on each phone (App Store or Play Store, same account). Then expose the app:
+
+   ```bash
+   scripts/expose.sh
+   ```
+
+   The first time, Tailscale may ask you to enable HTTPS certificates for your tailnet; follow its link. Open the `https://<mac>.<tailnet>.ts.net` address it prints on the phone. To stop exposing it, run `scripts/expose.sh off`.
+
+5. **Check it end to end:**
+
+   ```bash
+   scripts/smoke.sh
+   ```
+
+Nothing extra needs opening in the macOS firewall: Tailscale carries the traffic, and every server listens on `127.0.0.1` only.
+
+## LAN-only alternative (same Wi-Fi, mkcert)
+
+Use this only if you can't use Tailscale. The rest of this document covers it.
+
 ## Why phones need HTTPS
 
 `navigator.mediaDevices.getUserMedia` exists only in a **secure context**:
