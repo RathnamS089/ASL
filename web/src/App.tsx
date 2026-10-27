@@ -9,6 +9,7 @@ import { initialFlow, reduce, releasedClip, type Action, type Flow } from "./lib
 import { friendlyApiError } from "./lib/messages";
 import type { RecordedClip } from "./lib/recorder";
 import { SAMPLE } from "./lib/sample";
+import type { Mode } from "./lib/types";
 
 function uuid(): string {
   return crypto.randomUUID?.() ?? "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) => (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16));
@@ -32,6 +33,7 @@ export default function App() {
   const [ready, setReady] = useState<Readiness | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [mode, setMode] = useState<Mode>("signs");
 
   useEffect(() => {
     checkReady().then(setReady);
@@ -49,6 +51,7 @@ export default function App() {
           clip.blob,
           {
             client_request_id: requestId,
+            mode,
             recording: {
               started_at: clip.startedAt,
               duration_ms: Math.round(clip.durationMs),
@@ -68,7 +71,7 @@ export default function App() {
         dispatch({ type: "failed", requestId, error: friendlyApiError(e) });
       }
     },
-    [dispatch, facing],
+    [dispatch, facing, mode],
   );
 
   const status = ready === null ? null : !ready.ready ? <Badge tone="danger">Offline</Badge> : ready.mock ? <Badge tone="violet">Demo server</Badge> : <Badge tone="lime">Ready</Badge>;
@@ -97,6 +100,8 @@ export default function App() {
                 facing={facing}
                 canFlip={canFlip}
                 recording={flow.kind === "recording"}
+                mode={mode}
+                onModeChange={setMode}
                 onFlip={flip}
                 onRetry={retry}
                 onStart={() => (setNotice(null), dispatch({ type: "start_recording" }))}

@@ -42,12 +42,18 @@ Uploads one short clip and returns the translation **synchronously**.
 
 No other parts are allowed; an unexpected part returns `400 invalid_request`.
 
+**`mode`** (optional, default `"signs"`):
+- **`"signs"`:** whole ASL signs (the 250-sign vocabulary), turned into a sentence by the generator.
+- **`"letters"`:** fingerspelling. Each held letter A–Z becomes one entry in `signs`, and `sentence` is the spelled word, with `generation.source: "fingerspelling"`.
+- **Anything else:** `400 invalid_request`.
+
 `metadata` (example: `contracts/examples/translation-request-metadata.json`):
 
 ```json
 {
   "client_request_id": "6f1c8a52-4f0e-4a4e-9a51-3e2b7d1c9a10",
   "sign_language": "ase",
+  "mode": "signs",
   "recording": {
     "started_at": "2026-10-25T12:00:00Z",
     "duration_ms": 4200,
@@ -125,7 +131,8 @@ Each outer timeout is longer than the sum of the inner ones, so clients always r
 | `signs[].confidence` | number 0–1 or `null` | The model's score for the top label. **Not a calibrated probability** unless the recognizer's model card says so. `null` if unavailable. Never invented. |
 | `tokens[]` | array | Drives the kinetic typography. Joining the `text` values with single spaces gives `sentence`. `sign_index` is the index into `signs`, or `null` for function words the generator inserted. `emphasis` is one of `normal`, `strong`, `low_confidence`. |
 | `low_confidence` | bool | True when the recognizer's overall score is below its configured threshold. The UI should suggest re-recording. |
-| `generation.source` | `model` \| `template` \| `mock` | `template` means the constrained model was unavailable or its output was rejected. |
+| `generation.source` | `model` \| `template` \| `mock` \| `fingerspelling` | `template` means the constrained model was unavailable or its output was rejected. `fingerspelling` means `mode: "letters"`: the sentence is the letters themselves, with no language model. |
+| `mode` | `signs` \| `letters` | Echoes the request's mode. |
 | `models`, `timings_ms` | object | For display in debug mode and for M9 measurements. Their keys may grow. |
 
 Signs are ordered by `start_seconds`, do not overlap, satisfy `0 ≤ start ≤ end ≤ clip duration`, and have non-empty labels. These invariants match `TranslationResponse.validated()` in `VisualiserCore`.

@@ -1,0 +1,235 @@
+{
+  "backend": "openai_compat",
+  "model": "default_model",
+  "thinking": false,
+  "max_tokens": 96,
+  "host": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.12"
+  },
+  "notes": "4B 4-bit",
+  "case_file": "islr_glosses.jsonl",
+  "cases": 16,
+  "exact_match_rate": 0.688,
+  "model_acceptance_rate": 1.0,
+  "latency_ms": {
+    "p50": 862.2,
+    "p95": 1006.2,
+    "max": 1186.8
+  },
+  "rows": [
+    {
+      "run": 0,
+      "glosses": [
+        "HELLO",
+        "MOM"
+      ],
+      "reference": "Hello, mom.",
+      "output": "Hello, mom.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1186.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "DOG",
+        "HUNGRY"
+      ],
+      "reference": "The dog is hungry.",
+      "output": "The dog is hungry.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 862.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "MOM",
+        "DRINK",
+        "WATER"
+      ],
+      "reference": "Mom drinks water.",
+      "output": "Mom, drink water.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 860.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YESTERDAY",
+        "RAIN"
+      ],
+      "reference": "It rained yesterday.",
+      "output": "It rained yesterday.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 864.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "DAD"
+      ],
+      "reference": "Where is dad?",
+      "output": "Where is dad?",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 834.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "MY",
+        "DOG"
+      ],
+      "reference": "My dog.",
+      "output": "My dog.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 805.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "THANK-YOU",
+        "GRANDPA"
+      ],
+      "reference": "Thank you, grandpa.",
+      "output": "Thank you, grandpa.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 890.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "BROTHER",
+        "LIKE",
+        "PIZZA"
+      ],
+      "reference": "Brother likes pizza.",
+      "output": "My brother likes pizza.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 862.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "CAT",
+        "SLEEPY"
+      ],
+      "reference": "The cat is sleepy.",
+      "output": "The cat is sleepy.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 867.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "TOMORROW",
+        "SNOW"
+      ],
+      "reference": "It will snow tomorrow.",
+      "output": "Tomorrow, snow.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 839.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "UNCLE",
+        "HAPPY"
+      ],
+      "reference": "Uncle is happy.",
+      "output": "Uncle Happy.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 835.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "GRANDMA",
+        "READ",
+        "BOOK"
+      ],
+      "reference": "Grandma reads a book.",
+      "output": "Grandma read a book.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 978.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "CAT"
+      ],
+      "reference": "Where is the cat?",
+      "output": "Where is the cat?",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 862.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "NO",
+        "MILK"
+      ],
+      "reference": "No milk.",
+      "output": "No milk.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 806.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "GIRL",
+        "SAD"
+      ],
+      "reference": "The girl is sad.",
+      "output": "The girl is sad.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 947.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "DAD",
+        "GO",
+        "STORE"
+      ],
+      "reference": "Dad goes to the store.",
+      "output": "Dad goes to the store.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1006.2
+    }
+  ]
+}

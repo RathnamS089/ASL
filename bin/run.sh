@@ -23,11 +23,20 @@ wait_for() { # url name
 
 ML="$ROOT/ml-service"
 GEN_ENV=(GEN_BACKEND=template)
-ADAPTER="$ML/finetune/adapters/qwen35-2b-gloss-r2"
-if [[ $MOCK == 0 && -d "$ML/models/Qwen3.5-2B" ]]; then
-  args=(--model "$ML/models/Qwen3.5-2B" --host 127.0.0.1 --port 8002)
-  [[ -f "$ADAPTER/adapters.safetensors" ]] && args+=(--adapter-path "$ADAPTER")
-  echo "-> generator: Qwen3.5-2B ${ADAPTER:+(+ LoRA r2 if present)} on :8002"
+# Generator choice (see ml-service/MODEL_SELECTION.md): Qwen3.5-4B 4-bit was the most accurate
+# and fastest on recognizer-vocabulary glosses; the fine-tuned 2B is the fallback.
+# Override with GEN_MODEL_DIR=... [GEN_ADAPTER_DIR=...] bin/run.sh
+if [[ -z "${GEN_MODEL_DIR:-}" ]]; then
+  if [[ -d "$ML/models/Qwen3.5-4B-4bit" ]]; then GEN_MODEL_DIR="$ML/models/Qwen3.5-4B-4bit"
+  elif [[ -d "$ML/models/Qwen3.5-2B" ]]; then
+    GEN_MODEL_DIR="$ML/models/Qwen3.5-2B"
+    [[ -f "$ML/finetune/adapters/qwen35-2b-gloss-r2/adapters.safetensors" ]] && GEN_ADAPTER_DIR="${GEN_ADAPTER_DIR:-$ML/finetune/adapters/qwen35-2b-gloss-r2}"
+  fi
+fi
+if [[ $MOCK == 0 && -n "${GEN_MODEL_DIR:-}" ]]; then
+  args=(--model "$GEN_MODEL_DIR" --host 127.0.0.1 --port 8002)
+  [[ -n "${GEN_ADAPTER_DIR:-}" ]] && args+=(--adapter-path "$GEN_ADAPTER_DIR")
+  echo "-> generator: $(basename "$GEN_MODEL_DIR")${GEN_ADAPTER_DIR:+ + $(basename "$GEN_ADAPTER_DIR")} on :8002"
   "$ML/.venv/bin/mlx_lm.server" "${args[@]}" 2>&1 | sed 's/^/[gen] /' &
   pids+=($!)
   wait_for http://127.0.0.1:8002/v1/models generator

@@ -23,15 +23,19 @@ export interface Translation {
   tokens?: Token[];
   sign_language?: string;
   low_confidence?: boolean;
-  generation?: { source: "model" | "template" | "mock"; constrained: boolean };
+  generation?: { source: "model" | "template" | "mock" | "fingerspelling"; constrained: boolean };
+  mode?: Mode;
   is_mock: boolean;
   models?: Record<string, string>;
   timings_ms?: Record<string, number>;
 }
 
+export type Mode = "signs" | "letters";
+
 export interface RecordingMetadata {
   client_request_id: string;
   sign_language?: string;
+  mode?: Mode;
   recording: {
     started_at: string;
     duration_ms: number;

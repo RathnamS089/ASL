@@ -79,9 +79,12 @@ class MlxClassifier:
     target_fps = 15.0
 
     def __init__(self, model_dir: Path):
+        import mlx.core as mx
+
         from .model import load  # MLX import stays out of module import time
 
         self.model, self.labels = load(model_dir)
+        mx.eval(self.model.parameters())  # materialise now: lazy weights are tied to this thread's stream
         self.name = "islr-transformer"
         self.version = (model_dir / "VERSION").read_text().strip() if (model_dir / "VERSION").exists() else model_dir.name
 
@@ -89,7 +92,9 @@ class MlxClassifier:
         import mlx.core as mx
 
         feats = np.stack([featurize(xyz) for xyz in segments])
-        return np.array(mx.softmax(self.model(mx.array(feats)), axis=-1))
+        # The server calls this from worker threads; give MLX a stream owned by this thread.
+        with mx.stream(mx.new_stream(mx.default_device())):
+            return np.array(mx.softmax(self.model(mx.array(feats)), axis=-1))
 
 
 def load_classifier(model_dir: Path) -> Classifier:

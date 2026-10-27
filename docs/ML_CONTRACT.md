@@ -46,9 +46,15 @@ Go sends the clip rather than extracted frames for three reasons. Go does not ne
   "sign_language": "ase",
   "clip": { "container": "webm", "size_bytes": 1843200, "client_duration_ms": 4200 },
   "limits": { "min_seconds": 0.5, "max_seconds": 10.0, "max_signs": 8 },
-  "options": { "generate": true, "include_alternatives": false }
+  "options": { "generate": true, "include_alternatives": false, "mode": "signs" }
 }
 ```
+
+`options.mode` selects the recognizer:
+- **`"signs"`** (default): the ISLR sign classifier, then the generator.
+- **`"letters"`:** the A–Z hand-shape reader (`recognition/letters.py`). It returns one segment per held letter, and generation is the spelled word (`source: "fingerspelling"`).
+
+When the selected model isn't loaded, the response is `503 models_not_loaded`. An unknown mode gets `400 invalid_request`.
 
 Go sets `limits`, so there is one source of truth: Go reads them from its env and the ML service enforces whatever it receives. If `options.generate` is `false`, the service returns recognition only (`generation: null`). This exists for recognition evaluation runs.
 

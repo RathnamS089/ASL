@@ -50,7 +50,11 @@ class HolisticExtractor:
 
     name = "mediapipe-holistic"
 
-    def __init__(self, model_path: Path, target_fps: float = 15.0, max_seconds: float = 12.0):
+    def __init__(self, model_path: Path, target_fps: float = 15.0, max_seconds: float = 12.0,
+                 hand_model_path: Path | None = None, hand_fallback_side: str = "right"):
+        """`hand_model_path` enables a hand-only fallback (MediaPipe HandLandmarker) for frames
+        where Holistic finds no hands, e.g. close-up fingerspelling with no face or body in
+        view. The fallback hand goes in the `hand_fallback_side` slot ("right" or "left")."""
         from mediapipe.tasks.python import BaseOptions, vision  # imported lazily: heavy
 
         if not Path(model_path).is_file():
@@ -60,6 +64,14 @@ class HolisticExtractor:
             base_options=BaseOptions(model_asset_path=str(model_path)),
             running_mode=vision.RunningMode.VIDEO,
         )
+        self._hand_options = None
+        if hand_model_path is not None:
+            if not Path(hand_model_path).is_file():
+                raise FileNotFoundError(hand_model_path)
+            self._hand_options = vision.HandLandmarkerOptions(
+                base_options=BaseOptions(model_asset_path=str(hand_model_path)),
+                running_mode=vision.RunningMode.VIDEO, num_hands=1)
+        self._fallback_span = RIGHT_HAND if hand_fallback_side == "right" else LEFT_HAND
         self.target_fps = target_fps
         self.max_seconds = max_seconds
 
@@ -75,7 +87,9 @@ class HolisticExtractor:
             fps = 30.0  # MediaRecorder WebM often reports no frame rate
         rows, times, decoded = [], [], 0
         next_sample = 0.0
-        # A fresh landmarker per clip: VIDEO mode needs increasing timestamps.
+        # Fresh landmarkers per clip: VIDEO mode needs increasing timestamps.
+        hands = (self._vision.HandLandmarker.create_from_options(self._hand_options)
+                 if self._hand_options is not None else None)
         with self._vision.HolisticLandmarker.create_from_options(self._options) as landmarker:
             while True:
                 ok, frame = cap.read()
@@ -100,9 +114,15 @@ class HolisticExtractor:
                 _fill(out, LEFT_HAND, res.left_hand_landmarks)
                 _fill(out, POSE, res.pose_landmarks)
                 _fill(out, RIGHT_HAND, res.right_hand_landmarks)
+                if hands is not None and not res.left_hand_landmarks and not res.right_hand_landmarks:
+                    found = hands.detect_for_video(image, ts)
+                    if found.hand_landmarks:
+                        _fill(out, self._fallback_span, found.hand_landmarks[0])
                 rows.append(out)
                 times.append(ts / 1000)
         cap.release()
+        if hands is not None:
+            hands.close()
         if decoded == 0:
             raise UndecodableClip("no video frames could be decoded")
         duration = max(times[-1] if times else 0.0, decoded / fps)

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CameraState } from "../hooks/useCamera";
 import { cameraCopy } from "../lib/messages";
 import { ClipRecorder, MAX_CLIP_MS, MIN_CLIP_MS, type RecordedClip } from "../lib/recorder";
+import type { Mode } from "../lib/types";
 import { Button, Card, Icon } from "./ui";
 
 interface Props {
@@ -10,6 +11,8 @@ interface Props {
   facing: "user" | "environment";
   canFlip: boolean;
   recording: boolean;
+  mode: Mode;
+  onModeChange: (mode: Mode) => void;
   onFlip: () => void;
   onRetry: () => void;
   onStart: () => void;
@@ -17,7 +20,7 @@ interface Props {
   onTooShort: () => void;
 }
 
-export function CameraStage({ camera, facing, canFlip, recording, onFlip, onRetry, onStart, onRecorded, onTooShort }: Props) {
+export function CameraStage({ camera, facing, canFlip, recording, mode, onModeChange, onFlip, onRetry, onStart, onRecorded, onTooShort }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const recorderRef = useRef<ClipRecorder | null>(null);
   const [elapsed, setElapsed] = useState(0);
@@ -81,6 +84,22 @@ export function CameraStage({ camera, facing, canFlip, recording, onFlip, onRetr
 
   return (
     <div className="flex flex-col gap-5">
+      <div className="flex justify-center">
+        <div className="flex rounded-2xl bg-raised p-1 ring-1 ring-white/10" role="radiogroup" aria-label="What are you signing?">
+          {(["signs", "letters"] as const).map((m) => (
+            <button
+              key={m}
+              role="radio"
+              aria-checked={mode === m}
+              disabled={recording || countdown !== null}
+              onClick={() => onModeChange(m)}
+              className={`min-h-10 rounded-xl px-4 text-sm font-semibold transition ${mode === m ? "bg-lime text-ink" : "text-muted hover:text-paper"}`}
+            >
+              {m === "signs" ? "Signs" : "Letters A–Z"}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="relative overflow-hidden rounded-[2rem] bg-black ring-1 ring-white/10">
         <video
           ref={videoRef}
@@ -96,7 +115,7 @@ export function CameraStage({ camera, facing, canFlip, recording, onFlip, onRetr
         <div className="pointer-events-none absolute inset-[9%] rounded-[1.6rem] border border-dashed border-white/20" />
         <div className="pointer-events-none absolute left-1/2 top-[14%] h-[22%] w-[22%] -translate-x-1/2 rounded-full border border-dashed border-violet/40" />
         <p className="pointer-events-none absolute inset-x-0 bottom-4 text-center font-mono text-[11px] uppercase tracking-widest text-white/60">
-          {recording ? "Signing…" : "Face and both hands in frame"}
+          {recording ? (mode === "letters" ? "Spelling…" : "Signing…") : mode === "letters" ? "Signing hand clearly in frame" : "Face and both hands in frame"}
         </p>
 
         {recording && (
@@ -131,7 +150,13 @@ export function CameraStage({ camera, facing, canFlip, recording, onFlip, onRetr
           <motion.span layout className={recording ? "size-7 rounded-lg bg-danger" : "size-14 rounded-full bg-danger"} />
         </button>
       </div>
-      <p className="text-center text-sm text-muted">{recording ? "Tap to stop. Recording ends automatically at 10 seconds." : "Tap to record after a 3-second countdown. Sign one short phrase."}</p>
+      <p className="text-center text-sm text-muted">
+        {recording
+          ? "Tap to stop. Recording ends automatically at 10 seconds."
+          : mode === "letters"
+            ? "Fingerspell a word: hold each letter for about half a second. For double letters (the LL in HELLO), drop your hand briefly between them."
+            : "Tap to record after a 3-second countdown. Sign one short phrase."}
+      </p>
     </div>
   );
 }

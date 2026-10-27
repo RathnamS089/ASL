@@ -36,8 +36,9 @@ type ClipRef struct {
 }
 
 type Options struct {
-	Generate            bool `json:"generate"`
-	IncludeAlternatives bool `json:"include_alternatives"`
+	Generate            bool   `json:"generate"`
+	IncludeAlternatives bool   `json:"include_alternatives"`
+	Mode                string `json:"mode,omitempty"` // "signs" or "letters"
 }
 
 type Segment struct {

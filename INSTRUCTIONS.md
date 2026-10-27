@@ -94,6 +94,9 @@ Done (in `main`):
 - [x] Downloaded official Qwen3.5-2B and benchmarked it on an M4 Mac: 100% of outputs passed the no-invention rule, about 1 s each with thinking off; thinking on is unusable (~46 s, no answer). Results are in MODEL_SELECTION.md.
 
 Still to do:
+- [x] Generator decided: Qwen3.5-4B 4-bit beats both 2B variants on recognizer vocabulary (`ml-service/validation/README.md`)
+- [x] Alphabet (A–Z) mode: hand-shape model, 20/26 letters on an unseen signer
+- [x] Validated on real ASL videos (family lesson: 6/7 known signs)
 - [x] MLX LoRA fine-tuning set up and run once (`ml-service/finetune/`): better on held-out rows (80% exact vs 60%), not yet better on the benchmark; base model stays the default.
 - [x] Fine-tuning round 2: 60 WH-question pairs added and retrained. 81% exact on the benchmark (base 75%), and WH-questions are fixed. The round-2 adapter is now the recommended generator.
 - [ ] Get a fluent signer to review `finetune/pairs.tsv`, and fix the `IX-1 GO STORE TOMORROW` drop.

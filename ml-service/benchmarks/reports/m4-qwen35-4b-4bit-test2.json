@@ -1,0 +1,392 @@
+{
+  "backend": "openai_compat",
+  "model": "default_model",
+  "thinking": false,
+  "max_tokens": 96,
+  "host": {
+    "machine": "arm64",
+    "system": "Darwin",
+    "python": "3.12.12"
+  },
+  "notes": "Apple M4 16 GB; mlx-lm 0.32.2; Qwen3.5-4B 4-bit (mlx-community, from official weights); Metal; thinking off; no fine-tuning",
+  "case_file": "test_glosses.jsonl",
+  "cases": 27,
+  "exact_match_rate": 0.519,
+  "model_acceptance_rate": 0.926,
+  "latency_ms": {
+    "p50": 890.7,
+    "p95": 1022.7,
+    "max": 1069.0
+  },
+  "rows": [
+    {
+      "run": 0,
+      "glosses": [
+        "THANK-YOU",
+        "VERY-MUCH"
+      ],
+      "reference": "Thank you very much.",
+      "output": "Thank you very much.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 962.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WELCOME"
+      ],
+      "reference": "Welcome.",
+      "output": "Welcome.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 778.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "PLEASE",
+        "SIGN",
+        "SLOW"
+      ],
+      "reference": "Please sign slowly.",
+      "output": "Please sign slowly.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 836.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "NAME",
+        "FS-MARIA"
+      ],
+      "reference": "My name is Maria.",
+      "output": "I name Maria.",
+      "source": "template",
+      "exact_match": false,
+      "rejected_reason": "constraint: signs not expressed in the text: NAME",
+      "latency_ms": 924.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "DEAF"
+      ],
+      "reference": "I am deaf.",
+      "output": "I am deaf.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 835.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "LIKE",
+        "DANCE"
+      ],
+      "reference": "I like to dance.",
+      "output": "I like to dance.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 864.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "WANT",
+        "GO",
+        "HOME"
+      ],
+      "reference": "I want to go home.",
+      "output": "I want to go home.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 893.6
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "DOCTOR"
+      ],
+      "reference": "Where is the doctor?",
+      "output": "Where is the doctor?",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 880.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHERE",
+        "YOU",
+        "WORK"
+      ],
+      "reference": "Where do you work?",
+      "output": "Where do you work?",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 869.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHAT",
+        "YOU",
+        "EAT"
+      ],
+      "reference": "What are you eating?",
+      "output": "What do you eat?",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 866.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WHAT",
+        "THAT"
+      ],
+      "reference": "What is that?",
+      "output": "What that?",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 893.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YOU",
+        "FRIEND",
+        "WHO"
+      ],
+      "reference": "Who is your friend?",
+      "output": "Who is your friend?",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 864.3
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "NO"
+      ],
+      "reference": "No.",
+      "output": "No.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 813.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "WORK",
+        "HOSPITAL"
+      ],
+      "reference": "I work at the hospital.",
+      "output": "I work at the hospital.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 981.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "YESTERDAY",
+        "IX-1",
+        "WATCH",
+        "TV"
+      ],
+      "reference": "Yesterday I watched TV.",
+      "output": "Yesterday, I will watch TV.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1017.4
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "LAST-WEEK",
+        "IX-1",
+        "VISIT",
+        "GRANDMOTHER"
+      ],
+      "reference": "Last week I visited my grandmother.",
+      "output": "Last week I visited my grandmother.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 1022.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "NEXT-WEEK",
+        "IX-1",
+        "TRAVEL"
+      ],
+      "reference": "Next week I will travel.",
+      "output": "I will travel next week.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 986.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "WAIT",
+        "YOU"
+      ],
+      "reference": "I am waiting for you.",
+      "output": "I will wait you.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 965.2
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "CAN'T",
+        "SWIM"
+      ],
+      "reference": "I cannot swim.",
+      "output": "I can't swim.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 870.8
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "WE",
+        "FRIEND"
+      ],
+      "reference": "We are friends.",
+      "output": "We are friends.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 928.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "FOOD",
+        "GOOD"
+      ],
+      "reference": "The food is good.",
+      "output": "The food is good.",
+      "source": "model",
+      "exact_match": true,
+      "rejected_reason": null,
+      "latency_ms": 869.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "HOMEWORK",
+        "EASY"
+      ],
+      "reference": "The homework is easy.",
+      "output": "Homework is easy.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 882.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "DOOR",
+        "OPEN"
+      ],
+      "reference": "The door is open.",
+      "output": "Open the door.",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 890.1
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "IX-1",
+        "FAVORITE",
+        "COLOR",
+        "BLUE"
+      ],
+      "reference": "My favorite color is blue.",
+      "output": "I favorite color blue.",
+      "source": "template",
+      "exact_match": false,
+      "rejected_reason": "constraint: word 'like' does not come from any recognized sign",
+      "latency_ms": 968.5
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "TEACHER",
+        "WHERE"
+      ],
+      "reference": "Where is the teacher?",
+      "output": "Teacher, where?",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 890.7
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "STORE",
+        "CLOSE",
+        "WHY"
+      ],
+      "reference": "Why is the store closed?",
+      "output": "Why is the store closing?",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 962.9
+    },
+    {
+      "run": 0,
+      "glosses": [
+        "COFFEE",
+        "COST",
+        "HOW-MUCH"
+      ],
+      "reference": "How much does the coffee cost?",
+      "output": "How much does coffee cost?",
+      "source": "model",
+      "exact_match": false,
+      "rejected_reason": null,
+      "latency_ms": 1069.0
+    }
+  ]
+}

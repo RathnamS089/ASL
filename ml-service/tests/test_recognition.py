@@ -242,3 +242,16 @@ def test_islr_compound_labels_become_real_words():
     segs = [Segment(gloss(l), i, i + 0.5) for i, l in enumerate(["thankyou", "minemy", "mom"])]
     _, reason = align("Thank you, my mom.", segs, None)
     assert reason is None
+
+
+def test_mlx_classifier_works_from_a_worker_thread(trained):
+    import threading
+
+    from visualiser_ml.recognition.islr import MlxClassifier
+
+    clf = MlxClassifier(trained)
+    got = {}
+    t = threading.Thread(target=lambda: got.setdefault("p", clf.probabilities([body(30)])))
+    t.start()
+    t.join()
+    assert got["p"].shape == (1, 3)

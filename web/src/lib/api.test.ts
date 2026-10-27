@@ -67,3 +67,17 @@ describe("checkReady", () => {
     expect(await checkReady(async () => { throw new Error("x"); })).toEqual({ ready: false, mock: false });
   });
 });
+
+describe("letters mode", () => {
+  it("sends mode in metadata and accepts a fingerspelling result", async () => {
+    const fetchImpl = vi.fn(async (_u: RequestInfo | URL, init?: RequestInit) => {
+      const sent = JSON.parse(await ((init!.body as FormData).get("metadata") as Blob).text());
+      expect(sent.mode).toBe("letters");
+      return json({ id: "tr_1", sentence: "HI", signs: [{ label: "H", start_seconds: 0, end_seconds: 0.5, confidence: 0.9 }, { label: "I", start_seconds: 0.6, end_seconds: 1, confidence: 0.8 }],
+        tokens: [{ text: "HI", sign_index: null, emphasis: "strong" }], generation: { source: "fingerspelling", constrained: true }, is_mock: false, mode: "letters" });
+    });
+    const t = await translateClip(clip, { ...meta, mode: "letters" }, { fetchImpl: fetchImpl as typeof fetch });
+    expect(t.sentence).toBe("HI");
+    expect(t.generation?.source).toBe("fingerspelling");
+  });
+});

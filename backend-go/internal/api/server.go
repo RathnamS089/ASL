@@ -114,6 +114,14 @@ func (s *Server) translate(w http.ResponseWriter, r *http.Request) {
 	}
 	defer up.remove()
 
+	mode := up.Meta.Mode
+	if mode == "" {
+		mode = "signs"
+	}
+	if mode != "signs" && mode != "letters" {
+		writeError(w, r, newErr(http.StatusBadRequest, "invalid_request", `metadata.mode must be "signs" or "letters".`))
+		return
+	}
 	lang := s.cfg.SignLanguage
 	if up.Meta.SignLanguage != "" && up.Meta.SignLanguage != lang {
 		writeError(w, r, &apiError{Status: 422, Code: "unsupported_sign_language",
@@ -161,7 +169,7 @@ func (s *Server) translate(w http.ResponseWriter, r *http.Request) {
 		SignLanguage: lang,
 		Clip:         inference.ClipRef{Container: up.Container, SizeBytes: up.Size, ClientDurationMS: clientMS},
 		Limits:       inference.Limits{MinSeconds: s.cfg.MinClipSeconds, MaxSeconds: s.cfg.MaxClipSeconds, MaxSigns: s.cfg.MaxSigns},
-		Options:      inference.Options{Generate: true},
+		Options:      inference.Options{Generate: true, Mode: mode},
 	}, up.Path)
 	if err != nil {
 		if r.Context().Err() != nil {
@@ -171,11 +179,14 @@ func (s *Server) translate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(res.Recognition.Segments) == 0 || res.Generation == nil || strings.TrimSpace(res.Generation.Text) == "" {
-		writeError(w, r, &apiError{Status: 422, Code: "no_signs_detected",
-			Message: "No signs were recognised. Keep your hands and face in frame, with good light, and try again."})
+		msg := "No signs were recognised. Keep your hands and face in frame, with good light, and try again."
+		if mode == "letters" {
+			msg = "No letters were recognised. Hold each letter still for about half a second, with your hand clearly in view."
+		}
+		writeError(w, r, &apiError{Status: 422, Code: "no_signs_detected", Message: msg})
 		return
 	}
-	writeJSON(w, http.StatusOK, s.publicResponse(res, queued, s.now().Sub(inferStart), s.now().Sub(started)))
+	writeJSON(w, http.StatusOK, s.publicResponse(res, mode, queued, s.now().Sub(inferStart), s.now().Sub(started)))
 }
 
 func (s *Server) writeMock(w http.ResponseWriter, r *http.Request, queued time.Duration, started time.Time) {
@@ -202,7 +213,7 @@ type publicToken struct {
 	Emphasis  string `json:"emphasis"`
 }
 
-func (s *Server) publicResponse(res *inference.Response, queued, inferDur, total time.Duration) map[string]any {
+func (s *Server) publicResponse(res *inference.Response, mode string, queued, inferDur, total time.Duration) map[string]any {
 	signs := make([]publicSign, len(res.Recognition.Segments))
 	for i, seg := range res.Recognition.Segments {
 		signs[i] = publicSign{seg.Label, seg.StartSeconds, seg.EndSeconds, seg.Confidence}
@@ -226,6 +237,7 @@ func (s *Server) publicResponse(res *inference.Response, queued, inferDur, total
 		"signs":          signs,
 		"tokens":         tokens,
 		"sign_language":  s.cfg.SignLanguage,
+		"mode":           mode,
 		"low_confidence": res.Recognition.LowConfidence,
 		"generation":     map[string]any{"source": res.Generation.Source, "constrained": res.Generation.Constrained},
 		"is_mock":        res.Mock,

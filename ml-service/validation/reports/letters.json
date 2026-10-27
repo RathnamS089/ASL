@@ -1,0 +1,383 @@
+{
+ "video": "youtube.com/watch?v=wvTrlW5z4SM",
+ "model": "asl-letters-mlp",
+ "best_slot": "right",
+ "right": {
+  "span_accuracy": 0.769,
+  "static_span_accuracy": 0.792,
+  "mean_frame_accuracy": 0.539,
+  "rows": [
+   {
+    "letter": "A",
+    "frame_accuracy": 0.759,
+    "vote": "A",
+    "correct": true,
+    "spelled": "AB"
+   },
+   {
+    "letter": "B",
+    "frame_accuracy": 0.87,
+    "vote": "B",
+    "correct": true,
+    "spelled": "B"
+   },
+   {
+    "letter": "C",
+    "frame_accuracy": 0.218,
+    "vote": "D",
+    "correct": false,
+    "spelled": "D"
+   },
+   {
+    "letter": "D",
+    "frame_accuracy": 0.745,
+    "vote": "D",
+    "correct": true,
+    "spelled": "DE"
+   },
+   {
+    "letter": "E",
+    "frame_accuracy": 0.622,
+    "vote": "E",
+    "correct": true,
+    "spelled": "EEEF"
+   },
+   {
+    "letter": "F",
+    "frame_accuracy": 0.769,
+    "vote": "F",
+    "correct": true,
+    "spelled": "FFFFG"
+   },
+   {
+    "letter": "G",
+    "frame_accuracy": 0.617,
+    "vote": "G",
+    "correct": true,
+    "spelled": "GGH"
+   },
+   {
+    "letter": "H",
+    "frame_accuracy": 0.618,
+    "vote": "H",
+    "correct": true,
+    "spelled": "HHHI"
+   },
+   {
+    "letter": "I",
+    "frame_accuracy": 0.821,
+    "vote": "I",
+    "correct": true,
+    "spelled": "IJI"
+   },
+   {
+    "letter": "J",
+    "frame_accuracy": 0.248,
+    "vote": "I",
+    "correct": false,
+    "spelled": "JIJI"
+   },
+   {
+    "letter": "K",
+    "frame_accuracy": 0.773,
+    "vote": "K",
+    "correct": true,
+    "spelled": "KKKKL"
+   },
+   {
+    "letter": "L",
+    "frame_accuracy": 0.527,
+    "vote": "L",
+    "correct": true,
+    "spelled": "LL"
+   },
+   {
+    "letter": "M",
+    "frame_accuracy": 0.42,
+    "vote": "M",
+    "correct": true,
+    "spelled": "BMMBR"
+   },
+   {
+    "letter": "N",
+    "frame_accuracy": 0.004,
+    "vote": "M",
+    "correct": false,
+    "spelled": "RRMMMO"
+   },
+   {
+    "letter": "O",
+    "frame_accuracy": 0.686,
+    "vote": "O",
+    "correct": true,
+    "spelled": "OOOP"
+   },
+   {
+    "letter": "P",
+    "frame_accuracy": 0.53,
+    "vote": "P",
+    "correct": true,
+    "spelled": "PKKPPQ"
+   },
+   {
+    "letter": "Q",
+    "frame_accuracy": 0.568,
+    "vote": "Q",
+    "correct": true,
+    "spelled": "QGGQQRR"
+   },
+   {
+    "letter": "R",
+    "frame_accuracy": 0.319,
+    "vote": "S",
+    "correct": false,
+    "spelled": "RRSSSAS"
+   },
+   {
+    "letter": "S",
+    "frame_accuracy": 0.567,
+    "vote": "S",
+    "correct": true,
+    "spelled": "SZ"
+   },
+   {
+    "letter": "T",
+    "frame_accuracy": 0.6,
+    "vote": "T",
+    "correct": true,
+    "spelled": "TZTPR"
+   },
+   {
+    "letter": "U",
+    "frame_accuracy": 0.111,
+    "vote": "R",
+    "correct": false,
+    "spelled": "R"
+   },
+   {
+    "letter": "V",
+    "frame_accuracy": 0.0,
+    "vote": "W",
+    "correct": false,
+    "spelled": "W"
+   },
+   {
+    "letter": "W",
+    "frame_accuracy": 0.628,
+    "vote": "W",
+    "correct": true,
+    "spelled": "WX"
+   },
+   {
+    "letter": "X",
+    "frame_accuracy": 0.833,
+    "vote": "X",
+    "correct": true,
+    "spelled": "XXX"
+   },
+   {
+    "letter": "Y",
+    "frame_accuracy": 0.756,
+    "vote": "Y",
+    "correct": true,
+    "spelled": "YZ"
+   },
+   {
+    "letter": "Z",
+    "frame_accuracy": 0.409,
+    "vote": "Z",
+    "correct": true,
+    "spelled": "ZA"
+   }
+  ]
+ },
+ "left": {
+  "span_accuracy": 0.769,
+  "static_span_accuracy": 0.792,
+  "mean_frame_accuracy": 0.558,
+  "rows": [
+   {
+    "letter": "A",
+    "frame_accuracy": 0.759,
+    "vote": "A",
+    "correct": true,
+    "spelled": "AB"
+   },
+   {
+    "letter": "B",
+    "frame_accuracy": 0.835,
+    "vote": "B",
+    "correct": true,
+    "spelled": "BC"
+   },
+   {
+    "letter": "C",
+    "frame_accuracy": 0.442,
+    "vote": "D",
+    "correct": false,
+    "spelled": "D"
+   },
+   {
+    "letter": "D",
+    "frame_accuracy": 0.745,
+    "vote": "D",
+    "correct": true,
+    "spelled": "DE"
+   },
+   {
+    "letter": "E",
+    "frame_accuracy": 0.618,
+    "vote": "E",
+    "correct": true,
+    "spelled": "EEEF"
+   },
+   {
+    "letter": "F",
+    "frame_accuracy": 0.821,
+    "vote": "F",
+    "correct": true,
+    "spelled": "FFFFG"
+   },
+   {
+    "letter": "G",
+    "frame_accuracy": 0.635,
+    "vote": "G",
+    "correct": true,
+    "spelled": "GGH"
+   },
+   {
+    "letter": "H",
+    "frame_accuracy": 0.631,
+    "vote": "H",
+    "correct": true,
+    "spelled": "HHHI"
+   },
+   {
+    "letter": "I",
+    "frame_accuracy": 0.821,
+    "vote": "I",
+    "correct": true,
+    "spelled": "IJI"
+   },
+   {
+    "letter": "J",
+    "frame_accuracy": 0.248,
+    "vote": "I",
+    "correct": false,
+    "spelled": "JIJI"
+   },
+   {
+    "letter": "K",
+    "frame_accuracy": 0.773,
+    "vote": "K",
+    "correct": true,
+    "spelled": "KKKKL"
+   },
+   {
+    "letter": "L",
+    "frame_accuracy": 0.573,
+    "vote": "L",
+    "correct": true,
+    "spelled": "LL"
+   },
+   {
+    "letter": "M",
+    "frame_accuracy": 0.42,
+    "vote": "M",
+    "correct": true,
+    "spelled": "WBMMB"
+   },
+   {
+    "letter": "N",
+    "frame_accuracy": 0.0,
+    "vote": "O",
+    "correct": false,
+    "spelled": "O"
+   },
+   {
+    "letter": "O",
+    "frame_accuracy": 0.641,
+    "vote": "O",
+    "correct": true,
+    "spelled": "OOOP"
+   },
+   {
+    "letter": "P",
+    "frame_accuracy": 0.541,
+    "vote": "P",
+    "correct": true,
+    "spelled": "PKKPZPQ"
+   },
+   {
+    "letter": "Q",
+    "frame_accuracy": 0.587,
+    "vote": "Q",
+    "correct": true,
+    "spelled": "QGQQRR"
+   },
+   {
+    "letter": "R",
+    "frame_accuracy": 0.314,
+    "vote": "S",
+    "correct": false,
+    "spelled": "RSSSAS"
+   },
+   {
+    "letter": "S",
+    "frame_accuracy": 0.578,
+    "vote": "S",
+    "correct": true,
+    "spelled": "SZ"
+   },
+   {
+    "letter": "T",
+    "frame_accuracy": 0.559,
+    "vote": "T",
+    "correct": true,
+    "spelled": "TZTP"
+   },
+   {
+    "letter": "U",
+    "frame_accuracy": 0.033,
+    "vote": "R",
+    "correct": false,
+    "spelled": "V"
+   },
+   {
+    "letter": "V",
+    "frame_accuracy": 0.168,
+    "vote": "W",
+    "correct": false,
+    "spelled": "W"
+   },
+   {
+    "letter": "W",
+    "frame_accuracy": 0.633,
+    "vote": "W",
+    "correct": true,
+    "spelled": "WX"
+   },
+   {
+    "letter": "X",
+    "frame_accuracy": 0.833,
+    "vote": "X",
+    "correct": true,
+    "spelled": "XXX"
+   },
+   {
+    "letter": "Y",
+    "frame_accuracy": 0.76,
+    "vote": "Y",
+    "correct": true,
+    "spelled": "YZ"
+   },
+   {
+    "letter": "Z",
+    "frame_accuracy": 0.535,
+    "vote": "Z",
+    "correct": true,
+    "spelled": "ZZA"
+   }
+  ]
+ }
+}

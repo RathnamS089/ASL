@@ -119,3 +119,24 @@ def test_missing_token_config_refuses_to_start(monkeypatch):
     monkeypatch.delenv("ML_INTERNAL_TOKEN", raising=False)
     with pytest.raises(RuntimeError):
         Settings.from_env()
+
+
+class FakeLetters(FakeRecognizer):
+    name, version = "letters", "0"
+
+
+def test_letters_mode_spells_without_the_generator():
+    rec = FakeLetters([Segment(c, i * 0.5, i * 0.5 + 0.4, 0.9) for i, c in enumerate("HI")])
+    c = client(replace(BASE, mock=False), recognizer=FakeRecognizer([]), letter_recognizer=rec)
+    req = {**REQUEST, "options": {"generate": True, "mode": "letters"}}
+    body = c.post("/v1/infer", files=parts(req), headers=AUTH).json()
+    assert body["generation"]["text"] == "HI" and body["generation"]["source"] == "fingerspelling"
+    assert [s["label"] for s in body["recognition"]["segments"]] == ["H", "I"]
+
+
+def test_letters_mode_without_model_and_bad_mode():
+    c = client(replace(BASE, mock=False), recognizer=FakeRecognizer([]))
+    r = c.post("/v1/infer", files=parts({**REQUEST, "options": {"mode": "letters"}}), headers=AUTH)
+    assert r.status_code == 503 and "alphabet" in r.json()["error"]["message"]
+    r = c.post("/v1/infer", files=parts({**REQUEST, "options": {"mode": "poetry"}}), headers=AUTH)
+    assert r.status_code == 400

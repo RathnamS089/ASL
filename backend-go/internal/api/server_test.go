@@ -188,6 +188,23 @@ func TestTranslateSuccessMapsContractAndCleansUp(t *testing.T) {
 	}
 }
 
+func TestLettersModeIsPassedThrough(t *testing.T) {
+	ml := &fakeML{resp: goodResponse()}
+	h := newServer(t, conf(t), ml)
+	w, body := do(h, multipartReq(t, "/v1/translations", part{"metadata", "", []byte(`{"mode":"letters"}`)}, part{"clip", "c", webm}))
+	if w.Code != 200 || ml.gotReq.Options.Mode != "letters" || body["mode"] != "letters" {
+		t.Fatalf("letters: %d %v %+v", w.Code, body, ml.gotReq.Options)
+	}
+	w, body = do(h, multipartReq(t, "/v1/translations", part{"metadata", "", []byte(`{"mode":"poems"}`)}, part{"clip", "c", webm}))
+	if w.Code != 400 || errCode(body) != "invalid_request" {
+		t.Fatalf("bad mode: %d %v", w.Code, body)
+	}
+	w, _ = do(h, multipartReq(t, "/v1/translations", part{"clip", "c", webm}))
+	if ml.gotReq.Options.Mode != "signs" {
+		t.Fatalf("default mode: %q", ml.gotReq.Options.Mode)
+	}
+}
+
 func TestRawBodyCompatibility(t *testing.T) {
 	ml := &fakeML{resp: goodResponse()}
 	h := newServer(t, conf(t), ml)

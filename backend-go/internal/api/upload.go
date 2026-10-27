@@ -16,6 +16,7 @@ import (
 type Metadata struct {
 	ClientRequestID string `json:"client_request_id"`
 	SignLanguage    string `json:"sign_language"`
+	Mode            string `json:"mode"` // "signs" (default) or "letters" (fingerspelling)
 	Recording       *struct {
 		StartedAt  string  `json:"started_at"`
 		DurationMS *int    `json:"duration_ms"`

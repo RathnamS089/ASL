@@ -30,6 +30,8 @@ class Settings:
     recognizer_dir: Path = Path("models/recognizer/islr-1st-place")
     mediapipe_model: Path = Path("models/mediapipe/holistic_landmarker.task")
     min_sign_confidence: float = 0.35
+    letters_dir: Path = Path("models/letters/asl-mlp")
+    hand_model: Path = Path("models/mediapipe/hand_landmarker.task")
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -55,4 +57,6 @@ class Settings:
             recognizer_dir=Path(env("ML_RECOGNIZER_DIR", "models/recognizer/islr-1st-place")),
             mediapipe_model=Path(env("ML_MEDIAPIPE_MODEL", "models/mediapipe/holistic_landmarker.task")),
             min_sign_confidence=float(env("ML_MIN_SIGN_CONFIDENCE", "0.35")),
+            letters_dir=Path(env("ML_LETTERS_DIR", "models/letters/asl-mlp")),
+            hand_model=Path(env("ML_HAND_MODEL", "models/mediapipe/hand_landmarker.task")),
         )

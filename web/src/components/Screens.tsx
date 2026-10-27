@@ -123,6 +123,7 @@ export function Result({ translation, onAgain, onHome }: { translation: Translat
         <p className="eyebrow mr-auto">Translation</p>
         {translation.is_mock && <Badge tone="violet">Sample</Badge>}
         {translation.generation?.source === "template" && <Badge>Literal</Badge>}
+        {translation.generation?.source === "fingerspelling" && <Badge tone="lime">Fingerspelling</Badge>}
         {translation.low_confidence && <Badge tone="danger">Low confidence</Badge>}
       </div>
 
@@ -150,7 +151,7 @@ export function Result({ translation, onAgain, onHome }: { translation: Translat
 
       {translation.signs.length > 0 && (
         <div className="flex flex-col gap-3">
-          <p className="eyebrow">Signs recognised</p>
+          <p className="eyebrow">{translation.generation?.source === "fingerspelling" ? "Letters recognised" : "Signs recognised"}</p>
           <ul className="flex flex-wrap gap-2">
             {translation.signs.map((s, i) => (
               <li key={i} className="rounded-2xl bg-surface px-3 py-2 ring-1 ring-white/10">

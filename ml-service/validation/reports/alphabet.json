@@ -1,0 +1,978 @@
+{
+ "video": "youtube.com/watch?v=wvTrlW5z4SM",
+ "best": "right/axis",
+ "results": {
+  "right/axis": {
+   "accuracy": 0.154,
+   "static_accuracy": 0.125,
+   "rows": [
+    {
+     "letter": "a",
+     "decoded": "4",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "b",
+     "decoded": "+44-4",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "c",
+     "decoded": "4",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "d",
+     "decoded": "14 de",
+     "guess": "d",
+     "correct": true
+    },
+    {
+     "letter": "e",
+     "decoded": "49",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "f",
+     "decoded": "5 ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "g",
+     "decoded": "+--2",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "h",
+     "decoded": "d ry",
+     "guess": "d",
+     "correct": false
+    },
+    {
+     "letter": "i",
+     "decoded": "j",
+     "guess": "j",
+     "correct": false
+    },
+    {
+     "letter": "j",
+     "decoded": "j i3",
+     "guess": "j",
+     "correct": true
+    },
+    {
+     "letter": "k",
+     "decoded": " k",
+     "guess": "k",
+     "correct": true
+    },
+    {
+     "letter": "l",
+     "decoded": "-4",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "m",
+     "decoded": "+-676-42",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "n",
+     "decoded": "7 mo",
+     "guess": "m",
+     "correct": false
+    },
+    {
+     "letter": "o",
+     "decoded": "07-01",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "p",
+     "decoded": "+",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "q",
+     "decoded": "?pr",
+     "guess": "p",
+     "correct": false
+    },
+    {
+     "letter": "r",
+     "decoded": "vrutat",
+     "guess": "t",
+     "correct": false
+    },
+    {
+     "letter": "s",
+     "decoded": "l",
+     "guess": "l",
+     "correct": false
+    },
+    {
+     "letter": "t",
+     "decoded": "laa7",
+     "guess": "a",
+     "correct": false
+    },
+    {
+     "letter": "u",
+     "decoded": "+",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "v",
+     "decoded": "+-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "w",
+     "decoded": "w",
+     "guess": "w",
+     "correct": true
+    },
+    {
+     "letter": "x",
+     "decoded": "ky",
+     "guess": "k",
+     "correct": false
+    },
+    {
+     "letter": "y",
+     "decoded": "11",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "z",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    }
+   ]
+  },
+  "right/column": {
+   "accuracy": 0.0,
+   "static_accuracy": 0.0,
+   "rows": [
+    {
+     "letter": "a",
+     "decoded": "-4",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "b",
+     "decoded": "+-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "c",
+     "decoded": "5",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "d",
+     "decoded": "5",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "e",
+     "decoded": "+",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "f",
+     "decoded": "+",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "g",
+     "decoded": "+-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "h",
+     "decoded": " y",
+     "guess": "y",
+     "correct": false
+    },
+    {
+     "letter": "i",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "j",
+     "decoded": " 3",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "k",
+     "decoded": ".",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "l",
+     "decoded": "  w",
+     "guess": "w",
+     "correct": false
+    },
+    {
+     "letter": "m",
+     "decoded": "+ ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "n",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "o",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "p",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "q",
+     "decoded": "-22",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "r",
+     "decoded": "ww.w",
+     "guess": "w",
+     "correct": false
+    },
+    {
+     "letter": "s",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "t",
+     "decoded": "6",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "u",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "v",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "w",
+     "decoded": " i",
+     "guess": "i",
+     "correct": false
+    },
+    {
+     "letter": "x",
+     "decoded": "y",
+     "guess": "y",
+     "correct": false
+    },
+    {
+     "letter": "y",
+     "decoded": "-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "z",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    }
+   ]
+  },
+  "right/none": {
+   "accuracy": 0.0,
+   "static_accuracy": 0.0,
+   "rows": [
+    {
+     "letter": "a",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "b",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "c",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "d",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "e",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "f",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "g",
+     "decoded": "/",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "h",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "i",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "j",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "k",
+     "decoded": "/",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "l",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "m",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "n",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "o",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "p",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "q",
+     "decoded": "+",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "r",
+     "decoded": "/",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "s",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "t",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "u",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "v",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "w",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "x",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "y",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "z",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    }
+   ]
+  },
+  "left/axis": {
+   "accuracy": 0.0,
+   "static_accuracy": 0.0,
+   "rows": [
+    {
+     "letter": "a",
+     "decoded": "5",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "b",
+     "decoded": "  ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "c",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "d",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "e",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "f",
+     "decoded": "+",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "g",
+     "decoded": "+",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "h",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "i",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "j",
+     "decoded": "+--2",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "k",
+     "decoded": "212",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "l",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "m",
+     "decoded": "+-w2",
+     "guess": "w",
+     "correct": false
+    },
+    {
+     "letter": "n",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "o",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "p",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "q",
+     "decoded": "+-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "r",
+     "decoded": "23 ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "s",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "t",
+     "decoded": " er",
+     "guess": "e",
+     "correct": false
+    },
+    {
+     "letter": "u",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "v",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "w",
+     "decoded": "-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "x",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "y",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "z",
+     "decoded": "-",
+     "guess": "",
+     "correct": false
+    }
+   ]
+  },
+  "left/column": {
+   "accuracy": 0.0,
+   "static_accuracy": 0.0,
+   "rows": [
+    {
+     "letter": "a",
+     "decoded": "--",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "b",
+     "decoded": "-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "c",
+     "decoded": "+-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "d",
+     "decoded": "+-9",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "e",
+     "decoded": "---",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "f",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "g",
+     "decoded": "--",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "h",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "i",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "j",
+     "decoded": "-",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "k",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "l",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "m",
+     "decoded": "+-2",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "n",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "o",
+     "decoded": "5",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "p",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "q",
+     "decoded": "-6",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "r",
+     "decoded": "7 ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "s",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "t",
+     "decoded": "-6",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "u",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "v",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "w",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "x",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "y",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "z",
+     "decoded": "--",
+     "guess": "",
+     "correct": false
+    }
+   ]
+  },
+  "left/none": {
+   "accuracy": 0.0,
+   "static_accuracy": 0.0,
+   "rows": [
+    {
+     "letter": "a",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "b",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "c",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "d",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "e",
+     "decoded": " ",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "f",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "g",
+     "decoded": "/",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "h",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "i",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "j",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "k",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "l",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "m",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "n",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "o",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "p",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "q",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "r",
+     "decoded": "/",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "s",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "t",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "u",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "v",
+     "decoded": "/",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "w",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "x",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "y",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    },
+    {
+     "letter": "z",
+     "decoded": "",
+     "guess": "",
+     "correct": false
+    }
+   ]
+  }
+ }
+}

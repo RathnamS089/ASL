@@ -1,6 +1,6 @@
 # Generator model selection: vLLM and small reasoning models
 
-Owner: Language/inference. Status: **Qwen3.5-2B downloaded and benchmarked on the Apple M4 Mac that hosts the models (2026-10-25).** Numbers in the candidate table come from the cited sources. Numbers in "Our measurements" come from `benchmarks/bench_generator.py`, with the raw reports in `benchmarks/reports/`.
+Owner: Language/inference. Status: **Decided (2026-10-27): Qwen3.5-4B 4-bit (mlx-community conversion of the official weights), no fine-tune, is the default generator.** On glosses from the recognizer's real vocabulary it scored 69% exact and 100% constraint pass at 0.86 s, against 56% for the base 2B and 50% for our LoRA 2B. Full comparison in [validation/README.md](validation/README.md#generator-glosses--sentence-benchmarksreportsm4-islr-json). The 2B results below are kept for history. Numbers in the candidate table come from the cited sources. Numbers in "Our measurements" come from `benchmarks/bench_generator.py`, with the raw reports in `benchmarks/reports/`.
 
 ## Our measurements
 

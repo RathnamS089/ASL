@@ -5,7 +5,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Literal
 
 Emphasis = Literal["normal", "strong", "low_confidence"]
-GenerationSource = Literal["model", "template", "mock"]
+GenerationSource = Literal["model", "template", "mock", "fingerspelling"]
 
 
 @dataclass(frozen=True)

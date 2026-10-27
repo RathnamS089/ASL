@@ -46,6 +46,8 @@ All commands run from `ml-service/`. The model must already be in `models/Qwen3.
 
 **Important:** request `default_model`, not the model path. `mlx_lm.server` attaches the adapter only to `default_model`. A request naming the path silently loads a second copy of the base model **without** the adapter. That happened in our first evaluation and gave outputs identical to the base model. For the service, set `GEN_MODEL=default_model` when the server has an adapter.
 
+> **Update 2026-10-27: not the default any more.** On glosses from the recognizer's real 250-sign vocabulary, the round-2 adapter scored 50% exact and 75% pass, worse than the base 2B and the 4-bit 4B. It over-fits to the style of `pairs.tsv`, which one author wrote. See [validation/README.md](../validation/README.md). Retrain only with signer-reviewed pairs that use the recognizer's vocabulary.
+
 ## Results (Apple M4 16 GB, mlx-lm 0.32.2, thinking off)
 
 "Exact" means identical to the reference after lower-casing and dropping punctuation. It is strict: "Tomorrow it will rain." counts as a miss against "It will rain tomorrow." "Pass" means the model's output passed the constraint; otherwise the template was used. All reports are in `benchmarks/reports/` (`m4-qwen35-2b-*`).

@@ -16,7 +16,7 @@ VISUALISER turns a short sign-language clip into English text and plays the text
                                            │   ISLR 1st-place TFLite model) → glosses                  │
                                            │                          │ glosses                        │
                                            │                          ▼                                │
-                                           │   generator: mlx_lm.server :8002 — Qwen3.5-2B + LoRA r2   │
+                                           │   generator: mlx_lm.server :8002 — Qwen3.5-4B (4-bit)     │
                                            │   (constraint check; template fallback)                   │
                                            └──────────────────────────────────────────────────────────┘
 ```
@@ -26,7 +26,7 @@ VISUALISER turns a short sign-language clip into English text and plays the text
 | Web app | `web/` (React 19, TypeScript, Vite 8, Tailwind 4, Motion) | served by Go | your tailnet devices |
 | API | `backend-go/` (Go, standard library only) | `127.0.0.1:8080` | Tailscale Serve |
 | ML service | `ml-service/` (FastAPI) | `127.0.0.1:8001` | Go only (internal token) |
-| Generator | `mlx_lm.server`, Qwen3.5-2B + LoRA adapter | `127.0.0.1:8002` | ML service only |
+| Generator | `mlx_lm.server`, Qwen3.5-4B 4-bit (most accurate and fastest on recognizer vocabulary; see `ml-service/validation/README.md`) | `127.0.0.1:8002` | ML service only |
 | Exposure | Tailscale Serve (`bin/expose.sh`) | `https://<mac>.<tailnet>.ts.net` | devices signed in to your tailnet |
 
 Run the whole stack with `bin/run.sh` (add `--mock` to skip the models). Expose it with `bin/expose.sh`.
@@ -56,7 +56,7 @@ The LAN-only alternative (mkcert on the same Wi-Fi) is still documented in [DEVE
    - runs MediaPipe HolisticLandmarker for 543 landmarks per frame (face, hands, pose), in the same layout as the Google ISLR training data
    - splits the clip into signs at hands-down gaps and pauses in motion
    - classifies each segment with the pretrained ISLR model (TFLite, the Kaggle 1st-place solution), keeping signs above the confidence floor
-6. **Python generates.** Glosses go to the generator: Qwen3.5-2B with the round-2 LoRA adapter, with thinking off. The output must pass the constraint check, or the literal template is used.
+6. **Python generates.** Glosses go to the generator: Qwen3.5-4B (4-bit), with thinking off. The output must pass the constraint check, or the literal template is used.
 7. **Go answers.** It maps the result to the public response (no signs → `422 no_signs_detected`) and deletes the temporary clip.
 8. **Phone.** The words animate in time with the signs they came from. Low-confidence words are faded and underlined.
 
@@ -71,6 +71,19 @@ The LAN-only alternative (mkcert on the same Wi-Fi) is still documented in [DEVE
 | Classifier (alternative) | `recognition/model.py` → `MlxClassifier` | Our own 3-layer MLX transformer, trained with `ml-service/training/islr/` on Google ISLR if we ever need a different vocabulary. Not trained yet. |
 
 **"Face" means expression, not identity.** Facial movement carries grammar in sign languages, so face landmarks are model input. Nothing identifies, stores or matches who is signing.
+
+## Letters mode (fingerspelling A–Z)
+
+The camera screen has a **Signs / Letters** switch, which sends `metadata.mode`. In letters mode:
+- **Tracking:** the extractor runs Holistic and falls back to MediaPipe's hand-only tracker (`hand_landmarker.task`) when no body is visible.
+- **Reading:** each frame's 21 hand points are normalised (left hands mirrored) and classified A–Z by a small MLP. Letters held steadily for 0.5 s or more become the spelled word.
+- **No language model:** the word is the letters themselves.
+
+| Piece | File | Notes |
+| --- | --- | --- |
+| Letter model | `ml-service/models/letters/asl-mlp/` (trained by `training/letters/`) | 63 inputs → 256 → 256 → 26. Runs in NumPy at serving time, because MLX streams are per-thread. |
+| Training data | Marxulia/asl_sign_languages_alphabets_v03 (Hugging Face): 10,873 photos, 8,599 with a detected hand | **No stated licence.** Used only to train the local model. |
+| Validation | `ml-service/validation/validate_letters.py` | 20/26 letters on an unseen signer's alphabet video |
 
 ## Trust boundaries
 

@@ -107,7 +107,9 @@ The Mac mini has no camera, so you sign to a phone that opens the app on the Mac
 
 2. **Models** (downloaded by hand and git-ignored; see [ml-service/MODEL_SELECTION.md](../ml-service/MODEL_SELECTION.md) and [ml-service/training/islr/README.md](../ml-service/training/islr/README.md)):
    - `ml-service/models/mediapipe/holistic_landmarker.task` (13.7 MB)
-   - `ml-service/models/Qwen3.5-2B` (4.55 GB), plus the LoRA adapter from `finetune/`
+   - `ml-service/models/Qwen3.5-4B-4bit` (3.06 GB, `mlx-community/Qwen3.5-4B-4bit`): the default generator. `Qwen3.5-2B` plus the LoRA adapter is the fallback.
+   - `ml-service/models/mediapipe/hand_landmarker.task` (7.8 MB), the hand-only tracker for letters mode
+   - `ml-service/models/letters/asl-mlp/`, produced by `training/letters/prepare.py` + `train.py` (a few KB)
    - `ml-service/models/recognizer/islr-1st-place/` (`model.tflite`, 11.2 MB, and `sign_to_prediction_index_map.json`) from [huggingface.co/sign/kaggle-asl-signs-1st-place](https://huggingface.co/sign/kaggle-asl-signs-1st-place)
 
 3. **Start everything:**

@@ -66,11 +66,24 @@ def build_recognizer(s: Settings) -> Recognizer | None:
                           low_confidence_threshold=s.low_confidence_threshold or 0.5)
 
 
+def build_letter_recognizer(s: Settings) -> Recognizer | None:
+    """The A–Z hand-shape reader if its model is on disk."""
+    if s.mock or not (s.letters_dir / "weights.safetensors").is_file():
+        return None
+    from .recognition.landmarks import HolisticExtractor
+    from .recognition.letters import LetterReader, LetterRecognizer
+
+    hand = s.hand_model if s.hand_model.is_file() else None
+    return LetterRecognizer(LetterReader(s.letters_dir),
+                            HolisticExtractor(s.mediapipe_model, target_fps=30, hand_model_path=hand))
+
+
 def create_app(settings: Settings | None = None, recognizer: Recognizer | None = None,
-               generator: Generator | None = None) -> FastAPI:
+               generator: Generator | None = None, letter_recognizer: Recognizer | None = None) -> FastAPI:
     s = settings or Settings.from_env()
     gen = generator or build_generator(s)
     recognizer = recognizer or (build_recognizer(s) if settings is None else None)
+    letter_recognizer = letter_recognizer or (build_letter_recognizer(s) if settings is None else None)
     busy = threading.Lock()
     app = FastAPI(title="VISUALISER ML", version="0.1.0", docs_url=None, redoc_url=None)
 
@@ -93,6 +106,8 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
                                if recognizer else {"name": None, "version": None, "loaded": False}),
                 "generator": {"name": gen.name, "version": gen.version,
                               "loaded": gen.name == "template", "remote": gen.name == "openai_compat"},
+                "letters": ({"name": letter_recognizer.name, "version": letter_recognizer.version, "loaded": True}
+                            if letter_recognizer else {"name": None, "version": None, "loaded": False}),
             },
             "runtime": {"python": platform.python_version(), "machine": platform.machine(),
                         "execution_provider": "cpu"},
@@ -115,6 +130,9 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
             limits = Limits(**meta.get("limits", {}))
             sign_language = meta.get("sign_language", s.sign_language)
             generate = bool(meta.get("options", {}).get("generate", True))
+            mode = meta.get("options", {}).get("mode") or "signs"
+            if mode not in ("signs", "letters"):
+                raise ValueError(mode)
         except (ValueError, KeyError, TypeError):
             return error(400, "invalid_request", "The 'request' part is not valid JSON for this contract.")
         clip = form["clip"]
@@ -125,8 +143,10 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
         if sign_language != s.sign_language:
             return error(422, "unsupported_sign_language",
                          f"This service is configured for '{s.sign_language}'.", request_id)
-        if not s.mock and recognizer is None:
-            return error(503, "models_not_loaded", "No recognizer is loaded.", request_id, retryable=True)
+        active = letter_recognizer if mode == "letters" else recognizer
+        if not s.mock and active is None:
+            what = "alphabet (letters) model" if mode == "letters" else "recognizer"
+            return error(503, "models_not_loaded", f"No {what} is loaded.", request_id, retryable=True)
         if not busy.acquire(blocking=False):
             return error(503, "busy", "Another inference is running.", request_id, retryable=True)
         try:
@@ -138,13 +158,14 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
                 if body.get("generation"):
                     body["generation"]["source"] = "mock"
                 return body
-            return await run_in_threadpool(_run, clip, request_id, sign_language, limits, generate)
+            return await run_in_threadpool(_run, active, clip, request_id, sign_language, limits, generate, mode)
         except ClipError as e:
             return error(422, e.code, e.message, request_id, details=e.details)
         finally:
             busy.release()
 
-    def _run(clip: UploadFile, request_id: str, sign_language: str, limits: Limits, generate: bool):
+    def _run(recognizer: Recognizer, clip: UploadFile, request_id: str, sign_language: str, limits: Limits,
+             generate: bool, mode: str):
         started = time.perf_counter()
         # delete=False + explicit unlink: the decoder reopens the file by name, which an open
         # NamedTemporaryFile does not allow on every platform.
@@ -160,7 +181,12 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
         recognized_ms = round((time.perf_counter() - started) * 1000)
         generation = None
         if generate and recognition.segments:
-            generation = gen.generate(recognition.segments, sign_language=sign_language).to_dict()
+            if mode == "letters":
+                from .recognition.letters import spelled_generation
+
+                generation = spelled_generation(recognition.segments).to_dict()
+            else:
+                generation = gen.generate(recognition.segments, sign_language=sign_language).to_dict()
         total_ms = round((time.perf_counter() - started) * 1000)
         return {
             "request_id": request_id,
@@ -168,7 +194,8 @@ def create_app(settings: Settings | None = None, recognizer: Recognizer | None =
             "recognition": recognition.to_dict(),
             "generation": generation,
             "models": {"recognizer": {"name": recognizer.name, "version": recognizer.version},
-                       "generator": {"name": gen.name, "version": gen.version}},
+                       "generator": ({"name": "spelled", "version": "1"} if mode == "letters"
+                                     else {"name": gen.name, "version": gen.version})},
             "timings_ms": {"recognition": recognized_ms, "generation": total_ms - recognized_ms,
                            "total": total_ms},
         }
