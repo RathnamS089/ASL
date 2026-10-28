@@ -133,6 +133,7 @@ Each outer timeout is longer than the sum of the inner ones, so clients always r
 | `low_confidence` | bool | True when the recognizer's overall score is below its configured threshold. The UI should suggest re-recording. |
 | `generation.source` | `model` \| `template` \| `mock` \| `fingerspelling` | `template` means the constrained model was unavailable or its output was rejected. `fingerspelling` means `mode: "letters"`: the sentence is the letters themselves, with no language model. |
 | `mode` | `signs` \| `letters` | Echoes the request's mode. |
+| `debug` | object | `{ "hands_seen": number \| null, "candidates": [...] }`, passed through from the ML service (see `ML_CONTRACT.md`, "Debug fields"). Shows every guess, including ones below the confidence floor. For the "What the model saw" panel; not stable. |
 | `models`, `timings_ms` | object | For display in debug mode and for M9 measurements. Their keys may grow. |
 
 Signs are ordered by `start_seconds`, do not overlap, satisfy `0 ≤ start ≤ end ≤ clip duration`, and have non-empty labels. These invariants match `TranslationResponse.validated()` in `VisualiserCore`.
@@ -163,7 +164,7 @@ Signs are ordered by `start_seconds`, do not overlap, satisfy `0 ≤ start ≤ e
 | 415 | `unsupported_media_type` | no | Bytes are not WebM or MP4/MOV |
 | 422 | `clip_too_short` / `clip_too_long` | no | Duration outside 0.5–10 s |
 | 422 | `undecodable_clip` | no | The container sniffed correctly but could not be decoded |
-| 422 | `no_signs_detected` | no | Valid clip, but no sign passed the threshold. Suggest framing and lighting tips. |
+| 422 | `no_signs_detected` | no | Valid clip, but no sign passed the threshold. Suggest framing and lighting tips. `details` carries the same `debug` object as a success response. |
 | 422 | `unsupported_sign_language` | no | Not the configured language |
 | 429 | `rate_limited` | yes | Wait for `Retry-After` |
 | 500 | `internal` | yes | Bug. Report the `request_id`. |

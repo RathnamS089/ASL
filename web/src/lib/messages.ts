@@ -1,10 +1,12 @@
 import { ApiError } from "./api";
+import type { Debug } from "./types";
 
 export interface FriendlyError {
   title: string;
   hint: string;
   canRetry: boolean;
   reRecord: boolean;
+  debug?: Debug;
 }
 
 /** Turns API and camera errors into copy a person can act on. */
@@ -12,7 +14,7 @@ export function friendlyApiError(e: unknown): FriendlyError {
   const err = e instanceof ApiError ? e : new ApiError("network", String(e));
   switch (err.code) {
     case "no_signs_detected":
-      return { title: "No signs recognised", hint: "Keep both hands and your face in frame, with light in front of you, and sign a little slower.", canRetry: false, reRecord: true };
+      return { title: "No signs recognised", hint: "Keep both hands and your face in frame, with light in front of you, and sign a little slower.", canRetry: false, reRecord: true, debug: err.details as Debug | undefined };
     case "clip_too_long":
     case "clip_too_short":
     case "payload_too_large":

@@ -28,6 +28,21 @@ export interface Translation {
   is_mock: boolean;
   models?: Record<string, string>;
   timings_ms?: Record<string, number>;
+  debug?: Debug;
+}
+
+/** What the recognizer saw, including guesses below its confidence floor. */
+export interface Debug {
+  hands_seen?: number | null;
+  candidates?: Candidate[];
+}
+
+export interface Candidate {
+  kind: "segment" | "whole_clip";
+  start_seconds: number;
+  end_seconds: number;
+  kept: boolean;
+  top: { label: string; confidence: number }[];
 }
 
 export type Mode = "signs" | "letters";

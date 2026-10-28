@@ -183,7 +183,7 @@ func (s *Server) translate(w http.ResponseWriter, r *http.Request) {
 		if mode == "letters" {
 			msg = "No letters were recognised. Hold each letter still for about half a second, with your hand clearly in view."
 		}
-		writeError(w, r, &apiError{Status: 422, Code: "no_signs_detected", Message: msg})
+		writeError(w, r, &apiError{Status: 422, Code: "no_signs_detected", Message: msg, Details: debugInfo(res)})
 		return
 	}
 	writeJSON(w, http.StatusOK, s.publicResponse(res, mode, queued, s.now().Sub(inferStart), s.now().Sub(started)))
@@ -242,9 +242,22 @@ func (s *Server) publicResponse(res *inference.Response, mode string, queued, in
 		"generation":     map[string]any{"source": res.Generation.Source, "constrained": res.Generation.Constrained},
 		"is_mock":        res.Mock,
 		"models":         models,
+		"debug":          debugInfo(res),
 		"timings_ms": map[string]any{"queue": queued.Milliseconds(), "inference": inferDur.Milliseconds(),
 			"total": total.Milliseconds()},
 	}
+}
+
+// debugInfo is what the recognizer saw, including guesses below the confidence floor, so a
+// missed sign can be told apart from a sign that was never in frame.
+func debugInfo(res *inference.Response) map[string]any {
+	d := map[string]any{"hands_seen": res.Recognition.HandsSeen}
+	if len(res.Recognition.Candidates) > 0 {
+		d["candidates"] = res.Recognition.Candidates
+	} else {
+		d["candidates"] = []any{}
+	}
+	return d
 }
 
 // mapMLError follows the table in docs/ML_CONTRACT.md.

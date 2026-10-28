@@ -33,6 +33,9 @@ class RecognitionResult:
     segments: list[Segment]
     overall_confidence: float | None
     low_confidence: bool
+    hands_seen: float | None = None  # share of frames with at least one hand tracked
+    # Debug: every piece the classifier looked at, with its top guesses, kept or not.
+    candidates: list[dict] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return asdict(self)

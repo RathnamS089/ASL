@@ -127,6 +127,13 @@ The service never puts stack traces or file paths in `message`. They belong in i
 5. **Token mapping.** Each `segment_index` is a valid index into `segments` or `null`. Joining `tokens[].text` with single spaces gives `text`.
 6. **Generation constraint.** Every content word in `text` must come from a recognized segment. Only function words, punctuation and inflection may be added. The validator rejects anything else, and the service falls back to the deterministic template, setting `source: "template"` and the `rejected_reason`.
 
+## Debug fields (optional, may be absent)
+
+- **`recognition.hands_seen`.** Share of decoded frames with at least one hand tracked, `0–1`.
+- **`recognition.candidates[]`.** Every piece of the clip the classifier scored, kept or not: `{ "kind": "segment" | "whole_clip", "start_seconds", "end_seconds", "kept": bool, "top": [{ "label", "confidence" }…up to 5] }`. `whole_clip` scores everything from the first to the last hand frame as one sign, for comparison only; it never becomes a segment.
+
+These exist to diagnose missed signs (was the hand in view? was the right sign close to the floor?). Go passes them to the client unread.
+
 ## `POST /v1/generate` (internal, for benchmarks)
 
 Takes `{ "segments": [Segment…], "sign_language": "ase" }` and returns `{ "generation": GenerationResult, "timings_ms": { "generation": n } }`. It needs the internal token. Go does not call it. It exists so the generator can be tested and benchmarked before a recognizer exists.

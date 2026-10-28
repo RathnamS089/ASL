@@ -13,6 +13,7 @@ export class ApiError extends Error {
     readonly retryable = false,
     readonly retryAfterSeconds?: number,
     readonly requestId?: string,
+    readonly details?: Record<string, unknown>,
   ) {
     super(message);
     this.name = "ApiError";
@@ -43,7 +44,7 @@ async function parseError(res: Response): Promise<ApiError> {
   try {
     const body = (await res.json()) as { error?: ApiErrorBody };
     if (body.error?.code) {
-      return new ApiError(body.error.code, body.error.message, res.status, !!body.error.retryable, retryAfter, body.error.request_id);
+      return new ApiError(body.error.code, body.error.message, res.status, !!body.error.retryable, retryAfter, body.error.request_id, body.error.details);
     }
   } catch {
     /* not JSON */

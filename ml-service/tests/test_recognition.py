@@ -255,3 +255,23 @@ def test_mlx_classifier_works_from_a_worker_thread(trained):
     t.start()
     t.join()
     assert got["p"].shape == (1, 3)
+
+
+def test_recognizer_reports_guesses_it_dropped(trained, tmp_path):
+    """The debug candidates keep every piece's top guesses, even below the confidence floor."""
+    from visualiser_ml.recognition.islr import IslrRecognizer
+
+    fps, frames = 15.0, 120
+    xyz = np.full((frames, N_LANDMARKS, 3), np.nan, np.float32)
+    xyz[10:40] = body(30, "right", PATHS["circle"])
+    xyz[70:100] = body(30, "right", PATHS["swipe"])
+    track = LandmarkTrack(xyz, np.arange(frames, dtype=np.float32) / fps, fps, frames, frames / fps)
+    result = IslrRecognizer(trained, FakeExtractor(track), min_sign_confidence=1.01).recognize(
+        tmp_path / "clip", sign_language="ase", limits=Limits())
+    assert result.segments == []
+    kinds = [c["kind"] for c in result.candidates]
+    assert kinds == ["segment", "segment", "whole_clip"]
+    assert not any(c["kept"] for c in result.candidates)
+    assert [c["top"][0]["label"] for c in result.candidates[:2]] == ["CIRCLE", "SWIPE"]
+    assert all(1 <= len(c["top"]) <= 5 for c in result.candidates)
+    assert result.hands_seen == pytest.approx(60 / 120)

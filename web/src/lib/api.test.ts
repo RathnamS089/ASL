@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import example from "../../../contracts/examples/translation-response.json";
 import errorExample from "../../../contracts/examples/error-response.json";
 import { ApiError, checkReady, translateClip, validTranslation } from "./api";
+import { friendlyApiError } from "./messages";
 import type { RecordingMetadata } from "./types";
 
 const meta: RecordingMetadata = {
@@ -33,6 +34,14 @@ describe("translateClip", () => {
     const err = await translateClip(clip, meta, { fetchImpl }).catch((e) => e);
     expect(err).toBeInstanceOf(ApiError);
     expect(err).toMatchObject({ code: "busy", status: 503, retryable: true, retryAfterSeconds: 5 });
+  });
+
+  it("keeps no_signs_detected details for the debug panel", async () => {
+    const details = { hands_seen: 0.8, candidates: [{ kind: "segment", start_seconds: 0.4, end_seconds: 1.2, kept: false, top: [{ label: "NO", confidence: 0.21 }] }] };
+    const body = { error: { code: "no_signs_detected", message: "No signs.", details } };
+    const err = await translateClip(clip, meta, { fetchImpl: (async () => json(body, 422)) as typeof fetch }).catch((e) => e);
+    expect(err).toBeInstanceOf(ApiError);
+    expect(friendlyApiError(err).debug?.candidates?.[0].top[0].label).toBe("NO");
   });
 
   it("rejects malformed success bodies", async () => {

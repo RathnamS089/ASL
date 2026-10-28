@@ -278,12 +278,21 @@ func TestNoSignsAndMLErrors(t *testing.T) {
 		{"ml bug", &fakeML{err: &inference.Error{Status: 500, Code: "internal"}}, 502, "inference_failed"},
 		{"token wrong", &fakeML{err: &inference.Error{Status: 401, Code: "unauthorized"}}, 500, "internal"},
 	}
+	empty.Recognition.HandsSeen = ptr(0.8)
+	empty.Recognition.Candidates = json.RawMessage(`[{"kind":"segment","kept":false,"top":[{"label":"NO","confidence":0.2}]}]`)
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			h := newServer(t, conf(t), tc.ml)
 			w, body := do(h, multipartReq(t, "/v1/translations", part{"clip", "c", webm}))
 			if w.Code != tc.status || errCode(body) != tc.code {
 				t.Fatalf("got %d %q, want %d %q", w.Code, errCode(body), tc.status, tc.code)
+			}
+			if tc.code == "no_signs_detected" { // the dropped guesses reach the client for the debug view
+				d := body["error"].(map[string]any)["details"].(map[string]any)
+				top := d["candidates"].([]any)[0].(map[string]any)["top"].([]any)[0].(map[string]any)
+				if d["hands_seen"] != 0.8 || top["label"] != "NO" {
+					t.Fatalf("details: %v", d)
+				}
 			}
 		})
 	}

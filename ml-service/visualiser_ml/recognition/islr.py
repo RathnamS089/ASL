@@ -15,7 +15,7 @@ from typing import Protocol
 import numpy as np
 
 from ..schemas import Limits, RecognitionResult, Segment
-from .features import featurize
+from .features import featurize, hands_present
 from .landmarks import LandmarkTrack, UndecodableClip
 from .segmenter import segment
 
@@ -147,22 +147,35 @@ class IslrRecognizer:
                             {"max_seconds": limits.max_seconds, "actual_seconds": round(track.duration_seconds, 2)})
 
         spans = segment(track.xyz, track.times, max_signs=limits.max_signs)
+        present = np.flatnonzero(hands_present(track.xyz))
+        # Debug only: also classify everything from the first to the last hand frame as one
+        # sign, the way ISLR's training clips look, to show whether the cutting is to blame.
+        whole = (int(present[0]), int(present[-1]) + 1) if len(present) >= 3 else None
+        if whole in spans:
+            whole = None
         segments: list[Segment] = []
-        if spans:
+        candidates: list[dict] = []
+        pieces = spans + ([whole] if whole else [])
+        if pieces:
             n = len(track.times)
             probs = self.classifier.probabilities(
-                [track.xyz[max(0, s - self.PAD_FRAMES):min(n, e + self.PAD_FRAMES)] for s, e in spans])
-            for (s, e), p in zip(spans, probs):
-                top = np.argsort(p)[::-1][:3]
+                [track.xyz[max(0, s - self.PAD_FRAMES):min(n, e + self.PAD_FRAMES)] for s, e in pieces])
+            for k, ((s, e), p) in enumerate(zip(pieces, probs)):
+                top = np.argsort(p)[::-1][:5]
                 conf = float(p[top[0]])
-                if conf < self.min_sign_confidence:
-                    continue  # most likely not a sign in the vocabulary
-                label = self.glosses[int(top[0])]
                 start, end = float(track.times[s]), float(track.times[e - 1])
+                kept = k < len(spans) and conf >= self.min_sign_confidence
+                candidates.append({"kind": "segment" if k < len(spans) else "whole_clip",
+                                   "start_seconds": round(start, 3), "end_seconds": round(max(end, start), 3),
+                                   "kept": kept,
+                                   "top": [{"label": self.glosses[int(i)], "confidence": round(float(p[i]), 4)} for i in top]})
+                if not kept:
+                    continue  # most likely not a sign in the vocabulary (or the debug whole-clip view)
+                label = self.glosses[int(top[0])]
                 if segments and segments[-1].label == label:  # one sign split in two
                     prev = segments.pop()
                     start, conf = prev.start_seconds, max(conf, prev.confidence or 0)
-                alts = [{"label": self.glosses[int(i)], "confidence": round(float(p[i]), 4)} for i in top[1:]] if include_alternatives else []
+                alts = [{"label": self.glosses[int(i)], "confidence": round(float(p[i]), 4)} for i in top[1:3]] if include_alternatives else []
                 segments.append(Segment(label, round(start, 3), round(max(end, start), 3), round(conf, 4), alts))
         overall = round(float(np.mean([s.confidence for s in segments])), 4) if segments else None
         return RecognitionResult(
@@ -173,4 +186,6 @@ class IslrRecognizer:
             segments=segments,
             overall_confidence=overall,
             low_confidence=overall is None or overall < self.low_confidence_threshold,
+            hands_seen=round(len(present) / max(len(track.times), 1), 3),
+            candidates=candidates,
         )

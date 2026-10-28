@@ -7,6 +7,10 @@
 #   bin/run.sh --mock     mock ML (no models needed), useful for UI work
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# This Mac is the server for phones elsewhere, so keep it from sleeping while the stack runs.
+if [[ -z "${VISUALISER_AWAKE:-}" ]] && command -v caffeinate >/dev/null; then
+  VISUALISER_AWAKE=1 exec caffeinate -is "$0" "$@"
+fi
 MOCK=0
 [[ "${1:-}" == "--mock" ]] && MOCK=1
 

@@ -160,6 +160,7 @@ class LetterRecognizer:
 
     def recognize(self, clip_path: Path, *, sign_language: str, limits) -> "RecognitionResult":
         from ..schemas import RecognitionResult, Segment
+        from .features import hands_present
         from .islr import ClipError
         from .landmarks import UndecodableClip
 
@@ -175,7 +176,8 @@ class LetterRecognizer:
         overall = round(float(np.mean([s.confidence for s in segments])), 4) if segments else None
         return RecognitionResult(duration_seconds=round(track.duration_seconds, 3), frames_decoded=track.frames_decoded,
                                  frames_used=track.frames_used, fps=round(track.fps, 2), segments=segments,
-                                 overall_confidence=overall, low_confidence=overall is None or overall < 0.7)
+                                 overall_confidence=overall, low_confidence=overall is None or overall < 0.7,
+                                 hands_seen=round(float(hands_present(track.xyz).mean()) if len(track.times) else 0.0, 3))
 
 
 def spelled_generation(segments) -> "GenerationResult":

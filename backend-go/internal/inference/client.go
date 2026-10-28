@@ -59,6 +59,10 @@ type Recognition struct {
 	Segments          []Segment `json:"segments"`
 	OverallConfidence *float64  `json:"overall_confidence"`
 	LowConfidence     bool      `json:"low_confidence"`
+	HandsSeen         *float64  `json:"hands_seen"`
+	// Candidates is debug output (every piece the classifier saw, with its top guesses);
+	// Go passes it through unread.
+	Candidates json.RawMessage `json:"candidates"`
 }
 
 type Generation struct {

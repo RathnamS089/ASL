@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import type { FriendlyError } from "../lib/messages";
 import type { RecordedClip } from "../lib/recorder";
-import type { Translation } from "../lib/types";
+import type { Debug, Translation } from "../lib/types";
 import { KineticSentence } from "./KineticSentence";
 import { Badge, Button, Card, Icon } from "./ui";
 
@@ -167,6 +167,8 @@ export function Result({ translation, onAgain, onHome }: { translation: Translat
         </div>
       )}
 
+      {translation.debug && <WhatModelSaw debug={translation.debug} />}
+
       <div className="grid grid-cols-2 gap-3">
         <Button variant="secondary" onClick={onHome}>
           Home
@@ -199,6 +201,48 @@ export function ErrorView({ error, hasClip, onRetry, onReRecord, onHome }: { err
           Home
         </Button>
       </div>
+      {error.debug && <WhatModelSaw debug={error.debug} />}
     </Card>
+  );
+}
+
+/** Debug panel: every piece of the clip the recognizer classified, with its top guesses,
+ *  including ones dropped for low confidence. */
+export function WhatModelSaw({ debug }: { debug: Debug }) {
+  const candidates = debug.candidates ?? [];
+  const hands = debug.hands_seen;
+  return (
+    <details className="rounded-2xl bg-surface p-4 text-sm ring-1 ring-white/10">
+      <summary className="cursor-pointer select-none font-medium">What the model saw</summary>
+      <div className="mt-3 flex flex-col gap-4">
+        {hands != null && (
+          <p className={hands < 0.5 ? "text-danger" : "text-muted"}>
+            Hands tracked in {Math.round(hands * 100)}% of frames.
+            {hands < 0.5 && " Move back so both hands stay in view."}
+          </p>
+        )}
+        {candidates.length === 0 && <p className="text-muted">No sign-like movement was found, so nothing was classified.</p>}
+        {candidates.map((c, i) => (
+          <div key={i} className="flex flex-col gap-2">
+            <p className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
+              {c.kind === "whole_clip" ? "Whole clip as one sign" : `Piece ${i + 1}`} · {c.start_seconds.toFixed(1)}–{c.end_seconds.toFixed(1)} s
+              {c.kind === "segment" && (c.kept ? <Badge tone="lime">Used</Badge> : <Badge tone="danger">Too unsure, dropped</Badge>)}
+            </p>
+            <ul className="flex flex-col gap-1">
+              {c.top.map((g) => (
+                <li key={g.label} className="grid grid-cols-[7rem_1fr_3rem] items-center gap-2">
+                  <span className="truncate font-mono">{g.label}</span>
+                  <span className="h-1.5 overflow-hidden rounded-full bg-white/10">
+                    <span className="block h-full bg-violet" style={{ width: `${Math.round(g.confidence * 100)}%` }} />
+                  </span>
+                  <span className="text-right font-mono text-xs text-muted">{Math.round(g.confidence * 100)}%</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        {candidates.length > 0 && <p className="text-xs text-muted">Guesses under 35% are dropped. A sign that shows up here but below 35% was close.</p>}
+      </div>
+    </details>
   );
 }
